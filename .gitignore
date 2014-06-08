@@ -1,0 +1,39 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*~
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# Toolkit
+toolkit/binutils/
+toolkit/binutils-pi/
+toolkit/build-binutils/*
+toolkit/build-binutils-pi/*
+toolkit/binutils-2.22/
+toolkit/*.tar.gz
+toolkit/*.tar.bz2
+toolkit/cross/*
+toolkit/bin/*
+toolkit/gcc/*
+doc/*
+*.elf
+toolkit/arm-2008q3/
+libiconv*
+.DS_Store
+
+*.iso
+*.img
+*.bin
+*.mod
+*.map
+
+initutil
+*.log
