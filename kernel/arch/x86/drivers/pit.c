@@ -1,4 +1,5 @@
 #include <arch/x86/descriptor_tables.h>
+#include <arch/x86/ports.h>
 uint64_t pit_internal_ticks = 0;
 void pit_handler()
 {
