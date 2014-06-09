@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <video.h>
 void printk(const char * type, const char *fmt, ...)
 {
 	if(strlen(type) > 6)

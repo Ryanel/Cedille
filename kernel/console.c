@@ -72,6 +72,11 @@ void print(const char *c)
 		printc(c[i++]);
 	}
 }
+void console_printdiv()
+{
+	printf("------+---------------------------------");
+	printf("----------------------------------------");//80 lines
+}
 void console_clear()
 {
 	video_clear();

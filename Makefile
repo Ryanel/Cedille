@@ -97,7 +97,7 @@ prep-dist:
 	@-rm -rf *~ boot/*~ kernel/*~
 
 run:
-	@qemu-system-i386 -serial stdio -cdrom ${BUILD_DIRECTORY}/cdrom.iso -m 64
+	@qemu-system-i386 -serial stdio -cdrom ${BUILD_DIRECTORY}/cdrom.iso -m 16
 
 iso:
 	@echo "ISO [A]| ${BUILD_DIRECTORY}/cdrom/iso"
