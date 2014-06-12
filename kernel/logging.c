@@ -3,6 +3,7 @@
 #include <video.h>
 void printk(const char * type, const char *fmt, ...)
 {
+	#ifndef OPT_NO_ENCHANCED_LOGGING
 	if(strlen(type) > 6)
 	{
 		char array[6];
@@ -21,7 +22,7 @@ void printk(const char * type, const char *fmt, ...)
 		printf("%-6s| ",type);
 		video_reset_attr();
 	}
-	else if(strcmp(type,"fail") == 0 || strcmp(type,"fault") == 0)
+	else if(strcmp(type,"fail") == 0 || strcmp(type,"fault") == 0 || strcmp(type,"panic") == 0 || strcmp(type,"oops") == 0)
 	{
 		video_settextfore(0x4);
 		printf("%-6s| ",type);
@@ -49,6 +50,9 @@ void printk(const char * type, const char *fmt, ...)
 	{
 		printf("%-6s| ",type);
 	}
+	#else
+	printf("%s: ",type);
+	#endif
 	va_list args;
 	va_start(args, fmt);
 	vprintf(fmt,args);

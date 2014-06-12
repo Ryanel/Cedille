@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <video.h>
 #ifdef X86
 #include <arch/x86/ports.h>
@@ -74,8 +75,10 @@ void print(const char *c)
 }
 void console_printdiv()
 {
+	#ifndef OPT_NO_ENCHANCED_LOGGING
 	printf("------+---------------------------------");
 	printf("----------------------------------------");//80 lines
+	#endif
 }
 void console_clear()
 {

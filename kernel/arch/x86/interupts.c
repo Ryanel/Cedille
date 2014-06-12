@@ -2,6 +2,7 @@
 #include <arch/x86/ports.h>
 #include <stdint.h>
 #include <logging.h>
+#include <cedille.h>
 const char *exception_messages[] =
 {
 	"Division By Zero",
@@ -40,6 +41,9 @@ const char *exception_messages[] =
 	"Reserved",
 	"Reserved"
 };
+
+interrupt_handler_t interrupt_handlers [256];
+
 /*
 	unsigned int gs, fs, es, ds;      // pushed the segs last
 	unsigned int edi, esi, ebp, useless_value, ebx, edx, ecx, eax;  // pushed by pusha. useless value is esp 
@@ -48,6 +52,8 @@ const char *exception_messages[] =
 */
 extern void fault_handler(struct regs *r)
 {
+	if (interrupt_handlers[r->int_no] != 0)
+		interrupt_handlers[r->int_no] (r);
 	if(r->int_no < 32)
 	{
 		printk("fault","code     | %d (error %d),(%s)\n",r->int_no,r->err_code,exception_messages[r->int_no]);
@@ -55,13 +61,9 @@ extern void fault_handler(struct regs *r)
 		printk("fault","stack    | esp: 0x%x ebp: 0x%x uesp: 0x%x\n",r->useless_value,r->ebp,r->useresp);
 		printk("fault","gp regs  | eax: 0x%x ebx: 0x%x ecx: 0x%x edx: 0x%x\n",r->eax,r->ebx,r->ecx,r->edx);
 		printk("fault",".......  | esi: 0x%x edi: 0x%x eip: 0x%x eflags: 0x%x \n",r->esi,r->edi,r->eip,r->eflags);
-		printk("ok","Halting...\n");
-		asm("cli");
-		asm("hlt");
+		panic("Kernel fault");
 	}
 }
-
-interrupt_handler_t interrupt_handlers [256];
 
 /* This installs a custom IRQ handler for the given IRQ */
 void register_interrupt_handler (uint8_t n, interrupt_handler_t h)

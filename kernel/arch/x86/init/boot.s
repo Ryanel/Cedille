@@ -21,7 +21,6 @@ align 4
 section .text
 [GLOBAL start]
 [EXTERN kernel_entry]
-[EXTERN kernel_atexit]
 
 start:
 	mov esp, stack_top
@@ -31,7 +30,6 @@ start:
 	push eax
 	call kernel_entry
 	cli
-	call kernel_atexit
 .x86_halt:
 	hlt
 	jmp .x86_halt
