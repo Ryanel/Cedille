@@ -16,33 +16,27 @@ void printk(const char * type, const char *fmt, ...)
 		array[6] = 0;
 		printf("%-6s| ",array);
 	}
-	else if(strcmp(type,"ok") == 0)
+	else if(strcmp(type,"ok") == 0 || strcmp(type,"done") == 0) //Good
 	{
 		video_settextfore(0xA);
 		printf("%-6s| ",type);
 		video_reset_attr();
 	}
-	else if(strcmp(type,"fail") == 0 || strcmp(type,"fault") == 0 || strcmp(type,"panic") == 0 || strcmp(type,"oops") == 0)
+	else if(strcmp(type,"fail") == 0 || strcmp(type,"fault") == 0 || strcmp(type,"panic") == 0 || strcmp(type,"oops") == 0) //Bad
 	{
 		video_settextfore(0x4);
 		printf("%-6s| ",type);
 		video_reset_attr();
 	}
-	else if(strcmp(type,"info") == 0 || strcmp(type,"status") == 0)
+	else if(strcmp(type,"info") == 0 || strcmp(type,"status") == 0) // Info
 	{
 		video_settextfore(0xB);
 		printf("%-6s| ",type);
 		video_reset_attr();
 	}
-	else if(strcmp(type,"cpu") == 0 || strcmp(type,"debug") == 0)
+	else if(strcmp(type,"cpu") == 0 || strcmp(type,"debug") == 0 || strcmp(type,"device") == 0) //Debug
 	{
 		video_settextfore(0xD);
-		printf("%-6s| ",type);
-		video_reset_attr();
-	}
-	else if(strcmp(type,"device") == 0)
-	{
-		video_settextfore(0x9);
 		printf("%-6s| ",type);
 		video_reset_attr();
 	}
