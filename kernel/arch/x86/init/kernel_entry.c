@@ -11,6 +11,7 @@ extern uint32_t _kernel_start,_kernel_end;
 int x86_init_descriptor_tables();
 void pit_install(uint32_t frequency);
 void init_vmm();
+void init_syscalls();
 ///The entry point for the x86 version of the Cedille Microkernel
 void kernel_entry(int magic, multiboot_info_t * multiboot)
 {
@@ -38,6 +39,7 @@ void kernel_entry(int magic, multiboot_info_t * multiboot)
 	init_malloc(0);
 	init_pmm(multiboot->mem_upper);
 	init_vmm();
+	init_syscalls();
 	printk("ok","Finished Execution\n");
 	return;
 }

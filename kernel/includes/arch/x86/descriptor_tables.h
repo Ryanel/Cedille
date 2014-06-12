@@ -68,7 +68,7 @@ extern void isr28();
 extern void isr29();
 extern void isr30();
 extern void isr31();
-
+extern void isr100();
 struct regs
 {
 	unsigned int gs, fs, es, ds;      /* pushed the segs last */

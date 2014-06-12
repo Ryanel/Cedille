@@ -68,6 +68,8 @@ void idt_init_isrs()
 	idt_set_gate(29, (unsigned)isr29, 0x08, 0x8E);
 	idt_set_gate(30, (unsigned)isr30, 0x08, 0x8E);
 	idt_set_gate(31, (unsigned)isr31, 0x08, 0x8E);
+	//Syscall
+	idt_set_gate(0x64, (unsigned)isr100, 0x08, 0x8E);
 }
 void irq_install();
 uint32_t x86_init_descriptor_tables() ///Returns how many tables were initialised on error, otherwise 0.

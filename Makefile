@@ -30,7 +30,7 @@ CPP:=clang++
 C_OPTIONS := -ffreestanding -std=gnu99 
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
 C_OPTIONS += -Wno-unused-function -Wno-unused-parameter 
-C_OPTIONS += -s	
+C_OPTIONS += -s	-O2
 LD := ./toolkit/binutils/bin/i586-elf-ld -m elf_i386
 LFLAGS := -nostdlib -lgcc
 LD_SCRIPT := ${ARCH_DIRECTORY}/link.ld
