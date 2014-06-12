@@ -20,11 +20,6 @@ void deregister_syscall_handler (uint8_t n)
 	syscall_handlers[n] = 0;
 }
 
-void test()
-{
-	printk("info","test syscall\n");
-}
-
 void syscall_handler(registers_t *regs)
 {
 	void *location = syscall_handlers[regs->eax];
