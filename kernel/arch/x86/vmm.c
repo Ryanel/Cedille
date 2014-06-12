@@ -6,6 +6,7 @@
 #include <cedille.h>
 #include <arch/x86/paging.h>
 #include <arch/x86/descriptor_tables.h>
+#include <stdio.h>
 extern uint32_t _kernel_end;
 
 page_directory_t * kernel_page_directory = NULL;
@@ -49,22 +50,19 @@ void vmm_page_fault_exception(struct regs *regs)
 	uint32_t faulting_address;
 	asm volatile("mov %%cr2, %0" : "=r" (faulting_address));
 	// The error code gives us details of what happened.
-	int present   = !(regs->err_code & 0x1); // Page not present
-	int rw = regs->err_code & 0x2;           // Write operation?
-	int us = regs->err_code & 0x4;           // Processor was in user-mode?
-	int reserved = regs->err_code & 0x8;     // Overwritten CPU-reserved bits of page entry?
-	int id = regs->err_code & 0x10;          // Caused by an instruction fetch?
+	int present   = !(regs->err_code & 0x1); 	// Page not present
+	int rw = regs->err_code & 0x2;           	// Write operation?
+	int us = regs->err_code & 0x4;           	// Processor was in user-mode?
+	int reserved = regs->err_code & 0x8;     	// Overwritten CPU-reserved bits of page entry?
+	int id = regs->err_code & 0x10;          	// Caused by an instruction fetch?
 	printk("fault","Page fault at 0x%x ( ",faulting_address);
 	if (present) {printf("present ");}
 	if (rw) {printf("read-only ");}
 	if (us) {printf("user-mode ");}
 	if (reserved) {printf("reserved ");}
+	if (id) {printf("instruction fetch ");}
+	if (faulting_address < (uint32_t)&_kernel_end) {printf("[in kernel] ");}
 	printf(")\n");
-}
-
-void sbrk()
-{
-	oops("sbrk unimplemented");
 }
 
 void init_vmm()

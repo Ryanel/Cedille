@@ -1,5 +1,7 @@
 #ifndef ARCH_X86_PAGING_H
 #define ARCH_X86_PAGING_H
+#define INDEX_FROM_BIT(a) (a/(8*4))
+#define OFFSET_FROM_BIT(a) (a%(8*4))
 typedef struct page
 {
    uint32_t present    : 1;   // Page present in memory

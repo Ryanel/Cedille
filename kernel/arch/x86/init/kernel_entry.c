@@ -39,5 +39,7 @@ void kernel_entry(int magic, multiboot_info_t * multiboot)
 	init_pmm(multiboot->mem_upper);
 	init_vmm();
 	printk("ok","Finished Execution\n");
+	lheap_alloc_pages(0xF);
+	lheap_alloc_pages(2);
 	return;
 }

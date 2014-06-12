@@ -61,7 +61,7 @@ extern void fault_handler(struct regs *r)
 		printk("fault","stack    | esp: 0x%x ebp: 0x%x uesp: 0x%x\n",r->useless_value,r->ebp,r->useresp);
 		printk("fault","gp regs  | eax: 0x%x ebx: 0x%x ecx: 0x%x edx: 0x%x\n",r->eax,r->ebx,r->ecx,r->edx);
 		printk("fault",".......  | esi: 0x%x edi: 0x%x eip: 0x%x eflags: 0x%x \n",r->esi,r->edi,r->eip,r->eflags);
-		panic("Kernel fault");
+		panic("Interrupt fault");
 	}
 }
 
