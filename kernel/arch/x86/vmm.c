@@ -56,8 +56,9 @@ void vmm_page_fault_exception(struct regs *regs)
 	int reserved = regs->err_code & 0x8;     	// Overwritten CPU-reserved bits of page entry?
 	int id = regs->err_code & 0x10;          	// Caused by an instruction fetch?
 	printk("fault","Page fault at 0x%x ( ",faulting_address);
+	if (rw) {printf("a write; ");}
+	if (!rw) {printf("a read; ");}
 	if (present) {printf("present ");}
-	if (rw) {printf("read-only ");}
 	if (us) {printf("user-mode ");}
 	if (reserved) {printf("reserved ");}
 	if (id) {printf("instruction fetch ");}
@@ -65,14 +66,18 @@ void vmm_page_fault_exception(struct regs *regs)
 	printf(")\n");
 }
 
+uintptr_t * kernel_debug_zone;
+
 void init_vmm()
 {
 	printk("info","Starting Virtual Memory Manager...\n");
 	kernel_page_directory = (page_directory_t *)kmalloc_aligned(sizeof(page_directory_t));
 	memset(kernel_page_directory, 0, sizeof(page_directory_t));
 	current_page_directory = kernel_page_directory;
-	vmm_identity_map(0x0,mman_get_placement_address());
-	vmm_set_page_directory(kernel_page_directory);
+	vmm_identity_map(0x0,mman_get_placement_address() + 0x1000);
 	register_interrupt_handler (14, vmm_page_fault_exception); //Setup Page Fault Handler
+	vmm_set_page_directory(kernel_page_directory);
 	vmm_enable_paging();
+	//Use the new heap to allocate the kernel debug zone
+	kernel_debug_zone = lheap_alloc_pages(1);
 }

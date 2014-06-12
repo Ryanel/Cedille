@@ -7,7 +7,7 @@ void init_malloc(uint32_t status);
 uintptr_t * kmalloc(size_t sz);
 uintptr_t * kmalloc_aligned(size_t sz);
 uintptr_t * kmalloc_aligned_phys(size_t sz, uintptr_t * phys);
-void *sbrk(size_t amount);
+uintptr_t * sbrk(size_t amount);
 
 void init_pmm(uint32_t total_kb);
 void pmm_bitmap_set(uintptr_t address);

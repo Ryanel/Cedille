@@ -53,12 +53,13 @@ void pmm_alloc_frame(page_t *page, int is_kernel, int is_writeable)
 {
 	if(page->frame != 0)
 	{
-		oops("Attempted to realloc a frame!\n");
+		//oops("Attempted to realloc a page frame!");
 		return;
 	}
 	uint32_t index = pmm_bitmap_findfree();
 	if(index == (uintptr_t)-1) //If there is no more memory
 	{
+		//TODO: Call Kernel OOM Manager before panic
 		panic("Out of memory");
 	}
 	pmm_bitmap_set(index * 0x1000); // Make it the size of a page address boundry
@@ -79,13 +80,10 @@ void pmm_dealloc_frame(page_t *page)
 
 page_t * pmm_get_page(page_directory_t *dir,uint32_t address, uint8_t make)
 {
-	
 	uint32_t page_index = address / 0x1000;		//Page index
 	uint32_t table_index = page_index / 1024;	//Table index
-	printk("info","Getting page at addr 0x%X - the %d'th page\n",address,page_index);
 	if (dir->tables[table_index])
 	{
-		printf("returning 0x%X\n", (uint32_t)&dir->tables[table_index]->pages[page_index%1024]);
 		return &dir->tables[table_index]->pages[page_index%1024];
 	}
 	else if(make)
