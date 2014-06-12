@@ -19,7 +19,7 @@ void kernel_entry(int magic, multiboot_info_t * multiboot)
 	console_printdiv();
 
 	printk("ok","The Cedille Microkernel v.%s. (c) Corwin McKnight 2014\n",CEDILLE_VERSION_S);
-	printk("info","kernel image(ram): 0x%X - 0x%X (%d bytes, %d kb)\n",&_kernel_start,&_kernel_end, &_kernel_end - &_kernel_start, (&_kernel_end - &_kernel_start) / 1024);
+	printk("info","kernel image(ram): 0x%X - 0x%X (%d bytes, ~%dkb)\n",&_kernel_start,&_kernel_end, &_kernel_end - &_kernel_start, (&_kernel_end - &_kernel_start) / 1024);
 	
 	if(magic != MULTIBOOT_BOOTLOADER_MAGIC)
 	{
@@ -37,9 +37,10 @@ void kernel_entry(int magic, multiboot_info_t * multiboot)
 	console_printdiv();
 	pit_install(1000);
 	init_malloc(0);
-	init_pmm(multiboot->mem_upper);
+	init_pmm((multiboot->mem_upper * 1024) + 0x10000);
 	init_vmm();
 	init_syscalls();
 	printk("ok","Finished Execution\n");
+	console_printdiv();
 	return;
 }

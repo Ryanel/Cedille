@@ -6,7 +6,7 @@ void printk(const char * type, const char *fmt, ...)
 	#ifndef OPT_NO_ENCHANCED_LOGGING
 	if(strlen(type) > 6)
 	{
-		char array[6];
+		char array[7];
 		array[0] = type[0];
 		array[1] = type[1];
 		array[2] = type[2];
@@ -34,7 +34,7 @@ void printk(const char * type, const char *fmt, ...)
 		printf("%-6s| ",type);
 		video_reset_attr();
 	}
-	else if(strcmp(type,"cpu") == 0)
+	else if(strcmp(type,"cpu") == 0 || strcmp(type,"debug") == 0)
 	{
 		video_settextfore(0xD);
 		printf("%-6s| ",type);

@@ -97,17 +97,17 @@ page_t * pmm_get_page(page_directory_t *dir,uint32_t address, uint8_t make)
 	return NULL;
 }
 
-void init_pmm(uint32_t total_kb)
+void init_pmm(uint32_t total_b)
 {
-	printk("info","Starting Physical Memory Manager with 0x%X bytes...\n",total_kb * 1024);
-	if(total_kb == 0)
+	printk("info","Starting Physical Memory Manager with 0x%X bytes...\n",total_b);
+	if(total_b == 0)
 	{
 		printk("fail","Unknown amount of free memory? Reading Configuration Space...\n");
 		return;
 	}
 	else
 	{
-		bitmap_frames = total_kb;
+		bitmap_frames = total_b / 1024;
 	}
 	
 	bitmap = kmalloc(INDEX_FROM_BIT(bitmap_frames));
