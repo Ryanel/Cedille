@@ -62,6 +62,11 @@ void vmm_page_fault_exception(struct regs *regs)
 	printf(")\n");
 }
 
+void sbrk()
+{
+	oops("sbrk unimplemented");
+}
+
 void init_vmm()
 {
 	printk("info","Starting Virtual Memory Manager...\n");

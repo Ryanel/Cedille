@@ -1,4 +1,3 @@
-#include <stdint.h>
 #include <logging.h>
 #include <memory.h>
 #include <string.h>
