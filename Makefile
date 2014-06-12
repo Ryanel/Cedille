@@ -94,7 +94,7 @@ clean: prep-dist
 	@-rm -rf util/*.o util/*.bin
 
 prep-dist:
-	@-rm -rf *~ boot/*~ kernel/*~
+	@-rm -rf *~ doc/* kernel/*~
 
 run:
 	@qemu-system-i386 -serial stdio -cdrom ${BUILD_DIRECTORY}/cdrom.iso -m 16
