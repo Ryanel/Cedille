@@ -1,0 +1,5 @@
+# Cédlle Microkernel
+
+The Cedille Microkernel is a microkernel designed to keep a lot of running code outside of the kernel. This means that Cédille is inherently more stable and secure, as core services are run with lowered permissions. Core services are run as daemons in userspace with the same (but possibly heightend) permissions as other processes. 
+
+Cédille takes alot of insperation from BSD, as well as the Mach Kernel. The process model takes some insperation from Mach - Ports.
