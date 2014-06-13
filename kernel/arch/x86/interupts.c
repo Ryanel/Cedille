@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <logging.h>
 #include <cedille.h>
+///Table of all exception messages
 const char *exception_messages[] =
 {
 	"Division By Zero",
@@ -41,7 +42,7 @@ const char *exception_messages[] =
 	"Reserved",
 	"Reserved"
 };
-
+/// Function pointer array of interrupt handlers
 interrupt_handler_t interrupt_handlers [256];
 
 /*
@@ -50,6 +51,7 @@ interrupt_handler_t interrupt_handlers [256];
 	unsigned int int_no, err_code;    // our 'push byte #' and ecodes do this
 	unsigned int eip, cs, eflags, useresp, ss; //pushed by the processor automatically
 */
+//Handles interrupts
 extern void fault_handler(struct regs *r)
 {
 	if (interrupt_handlers[r->int_no] != 0)
@@ -65,19 +67,19 @@ extern void fault_handler(struct regs *r)
 	}
 }
 
-/* This installs a custom IRQ handler for the given IRQ */
+/** This installs a custom IRQ handler for the given IRQ **/
 void register_interrupt_handler (uint8_t n, interrupt_handler_t h)
 {
 	interrupt_handlers [n] = h;
 	
 }
 
-/* This clears the handler for a given IRQ */
+/** This clears the handler for a given IRQ **/
 void deregister_interrupt_handler (uint8_t n)
 {
 	interrupt_handlers [n] = 0;
 }
-
+///Remaps the irq's in the PIC
 void irq_remap(void)
 {
 	outb(0x20, 0x11);
@@ -114,6 +116,7 @@ void irq_install()
 	idt_set_gate(47, (unsigned)irq15, 0x08, 0x8E);
 	return;
 }
+///Handles IRQ's
 void irq_handler(struct regs *r)
 {
 	/* This is a blank function pointer */

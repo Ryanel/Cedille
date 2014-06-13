@@ -7,7 +7,7 @@ struct gdt_entry gdt_entries[5];
 struct gdt_ptr   gdt_ptr;
 struct idt_entry idt_entries[256];
 struct idt_ptr   idt_ptr; 
-
+///Sets a gate in the GDT
 void gdt_set_gate(signed int num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran)
 {
 	gdt_entries[num].base_low    = (base & 0xFFFF);
@@ -20,7 +20,7 @@ void gdt_set_gate(signed int num, uint32_t base, uint32_t limit, uint8_t access,
 	gdt_entries[num].granularity |= gran & 0xF0;
 	gdt_entries[num].access      = access;
 } 
-
+///Sets a gate in the IDT
 void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags)
 {
     idt_entries[num].base_lo = (base & 0xFFFF);
@@ -30,7 +30,7 @@ void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, uns
     idt_entries[num].always0 = 0;
     idt_entries[num].flags = flags;
 }
-
+///Inits interrupt services
 void idt_init_isrs()
 {
 	idt_set_gate(0, (unsigned)isr0, 0x08, 0x8E);
@@ -71,7 +71,9 @@ void idt_init_isrs()
 	//Syscall
 	idt_set_gate(0x64, (unsigned)isr100, 0x08, 0x8E);
 }
+///Installs all irqs
 void irq_install();
+///Inits all descriptor tables.
 uint32_t x86_init_descriptor_tables() ///Returns how many tables were initialised on error, otherwise 0.
 {
 	gdt_ptr.limit = (sizeof(struct gdt_entry) * 5) - 1;

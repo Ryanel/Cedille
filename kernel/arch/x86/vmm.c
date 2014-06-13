@@ -13,7 +13,7 @@ page_directory_t * kernel_page_directory = NULL;
 page_directory_t * current_page_directory = NULL;
 
 uintptr_t mman_get_placement_address();
-
+///Identity Maps start_addr to end_addr
 void vmm_identity_map(uint32_t start_addr, uint32_t end_addr)
 {
 	if(start_addr > end_addr)
@@ -29,13 +29,13 @@ void vmm_identity_map(uint32_t start_addr, uint32_t end_addr)
 	}
 	asm("hlt");
 }
-
+///Sets page directory
 void vmm_set_page_directory(page_directory_t *d)
 {
 	current_page_directory = d;
 	asm volatile("mov %0, %%cr3":: "r"(&d->tablesPhysical));
 }
-
+///Enables paging
 void vmm_enable_paging()
 {
 	uint32_t cr0;
@@ -44,7 +44,7 @@ void vmm_enable_paging()
 	asm volatile("mov %0, %%cr0":: "r"(cr0));
 	printk("cpu","Paging enabled\n");
 }
-
+///Called on page fault to get extra information
 void vmm_page_fault_exception(struct regs *regs)
 {
 	uint32_t faulting_address;
@@ -65,9 +65,9 @@ void vmm_page_fault_exception(struct regs *regs)
 	if (faulting_address < (uint32_t)&_kernel_end) {printf("[in kernel] ");}
 	printf(")\n");
 }
-
+/// 4kb's of swap space
 uintptr_t * kernel_debug_zone;
-
+/// Initialises the VMM, on the x86 side.
 void init_vmm()
 {
 	printk("info","Starting Virtual Memory Manager...\n");

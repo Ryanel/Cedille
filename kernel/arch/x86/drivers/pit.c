@@ -1,11 +1,12 @@
 #include <arch/x86/descriptor_tables.h>
 #include <arch/x86/ports.h>
 uint64_t pit_internal_ticks = 0;
+///Handles the PIT ticks and reports them to the central clock.
 void pit_handler()
 {
 	pit_internal_ticks++;
 }
-
+///Starts the PIT at frequency
 void pit_install(uint32_t frequency)
 {
 	register_interrupt_handler (IRQ0, pit_handler);

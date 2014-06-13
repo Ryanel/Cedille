@@ -4,9 +4,13 @@
 #include <arch/x86/paging.h>
 #include <cedille.h>
 
-uintptr_t * bitmap;
+///Bitmap of every page in the system, and whether its free (0) or used (1).
+uintptr_t * bitmap; 
+ ///How many frames bitmap holds.
 uint32_t bitmap_frames = 0x0;
-
+/**
+Sets the page that address is in to be used.
+**/
 void pmm_bitmap_set(uintptr_t address)
 {
 	uint32_t frame = address / 0x1000;
@@ -14,6 +18,9 @@ void pmm_bitmap_set(uintptr_t address)
 	uint32_t off = OFFSET_FROM_BIT(frame);
 	bitmap[idx] |= (0x1 << off);
 }
+/**
+Sets the page that address is in to be free.
+**/
 void pmm_bitmap_clear(uintptr_t address)
 {
    uint32_t frame = address / 0x1000;
@@ -21,6 +28,9 @@ void pmm_bitmap_clear(uintptr_t address)
    uint32_t off = OFFSET_FROM_BIT(frame);
    bitmap[idx] &= ~(0x1 << off);
 }
+/**
+Tests to see that the page address is in is set.
+**/
 uint32_t pmm_bitmap_test(uintptr_t address)
 {
    uint32_t frame = address / 0x1000;
@@ -28,6 +38,9 @@ uint32_t pmm_bitmap_test(uintptr_t address)
    uint32_t off = OFFSET_FROM_BIT(frame);
    return (bitmap[idx] & (0x1 << off));
 }
+/**
+Finds the first free page, and returns it's address
+**/
 uint32_t pmm_bitmap_findfree()
 {
 	uint32_t i, j;
@@ -48,7 +61,9 @@ uint32_t pmm_bitmap_findfree()
 	}
 	return (uint32_t)-1;
 }
-
+/**
+Allocates a page frame automatically. 
+**/
 void pmm_alloc_frame(page_t *page, int is_kernel, int is_writeable)
 {
 	if(page->frame != 0)
@@ -68,6 +83,9 @@ void pmm_alloc_frame(page_t *page, int is_kernel, int is_writeable)
 	page->user = (is_kernel)?0:1;
 	page->frame = index;
 }
+/**
+Deallocates a frame.
+**/
 void pmm_dealloc_frame(page_t *page)
 {
 	if(page->frame != 0)
@@ -77,7 +95,9 @@ void pmm_dealloc_frame(page_t *page)
 	}
 
 }
-
+/**
+Gets a page from dir, corresponding to the address address. If make is non-zero, and the page doesnt exist, it is created.
+**/
 page_t * pmm_get_page(page_directory_t *dir,uint32_t address, uint8_t make)
 {
 	uint32_t page_index = address / 0x1000;		//Page index

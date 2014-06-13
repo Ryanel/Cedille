@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <video.h>
+/**
+Logs output to system console. Works as an enchanced printf.
+@param[in] type  The kind or type of the entry. Is autocolored if it is common.
+@param[in] fmt  The message format. Passed directly to printf.
+@param[in] ...  Any paramaters to pass
+**/
 void printk(const char * type, const char *fmt, ...)
 {
 	#ifndef OPT_NO_ENCHANCED_LOGGING
