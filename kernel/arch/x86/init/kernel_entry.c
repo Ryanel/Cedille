@@ -15,8 +15,7 @@ void init_syscalls();
 ///The entry point for the x86 version of the Cedille Microkernel
 void kernel_entry(int magic, multiboot_info_t * multiboot)
 {
-	console_init();
-	console_printdiv();
+	console_init(); console_printdiv();
 
 	printk("ok","The Cedille Microkernel v.%s. (c) Corwin McKnight 2014\n",CEDILLE_VERSION_S);
 	printk("info","kernel image(ram): 0x%X - 0x%X (%d bytes, ~%dkb)\n", \
@@ -31,13 +30,11 @@ void kernel_entry(int magic, multiboot_info_t * multiboot)
 		return;
 	}
 	printk("status","Initialising the processor...\n");
-	console_printdiv();
 	x86_init_descriptor_tables();
 	printk("ok","Installed Descriptor Tables\n");
 	printk("cpu","Starting interrupts...\n");
 	asm("sti");
 	printk("device","Starting (basic) PIT...\n");
-	console_printdiv();
 	pit_install(1000);
 	init_malloc(0);
 	init_pmm((multiboot->mem_upper * 1024) + 0x10000);
