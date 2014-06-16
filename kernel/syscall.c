@@ -25,7 +25,7 @@ void syscall_handler(registers_t *regs)
 	void *location = syscall_handlers[regs->eax];
 	if(location == NULL)
 	{
-		oops("Syscall not registered");
+		oops("Called a unregistered syscall!");
 		return;
 	}
 	int ret;
@@ -63,7 +63,10 @@ int do_syscall_p2(uint32_t no, void* param,void* param2)
 	asm volatile("int $0x64" : "=a" (a) : "0" (no), "b" ((uint32_t)param), "c" ((uint32_t)param2));
 	return a;
 }
+void init_syscall();
 void init_syscalls()
 {
 	register_interrupt_handler (0x64, &syscall_handler); //Setup Page Fault Handler
+	init_syscall();
+	do_syscall_p1(SYSCALL_OOPS,"syscall!");
 }

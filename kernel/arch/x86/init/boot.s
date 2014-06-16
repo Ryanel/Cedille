@@ -33,3 +33,7 @@ start:
 .x86_halt:
 	hlt
 	jmp .x86_halt
+global read_eip
+read_eip:
+	pop eax
+	jmp eax

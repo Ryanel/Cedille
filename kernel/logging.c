@@ -46,6 +46,12 @@ void printk(const char * type, const char *fmt, ...)
 		printf("%-6s| ",type);
 		video_reset_attr();
 	}
+	else if(strcmp(type,"warn") == 0) //Warnings
+	{
+		video_settextfore(0xE);
+		printf("%-6s| ",type);
+		video_reset_attr();
+	}
 	else
 	{
 		printf("%-6s| ",type);

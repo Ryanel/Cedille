@@ -42,9 +42,6 @@ void kernel_entry(int magic, multiboot_info_t * multiboot)
 	init_syscalls();
 	printk("ok","Finished Execution\n");
 	console_printdiv();
-	printk("ok","bios/reserved: 0x0 - 0x%X\n",&_kernel_start);
-	printk("ok","kernel: 0x%X - 0x%X\n",&_kernel_start,&_kernel_end);
-	printk("ok","kernel heap: 0x%X - 0x%X (%d bytes)\n",&_kernel_end,pmm_bitmap_findfree() * 0x1000, (pmm_bitmap_findfree() * 0x1000) - (uint32_t)&_kernel_end);
-	console_printdiv();
+	task_init();
 	return;
 }

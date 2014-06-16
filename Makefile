@@ -8,7 +8,7 @@ ARCH_TOOLKIT_PREFIX :=
 
 BUILD_DIRECTORY := build
 
-COMPILE_OPTIONS := -DARCH=${ARCH} -DARCH_STRING="\"${ARCH}\"" #-D KERNEL_SYMBOLS #-D KLOG_TITLE_TIME
+COMPILE_OPTIONS := -DDEBUG -DARCH=${ARCH} -DARCH_STRING="\"${ARCH}\"" #-D KERNEL_SYMBOLS #-D KLOG_TITLE_TIME
 #Files
 BOOT_FILES := $(patsubst %.c,%.o,$(wildcard kernel/init/*.c))
 ARCH_BOOT_FILES := $(patsubst %.s,%.o,$(wildcard ${ARCH_DIRECTORY}/init/*.s)) $(patsubst %.c,%.o,$(wildcard ${ARCH_DIRECTORY}/init/*.c))
