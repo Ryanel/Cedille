@@ -66,7 +66,6 @@ int do_syscall_p2(uint32_t no, void* param,void* param2)
 void init_syscall();
 void init_syscalls()
 {
-	register_interrupt_handler (0x64, &syscall_handler); //Setup Page Fault Handler
+	register_interrupt_handler (0x64, &syscall_handler); //Setup Syscall Handler
 	init_syscall();
-	do_syscall_p1(SYSCALL_OOPS,"syscall!");
 }

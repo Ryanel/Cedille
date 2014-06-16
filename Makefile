@@ -38,6 +38,7 @@ INCLUDE_DIR := "./kernel/includes"
 CROSS_CLANG := -target i586-elf
 ASM := nasm -felf 
 GENISO := xorriso -as mkisofs
+EMU := qemu-system-i386
 #Rules
 .PHONY: iso clean
 
@@ -97,7 +98,7 @@ prep-dist:
 	@-rm -rf *~ doc/* kernel/*~
 
 run:
-	@qemu-system-i386 -serial stdio -cdrom ${BUILD_DIRECTORY}/cdrom.iso -m 16
+	@${EMU} -serial stdio -cdrom ${BUILD_DIRECTORY}/cdrom.iso -m 16
 
 iso:
 	@echo "ISO [A]| ${BUILD_DIRECTORY}/cdrom/iso"
