@@ -21,7 +21,7 @@ void kernel_entry(int magic, multiboot_info_t * multiboot)
 	console_init();
 	console_printdiv();
 	printk("status","Kernel initialising...\n");
-	printk("ok","The Cedille Microkernel v.%s. (c) Corwin McKnight 2014\n",CEDILLE_VERSION_S);
+	printk("ok","The C%cdille Microkernel v.%s. (c) Corwin McKnight 2014\n",130,CEDILLE_VERSION_S);
 	#ifdef DEBUG
 	printk("debug","kernel image(ram): 0x%X - 0x%X (", &_kernel_start,&_kernel_end, &_kernel_end - &_kernel_start);
 	logging_printbestunit(&_kernel_end - &_kernel_start, 0); printf(")\n");
@@ -38,11 +38,15 @@ void kernel_entry(int magic, multiboot_info_t * multiboot)
 	asm("sti");
 	printk("device","Starting (basic) PIT...\n");
 	pit_install(1000);
-	init_malloc(0);
+	init_malloc(0,multiboot->mem_upper * 1024);
+	printk("info","Starting ");
 	init_pmm(multiboot->mem_upper * 1024);
+	printf("PMM ");
 	init_vmm();
+	printf("& VMM\n");
 	init_syscalls();
 	task_init();
+	
 	printk("debug","Exiting Kernel Setup Enviorment...\n");
 	console_printdiv();
 	kmain();

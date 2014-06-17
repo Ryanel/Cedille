@@ -5,17 +5,21 @@
 #include <cedille.h>
 #include <logging.h>
 #include <string.h>
+
+uint32_t memory_bytes_avalable = 0x0;
+
 extern uint32_t _kernel_end;
 uintptr_t pre_placementaddr;
 uint32_t kmalloc_status = 0;
 extern page_directory_t * kernel_page_directory;
 
-void init_malloc(uint32_t status)
+void init_malloc(uint32_t status,uint32_t addr_bytes)
 {
 	if(status == 0)
 	{
 		pre_placementaddr = (uintptr_t)&_kernel_end;
 		kmalloc_status = 0;
+		memory_bytes_avalable = addr_bytes;
 	}
 }
 

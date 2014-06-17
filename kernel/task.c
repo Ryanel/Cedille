@@ -30,7 +30,8 @@ thread_t * task_create_thread_stack(thread_t * thread,uint32_t sz)
 		sz = 0x1000; //Set to the size of a page as a minimum
 	}
 	thread->context->stack = (uint32_t)malloc(sz) + sz;
-	thread->context->stack_base = thread->context->stack;
+	thread->context->stack_base = 0;
+	memset(thread->context->stack - sz,0,sz);
 	return thread;
 }
 
@@ -49,7 +50,8 @@ thread_t * task_init_thread(thread_t * thread,void (*fn)(void))
 	*--stack = (uint32_t)&task_thread_exit; // Fake return address.
 	*--stack = (uint32_t)&fn; //Function
 	*--stack = 0; // EBP
-	thread->context->stack_base = (uint32_t)stack;
+	thread->context->stack_base = 0;
+	thread->context->eflags		= 0x200;
 	thread->context->stack		= (uint32_t)stack;
 	return thread;
 }
@@ -83,7 +85,27 @@ void idle_thread()
 
 void task_perform_context_switch(task_t * task)
 {
-	printk("fail","Context switching disabled");
+#if 0
+	//Save
+	asm volatile ("mov %%esp, %0" : "=r" (running_task->main_thread->context->stack));
+	asm volatile ("mov %%ebp, %0" : "=r" (running_task->main_thread->context->stack_base));
+	//asm volatile ("mov %%ebx, %0" : "=r" (running_task->main_thread->context->ebx));
+	asm volatile ("mov %%ecx, %0" : "=r" (running_task->main_thread->context->ecx));
+	asm volatile ("mov %%edx, %0" : "=r" (running_task->main_thread->context->edx));
+	asm volatile ("mov %%esi, %0" : "=r" (running_task->main_thread->context->esi));
+	asm volatile ("mov %%edi, %0" : "=r" (running_task->main_thread->context->edi));
+	running_task = task;
+	//Restore
+	asm volatile ("mov %0, %%edi" : : "r" (task->main_thread->context->edi));
+	asm volatile ("mov %0, %%esi" : : "r" (task->main_thread->context->esi));
+	asm volatile ("mov %0, %%edx" : : "r" (task->main_thread->context->edx));
+	asm volatile ("mov %0, %%ecx" : : "r" (task->main_thread->context->ecx));
+	//asm volatile ("mov %0, %%ebx" : : "r" (task->main_thread->context->ebx));
+	asm volatile ("mov %0, %%ebp" : : "r" (task->main_thread->context->stack_base));
+	asm volatile ("mov %0, %%esp" : : "r" (task->main_thread->context->stack));
+#else
+	oops("Context Switching Disabled!");
+#endif
 }
 
 void task_init()
@@ -92,6 +114,8 @@ void task_init()
 	running_task = task_create_task(NULL);
 	running_task->id = --task_id_counter;;
 	running_task->port = 0;
-
+	test_task = task_create_task(running_task);
+	task_init_thread(test_task->main_thread,&idle_thread);
+	task_perform_context_switch(test_task);
 }
 

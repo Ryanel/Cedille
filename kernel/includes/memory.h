@@ -3,7 +3,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <arch/x86/paging.h>
-void init_malloc(uint32_t status);
+void init_malloc(uint32_t status,uint32_t addr_bytes);
 uintptr_t * kmalloc(size_t sz);
 uintptr_t * kmalloc_aligned(size_t sz);
 uintptr_t * kmalloc_aligned_phys(size_t sz, uintptr_t * phys);
@@ -20,5 +20,4 @@ page_t * pmm_get_page(page_directory_t *dir,uint32_t address, uint8_t make);
 
 //Large heap
 uintptr_t * lheap_alloc_pages(uint32_t pages);
-
 #endif

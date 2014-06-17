@@ -9,6 +9,7 @@
 #include <stdio.h>
 extern uint32_t _kernel_end;
 
+//Its a pointer
 page_directory_t * kernel_page_directory = NULL;
 page_directory_t * current_page_directory = NULL;
 
@@ -38,11 +39,10 @@ void vmm_set_page_directory(page_directory_t *d)
 ///Enables paging
 void vmm_enable_paging()
 {
-	uint32_t cr0;
+	uint32_t cr0; //Its the CR0 register, you dumbo
 	asm volatile("mov %%cr0, %0": "=r"(cr0));
 	cr0 |= 0x80000000; //Sets the page enable bit in cr0
 	asm volatile("mov %0, %%cr0":: "r"(cr0));
-	printk("cpu","Paging enabled\n");
 }
 ///Called on page fault to get extra information
 void vmm_page_fault_exception(struct regs *regs)
@@ -70,7 +70,6 @@ uintptr_t * kernel_debug_zone;
 /// Initialises the VMM, on the x86 side.
 void init_vmm()
 {
-	printk("info","Starting Virtual Memory Manager...\n");
 	kernel_page_directory = (page_directory_t *)kmalloc_aligned(sizeof(page_directory_t));
 	memset(kernel_page_directory, 0, sizeof(page_directory_t));
 	current_page_directory = kernel_page_directory;
@@ -78,6 +77,6 @@ void init_vmm()
 	register_interrupt_handler (14, vmm_page_fault_exception); //Setup Page Fault Handler
 	vmm_set_page_directory(kernel_page_directory);
 	vmm_enable_paging();
-	//Use the new heap to allocate the kernel debug zone
+	//Use the new heap to allocate the kernel debug zone. Serves as scrach
 	kernel_debug_zone = (uintptr_t *)lheap_alloc_pages(1);
 }

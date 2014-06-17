@@ -98,7 +98,7 @@ prep-dist:
 	@-rm -rf *~ doc/* kernel/*~
 
 run:
-	@${EMU} -serial stdio -cdrom ${BUILD_DIRECTORY}/cdrom.iso
+	@${EMU} -m 4 -serial stdio -cdrom ${BUILD_DIRECTORY}/cdrom.iso
 
 iso:
 	@echo "ISO [A]| ${BUILD_DIRECTORY}/cdrom/iso"
