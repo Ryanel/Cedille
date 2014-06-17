@@ -18,4 +18,7 @@ void pmm_alloc_frame(page_t *page, int is_kernel, int is_writeable);
 void pmm_dealloc_frame(page_t *page);
 page_t * pmm_get_page(page_directory_t *dir,uint32_t address, uint8_t make);
 
+//Large heap
+uintptr_t * lheap_alloc_pages(uint32_t pages);
+
 #endif

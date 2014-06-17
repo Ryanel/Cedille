@@ -79,5 +79,5 @@ void init_vmm()
 	vmm_set_page_directory(kernel_page_directory);
 	vmm_enable_paging();
 	//Use the new heap to allocate the kernel debug zone
-	kernel_debug_zone = lheap_alloc_pages(1);
+	kernel_debug_zone = (uintptr_t *)lheap_alloc_pages(1);
 }

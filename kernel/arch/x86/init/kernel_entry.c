@@ -12,6 +12,7 @@ int x86_init_descriptor_tables();
 void pit_install(uint32_t frequency);
 void init_vmm();
 void init_syscalls();
+void task_init();
 ///The entry point for the x86 version of the Cedille Microkernel
 void kernel_entry(int magic, multiboot_info_t * multiboot)
 {

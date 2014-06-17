@@ -5,8 +5,6 @@
 #include <stdio.h>
 #include <cedille.h>
 #include <syscall.h>
-//void register_syscall_handler (uint8_t n, syscall_handler_t h);
-//void deregister_syscall_handler (uint8_t n);
 int syscall_panic(char * s)
 {
 	panic(s);
@@ -21,6 +19,6 @@ int syscall_oops(char * s)
 
 void init_syscall()
 {
-	register_syscall_handler (0x0, &syscall_panic);
-	register_syscall_handler (0x1, &syscall_oops);
+	register_syscall_handler (SYSCALL_PANIC, (syscall_handler_t)&syscall_panic);
+	register_syscall_handler (SYSCALL_OOPS, (syscall_handler_t)&syscall_oops);
 }

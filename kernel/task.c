@@ -45,7 +45,7 @@ thread_t * task_create_thread()
 
 thread_t * task_init_thread(thread_t * thread,void (*fn)(void))
 {
-	uint32_t * stack = (uint32_t)thread->context->stack;
+	uint32_t * stack = (uint32_t*)thread->context->stack;
 	*--stack = (uint32_t)&task_thread_exit; // Fake return address.
 	*--stack = (uint32_t)&fn; //Function
 	*--stack = 0; // EBP

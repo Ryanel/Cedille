@@ -7,7 +7,7 @@
 #include <syscall.h>
 #include <arch/x86/descriptor_tables.h>
 
-static void *syscall_handlers[0xFF];
+static void *syscall_handlers[MAX_SYSCALLS];
 
 void register_syscall_handler (uint8_t n, syscall_handler_t h)
 {
