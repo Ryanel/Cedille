@@ -3,6 +3,7 @@
 #include <string.h>
 #include <arch/x86/paging.h>
 #include <cedille.h>
+#include <stdio.h>
 
 ///Bitmap of every page in the system, and whether its free (0) or used (1).
 uintptr_t * bitmap; 
@@ -119,7 +120,7 @@ page_t * pmm_get_page(page_directory_t *dir,uint32_t address, uint8_t make)
 
 void init_pmm(uint32_t total_b)
 {
-	printk("info","Starting Physical Memory Manager with 0x%X bytes...\n",total_b);
+	printk("info","Starting Physical Memory Manager with "); logging_printbestunit(total_b,1);
 	if(total_b == 0)
 	{
 		printk("fail","Unknown amount of free memory? Reading Configuration Space...\n");
@@ -127,7 +128,7 @@ void init_pmm(uint32_t total_b)
 	}
 	else
 	{
-		bitmap_frames = total_b / 1024;
+		bitmap_frames = total_b / 1000; // KB = 1000, KiB = 1024
 	}
 	
 	bitmap = kmalloc(INDEX_FROM_BIT(bitmap_frames));
