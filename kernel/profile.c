@@ -14,10 +14,10 @@ void profiler_memory()
 	START_PROFILE
 	printf("Kernel Profiler: Memory\n");
 	printf("Physical Address Space = 0x0 -> 0x%X\n",memory_bytes_avalable);
-	uint32_t block_size = memory_bytes_avalable / (0x1000);
-	if(block_size < 0x2000)
+	uint32_t block_size = memory_bytes_avalable / (0x100);
+	if(block_size < 0x500)
 	{
-		block_size = 0x2000;
+		block_size = 0x500;
 	}
 	printf("Used Memory (block size is 0x%X):\n",block_size);
 		for (uint32_t i = 0; i < memory_bytes_avalable; i += block_size) {
