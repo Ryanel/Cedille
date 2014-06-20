@@ -1,6 +1,9 @@
 #include <logging.h>
+
+void profiler_memory();
+
 void kmain()
 {
-	printk("debug","Entering Kernel Enviorment...\n");
+	printk("ok","Entering Kernel Enviorment...\n");
 	profiler_memory();
 }

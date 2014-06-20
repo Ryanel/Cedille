@@ -120,13 +120,16 @@ void irq_install()
 void irq_handler(struct regs *r)
 {
 	/* This is a blank function pointer */
-	if (interrupt_handlers[r->int_no] != 0)
+	if (interrupt_handlers[r->int_no] != 0){
 		interrupt_handlers[r->int_no] (r);
+	}
+	else {
+		printk("warn","Recieved unhandled interrupt %d\n",r->int_no);
+	}
 	/* If the IDT entry that was invoked was greater than 40
 	*  (meaning IRQ8 - 15), then we need to send an EOI to
 	*  the slave controller */
-	if (r->int_no >= 40)
-	{
+	if (r->int_no >= 40) {
 		outb(0xA0, 0x20);
 	}
 

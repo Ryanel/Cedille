@@ -39,7 +39,7 @@ void kernel_entry(int magic, multiboot_info_t * multiboot)
 	printk("device","Starting (basic) PIT...\n");
 	pit_install(1000);
 	init_malloc(0,multiboot->mem_upper * 1024);
-	printk("info","Starting ");
+	printk("ok","Starting ");
 	init_pmm(multiboot->mem_upper * 1024);
 	printf("PMM ");
 	init_vmm();

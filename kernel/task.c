@@ -31,7 +31,7 @@ thread_t * task_create_thread_stack(thread_t * thread,uint32_t sz)
 	}
 	thread->context->stack = (uint32_t)malloc(sz) + sz;
 	thread->context->stack_base = 0;
-	memset(thread->context->stack - sz,0,sz);
+	memset((uintptr_t*)thread->context->stack - sz,0,sz);
 	return thread;
 }
 
@@ -103,8 +103,6 @@ void task_perform_context_switch(task_t * task)
 	//asm volatile ("mov %0, %%ebx" : : "r" (task->main_thread->context->ebx));
 	asm volatile ("mov %0, %%ebp" : : "r" (task->main_thread->context->stack_base));
 	asm volatile ("mov %0, %%esp" : : "r" (task->main_thread->context->stack));
-#else
-	oops("Context Switching Disabled!");
 #endif
 }
 
@@ -114,8 +112,5 @@ void task_init()
 	running_task = task_create_task(NULL);
 	running_task->id = --task_id_counter;;
 	running_task->port = 0;
-	test_task = task_create_task(running_task);
-	task_init_thread(test_task->main_thread,&idle_thread);
-	task_perform_context_switch(test_task);
 }
 

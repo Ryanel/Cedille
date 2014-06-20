@@ -14,7 +14,7 @@ uintptr_t * lheap_alloc_pages(uint32_t pages)
 	{
 		pmm_alloc_frame(pmm_get_page(kernel_page_directory,first_free + (i * 0x1000), 1), 1,1);
 	}
-	return (uintptr_t *)(first_free * 0x1000);
+	return (uintptr_t *)(first_free);
 }
 
 uintptr_t * sbrk(size_t amount)
