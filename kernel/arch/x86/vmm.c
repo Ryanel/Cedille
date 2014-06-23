@@ -8,7 +8,6 @@
 #include <arch/x86/descriptor_tables.h>
 #include <stdio.h>
 extern uint32_t _kernel_end;
-
 //Its a pointer
 page_directory_t * kernel_page_directory = NULL;
 page_directory_t * current_page_directory = NULL;

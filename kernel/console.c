@@ -42,6 +42,9 @@ void printc(unsigned char c)
 
 	else if (c == '\n') //Newline
 	{
+	   #ifndef X86
+		video_printchar(term_x,term_y,c);
+	   #endif
 	   term_x = 0;
 	   term_y++;
 	}

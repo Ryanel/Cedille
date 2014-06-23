@@ -7,6 +7,9 @@
 extern uint32_t memory_bytes_avalable;
 
 void console_printdiv();
+
+#ifdef X86
+
 void profiler_memory()
 {
 	START_PROFILE
@@ -66,3 +69,4 @@ void profiler_memory()
 	video_reset_attr();
 	console_printdiv();;
 }
+#endif

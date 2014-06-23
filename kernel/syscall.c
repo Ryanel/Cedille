@@ -28,6 +28,7 @@ void syscall_handler(registers_t *regs)
 		oops("Called a unregistered syscall!");
 		return;
 	}
+	#ifdef X86
 	int ret;
 	asm volatile (" \
 		push %1; \
@@ -43,29 +44,39 @@ void syscall_handler(registers_t *regs)
 		pop %%ebx; \
 	" : "=a" (ret) : "r" (regs->edi), "r" (regs->esi), "r" (regs->edx), "r" (regs->ecx), "r" (regs->ebx), "r" (location));
 	regs->eax = ret;
+	#endif
 }
 
 int do_syscall(uint32_t no)
 {
+	#ifdef X86
 	int a;
 	asm volatile("int $0x64" : "=a" (a) : "0" (no));
 	return a;
+	#endif
 }
 int do_syscall_p1(uint32_t no, void* param)
 {
+	#ifdef X86
 	int a;
 	asm volatile("int $0x64" : "=a" (a) : "0" (no), "b" ((uint32_t)param));
 	return a;
+	#endif
 }
 int do_syscall_p2(uint32_t no, void* param,void* param2)
 {
+	#ifdef X86
 	int a;
 	asm volatile("int $0x64" : "=a" (a) : "0" (no), "b" ((uint32_t)param), "c" ((uint32_t)param2));
 	return a;
+	#endif
+
 }
 void init_syscall();
 void init_syscalls()
 {
+	#ifdef X86
 	register_interrupt_handler (0x64, &syscall_handler); //Setup Syscall Handler
+	#endif
 	init_syscall();
 }

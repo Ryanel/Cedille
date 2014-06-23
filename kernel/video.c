@@ -1,11 +1,15 @@
 #ifdef X86
 #include <arch/x86/textmode_console.h>
+#else
+#include <arch/arm/serial.h>
 #endif
-
+#include <stdint.h>
 void video_printchar(int x,int y, unsigned char c)
 {
 	#ifdef X86
 	textmode_write(x,y,c);
+	#else
+	serial_write(c);
 	#endif
 }
 
@@ -59,7 +63,9 @@ void video_settextfore(uint8_t color)
 
 void video_reset_attr()
 {
+	#ifdef X86
 	textmode_resetcolor();
+	#endif
 }
 
 void video_clear()

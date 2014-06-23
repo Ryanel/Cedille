@@ -8,7 +8,7 @@ ARCH_TOOLKIT_PREFIX :=
 
 BUILD_DIRECTORY := build
 
-COMPILE_OPTIONS := -DARCH=${ARCH} -DARCH_STRING="\"${ARCH}\"" #-D KERNEL_SYMBOLS #-D KLOG_TITLE_TIME
+COMPILE_OPTIONS := -DDEBUG -DARCH=${ARCH} -DARCH_STRING="\"${ARCH}\"" #-D KERNEL_SYMBOLS #-D KLOG_TITLE_TIME
 #Files
 BOOT_FILES := $(patsubst %.c,%.o,$(wildcard kernel/init/*.c))
 ARCH_BOOT_FILES := $(patsubst %.s,%.o,$(wildcard ${ARCH_DIRECTORY}/init/*.s)) $(patsubst %.c,%.o,$(wildcard ${ARCH_DIRECTORY}/init/*.c))
@@ -27,13 +27,13 @@ KASM_FILES := $(patsubst %.s,%.o,$(wildcard ${ARCH_DIRECTORY}asm/*.s))
 #Compiler Options
 CC:=clang -DX86 -target i586-elf
 CPP:=clang++
-C_OPTIONS := -ffreestanding -std=gnu99 
+C_OPTIONS := -ffreestanding -std=gnu99  -nostartfiles
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
 C_OPTIONS += -Wno-unused-function
-C_OPTIONS += -s -g
+C_OPTIONS += -s -g -Os
 C_OPTIONS += -z max-page-size=0x1000
 LD := ./toolkit/binutils/bin/i586-elf-ld -m elf_i386
-LFLAGS := -nostdlib -lgcc -z max-page-size=0x1000
+LFLAGS := -nostdlib -ffreestanding -lgcc -z max-page-size=0x1000
 LD_SCRIPT := ${ARCH_DIRECTORY}/link.ld
 INCLUDE_DIR := "./kernel/includes"
 CROSS_CLANG := -target i586-elf
@@ -119,7 +119,7 @@ x64:
 arm:
 	@make integrator-cp
 integrator-cp:
-	@make build-dir kernel ARCH=arm/integrator-cp ASM=arm-none-eabi-as LD="arm-none-eabi-gcc -lgcc -nostartfiles -fno-builtin -nostartfiles -DARCH_ARM_ICP" LFLAGS="" CC="arm-none-eabi-gcc -DARM"
+	@make build-dir kernel ARCH=arm/integrator-cp ASM=arm-none-eabi-as LD="arm-none-eabi-gcc -lgcc -ffreestanding -nostartfiles -fno-builtin -nostartfiles" LFLAGS="" CC="arm-none-eabi-gcc -DARM"
 rpi:
 	@make build-dir kernel gen-symbols add-symbols ARCH=arm/rpi ASM=arm-none-eabi-as LD="arm-none-eabi-gcc -lgcc -nostartfiles -fno-builtin -nostartfiles -DARCH_ARM_RPI" LFLAGS="" CC="arm-none-eabi-gcc -DARM"
 run-arm-icp:
