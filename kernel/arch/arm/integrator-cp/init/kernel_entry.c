@@ -1,7 +1,7 @@
 #include <logging.h>
 #include <cedille.h>
 #include <console.h>
-
+#include <stdio.h>
 extern uint32_t _kernel_start,_kernel_end;
 
 void kernel_entry()

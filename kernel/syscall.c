@@ -53,6 +53,8 @@ int do_syscall(uint32_t no)
 	int a;
 	asm volatile("int $0x64" : "=a" (a) : "0" (no));
 	return a;
+	#else
+	return 0;
 	#endif
 }
 int do_syscall_p1(uint32_t no, void* param)
@@ -61,6 +63,8 @@ int do_syscall_p1(uint32_t no, void* param)
 	int a;
 	asm volatile("int $0x64" : "=a" (a) : "0" (no), "b" ((uint32_t)param));
 	return a;
+	#else
+	return 0;
 	#endif
 }
 int do_syscall_p2(uint32_t no, void* param,void* param2)
@@ -69,6 +73,8 @@ int do_syscall_p2(uint32_t no, void* param,void* param2)
 	int a;
 	asm volatile("int $0x64" : "=a" (a) : "0" (no), "b" ((uint32_t)param), "c" ((uint32_t)param2));
 	return a;
+	#else
+	return 0;
 	#endif
 
 }
