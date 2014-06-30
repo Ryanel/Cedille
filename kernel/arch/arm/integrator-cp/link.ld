@@ -2,7 +2,7 @@ ENTRY (_start)
 
 SECTIONS
 {
-    . = 0;
+    . = 0x10000;
     _kernel_start = .;
     .text : { *(.text*) *(.rodata*) }
     .data : { *(.data*) }

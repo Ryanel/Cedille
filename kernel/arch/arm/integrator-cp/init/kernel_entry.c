@@ -2,12 +2,13 @@
 #include <cedille.h>
 #include <console.h>
 #include <stdio.h>
+void arm_init_interrupts();
 extern uint32_t _kernel_start,_kernel_end;
 
 void kernel_entry()
 {
 	console_init();
-	console_printdiv();
+	console_printdiv();printf("\n"); //Force a new line as the hres might not be 80 cols.
 	printk("status","Kernel initialising...\n");
 	printk("ok","The Cedille Microkernel v.%s. (c) Corwin McKnight 2014\n",CEDILLE_VERSION_S);
 	printk("device","Logging on UART0\n");
@@ -17,4 +18,6 @@ void kernel_entry()
 	#endif
 	printk("cpu","Running on Integrator-CP (ARM926EJ-S)\n");
 	printk("status","Initialising the processor...\n");
+	printk("cpu","Starting interrupts....\n");
+	arm_init_interrupts();
 }

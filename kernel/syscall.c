@@ -22,6 +22,10 @@ void deregister_syscall_handler (uint8_t n)
 
 void syscall_handler(registers_t *regs)
 {
+	if(regs->eax > MAX_SYSCALLS)
+	{
+		oops("Syscall out of bounds!");
+	}
 	void *location = syscall_handlers[regs->eax];
 	if(location == NULL)
 	{
