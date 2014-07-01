@@ -46,7 +46,6 @@ void kernel_entry(int magic, multiboot_info_t * multiboot)
 	printf("& VMM\n");
 	init_syscalls();
 	task_init();
-	
 	printk("debug","Exiting Kernel Setup Enviorment...\n");
 	console_printdiv();
 	kmain();

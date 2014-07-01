@@ -2,6 +2,7 @@
 #include <logging.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef X86
 uint32_t task_id_counter = 0;
 uint32_t thread_id_counter = 0;
 
@@ -113,4 +114,4 @@ void task_init()
 	running_task->id = --task_id_counter;;
 	running_task->port = 0;
 }
-
+#endif

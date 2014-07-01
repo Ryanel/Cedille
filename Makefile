@@ -33,7 +33,7 @@ C_OPTIONS += -Wno-unused-function
 C_OPTIONS += -s -g -Os
 C_OPTIONS += -z max-page-size=0x1000
 LD := ./toolkit/binutils/bin/i586-elf-ld -m elf_i386
-LFLAGS := -nostdlib -ffreestanding -lgcc -z max-page-size=0x1000
+LFLAGS :=  -lgcc
 LD_SCRIPT := ${ARCH_DIRECTORY}/link.ld
 INCLUDE_DIR := "./kernel/includes"
 CROSS_CLANG := -target i586-elf
@@ -68,9 +68,9 @@ kernel: arch-boot boot lib drivers arch-files arch-low arch-lib arch-drivers fs 
 	@echo " LD [K]| kernel.elf"
 	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o ${BUILD_DIRECTORY}/kernel.elf ${SRC_FILES}
 
-kernel-sparc: arch-boot
-	@echo " LD [K]| kernel.elf (sparc)"
-	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o ${BUILD_DIRECTORY}/kernel.elf ${ARCH_BOOT_FILES}
+kernel-sparc: arch-boot arch-files arch-low arch-drivers lib arch-lib
+	@echo " LD [K]| kernel.aout (sparc)"
+	@${LD} -T ${LD_SCRIPT} -o ${BUILD_DIRECTORY}/kernel.aout ${ARCH_BOOT_FILES} ${ARCH_FILES} ${ARCH_LOW_FILES} ${ARCH_DRIVER_FILES} ${LIB_FILES} ${ARCH_LIB_FILES}
 
 asm-src: ${KASM_FILES}
 
@@ -92,8 +92,8 @@ kernel-asm: asm-src
 	@${CPP} -c ${CPP_OPTIONS} ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
 
 clean: prep-dist
-	@-rm -rf kernel/*.o kernel/init/*.o kernel/lib/*.o kernel/drivers/*.o kernel/fs/*.o ${ARCH_DIRECTORY}/*.o ${ARCH_DIRECTORY}/init/*.o ${ARCH_DIRECTORY}/drivers/*.o ${ARCH_DIRECTORY}/lib/*.o ${ARCH_DIRECTORY}/low/*.o
-	@-rm -rf util/*.o util/*.bin
+	@echo "CLN    | *.o" 
+	@-find . -name "*.o" -type f -delete
 
 prep-dist:
 	@-rm -rf *~ doc/* kernel/*~
@@ -127,6 +127,6 @@ run-arm-icp:
 run-arm-rpi:
 	@qemu-system-arm -m 8 -M versatilepb -cpu arm1176 -serial stdio -kernel ${BUILD_DIRECTORY}/kernel.elf -initrd iso/boot/initrd.img
 sparc:
-	@make ARCH=sparc ASM=sparc-elf-as LD=sparc-elf-ld CC=sparc-elf-gcc kernel-sparc
+	@make ARCH=sparc ASM=sparc-elf-as LD=sparc-elf-ld CC="sparc-elf-gcc -DSPARC" kernel-sparc
 run-asm:
 	@qemu-system-i386 -m 8 -serial stdio -kernel ${BUILD_DIRECTORY}/kernel-asm.elf
