@@ -10,5 +10,9 @@ void kmain()
 		printk("fail","kvfsd failed to start. Halting...\n");
 		return;
 	}
-	profiler_memory();
+	printk("ok","Entering idle loop...\n");
+	for(;;)
+	{
+
+	}
 }

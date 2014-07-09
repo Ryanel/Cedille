@@ -10,6 +10,15 @@
 #define VFS_SYMLINK     0x06
 #define VFS_MOUNTPOINT  0x08
 
+#define VFS_PERMISSION_READ  0x01
+#define VFS_PERMISSION_WRITE 0x02
+#define VFS_PERMISSION_EXECUTE 0x04
+
+#define PATH_SEPARATOR '/'
+#define PATH_SEPARATOR_STRING "/"
+#define PATH_UP  ".."
+#define PATH_DOT "."
+
 typedef struct vfs_fnode
 {
 	char name[128];
@@ -37,4 +46,5 @@ typedef struct vfs_node
 } vfs_node_t;
 
 int init_vfs();
+char * vfs_canonicalize_path(char *cwd, char *input);
 #endif

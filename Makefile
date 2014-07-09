@@ -27,6 +27,8 @@ KASM_FILES := $(patsubst %.s,%.o,$(wildcard ${ARCH_DIRECTORY}asm/*.s))
 #Compiler Options
 CC:=clang -DX86 -target i586-elf
 CPP:=clang++
+STRIP:= strip
+NM := nm
 C_OPTIONS := -ffreestanding -std=gnu99  -nostartfiles 
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
 C_OPTIONS += -Wno-unused-function
@@ -43,7 +45,7 @@ EMU := qemu-system-i386
 #Rules
 .PHONY: iso clean
 
-all: build-dir kernel gen-symbols add-symbols iso
+all: build-dir kernel gen-symbols add-symbols strip iso
 
 build-dir:
 	@echo "DIR    | ${BUILD_DIRECTORY}"
@@ -101,6 +103,9 @@ prep-dist:
 run:
 	@${EMU} -m 4 -serial stdio -cdrom ${BUILD_DIRECTORY}/cdrom.iso
 
+strip:
+	@echo "STRIP  | "${BUILD_DIRECTORY}/kernel.elf
+	@${STRIP} ${BUILD_DIRECTORY}/kernel.elf
 sparc-iso:
 	@echo "GEN [A]| ${BUILD_DIRECTORY}/sparc-bootblock.bin"
 	@dd if=/dev/zero of=${BUILD_DIRECTORY}/sparc-bootblock.bin bs=2048 count=4
@@ -114,7 +119,7 @@ iso:
 
 gen-symbols:
 	@echo "GEN [M]| ${BUILD_DIRECTORY}/kernel.elf -> ${BUILD_DIRECTORY}/kernel.map"
-	@nm ${BUILD_DIRECTORY}/kernel.elf > ${BUILD_DIRECTORY}/kernel.map
+	@${NM} ${BUILD_DIRECTORY}/kernel.elf > ${BUILD_DIRECTORY}/kernel.map
 add-symbols: gen-symbols
 	@echo " CP [M]| ${BUILD_DIRECTORY}/kernel.map -> iso/boot/symbols.mod"
 	@cp ${BUILD_DIRECTORY}/kernel.map iso/boot/symbols.mod

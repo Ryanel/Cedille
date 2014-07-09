@@ -26,14 +26,107 @@ int init_vfs()
 	//directory entry listing all of the mountpoints.
 	vfs_root = malloc(sizeof(vfs_node_t));
 	memset(vfs_root,0,sizeof(vfs_node_t));
+
 	vfs_root->type = VFS_DIRECTORY | VFS_MOUNTPOINT;
 	vfs_root->dnode = malloc(sizeof(vfs_dnode_t));
 	vfs_root->dnode->name[0] = '/';
+
 	tree_set_root(vfs_tree,vfs_root);
-	debug_print_node(vfs_root);
+
+	vfs_node_t * test = malloc(sizeof(vfs_node_t));
+	test->fnode = malloc(sizeof(vfs_fnode_t));
+	test->type = VFS_FILE;
+	strcpy(test->fnode->name,"helloworld");
+
+	tree_node_insert_child(vfs_tree, vfs_tree->root, tree_node_create(test));
+	
 	printk("done","Started kvfsd\n");
 	return 0;
 }
+
+char * vfs_canonicalize_path(char *cwd, char *input) {
+	list_t *out = list_create();
+
+	if (strlen(input) && input[0] != PATH_SEPARATOR) {
+		char *path = malloc((strlen(cwd) + 1) * sizeof(char));
+		memcpy(path, cwd, strlen(cwd) + 1);
+
+		char *pch;
+		char *save;
+		pch = strtok_r(path,PATH_SEPARATOR_STRING,&save);
+
+		while (pch != NULL) {
+			char *s = malloc(sizeof(char) * (strlen(pch) + 1));
+			memcpy(s, pch, strlen(pch) + 1);
+
+			list_insert(out, s);
+			pch = strtok_r(NULL,PATH_SEPARATOR_STRING,&save);
+		}
+		free(path);
+	}
+
+	char *path = malloc((strlen(input) + 1) * sizeof(char));
+	memcpy(path, input, strlen(input) + 1);
+
+	char *pch;
+	char *save;
+	pch = strtok_r(path,PATH_SEPARATOR_STRING,&save);
+
+	while (pch != NULL) {
+		if (!strcmp(pch,PATH_UP)) {
+			list_node_t * n = list_pop(out);
+			if (n) {
+				free(n->value);
+				free(n);
+			}
+		} else if (!strcmp(pch,PATH_DOT)) {
+
+		} else {
+			char * s = malloc(sizeof(char) * (strlen(pch) + 1));
+			memcpy(s, pch, strlen(pch) + 1);
+			list_insert(out, s);
+		}
+		pch = strtok_r(NULL, PATH_SEPARATOR_STRING, &save);
+	}
+	free(path);
+
+	size_t size = 0;
+	foreach(item, out) {
+		size += strlen(item->value) + 1;
+	}
+
+	char *output = malloc(sizeof(char) * (size + 1));
+	char *output_offset = output;
+	if (size == 0) {
+		output = realloc(output, sizeof(char) * 2);
+		output[0] = PATH_SEPARATOR;
+		output[1] = '\0';
+	} else {
+		foreach(item, out) {
+			output_offset[0] = PATH_SEPARATOR;
+			output_offset++;
+			memcpy(output_offset, item->value, strlen(item->value) + 1);
+			output_offset += strlen(item->value);
+		}
+	}
+
+	list_destroy(out);
+	list_free(out);
+	free(out);
+
+	return output;
+}
+
+
+int vfs_add_node(char * path, vfs_node_t * node)
+{
+	char * apath = vfs_canonicalize_path("/", path);
+	char * parent_path = malloc(strlen(path) + 4);
+	sprintf(parent_path, "%s", path);
+	printf("parent path: %s\n",parent_path);
+	return 0;
+}
+
 
 uint8_t vfs_tree_comparator(vfs_node_t * a, vfs_node_t * b)
 {

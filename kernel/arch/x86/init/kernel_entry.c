@@ -45,11 +45,11 @@ void kernel_entry(int magic, multiboot_info_t * multiboot)
 	init_vmm();
 	printf("& VMM\n");
 
-	printf("Memory Map at:0x%X\n",multiboot->mmap_addr);
+	//printf("Memory Map at:0x%X\n",multiboot->mmap_addr);
 	multiboot_memory_map_t * mmap = (multiboot_memory_map_t*)multiboot->mmap_addr;
 	while((uint32_t)mmap < (uint32_t)multiboot->mmap_addr + (uint32_t)multiboot->mmap_length)
 	{
-		printf("0x%08X->0x%08X (type %d)\n",mmap->addr,mmap->len,mmap->type);
+		//printf("0x%08X->0x%08X (type %d)\n",mmap->addr,mmap->len,mmap->type);
 		mmap = (multiboot_memory_map_t*) ( (unsigned int)mmap + mmap->size + sizeof(unsigned int) );
 	}
 	init_syscalls();
