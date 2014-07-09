@@ -13,7 +13,7 @@ SECTIONS
 		LONG(0);
 		LONG(0);
 		LONG(0);
-        LONG(0);
+		LONG(0);
 		_boot_start = .;
 		*(.text*)
 		*(.rodata*)

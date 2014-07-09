@@ -12,5 +12,6 @@ void serial_writes(const char * s)
 	{
 		serial_write(*s);
 		s++;
+		asm("add %g7,1");
 	};
 }

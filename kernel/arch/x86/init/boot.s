@@ -22,7 +22,8 @@ section .text
 [GLOBAL start]
 [EXTERN kernel_entry]
 
-_start:
+start:
+	;Setup stack
 	mov esp, stack_top
 	mov ebp, 0
 	;Push multiboot params

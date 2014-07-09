@@ -12,8 +12,6 @@ void panic(char *s)
 	asm("cli");
 	asm("sti");
 	#endif
-	#ifdef DEBUG
-	#endif
 	for(;;)
 	{
 

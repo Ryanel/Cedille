@@ -102,7 +102,7 @@ void logging_printbestunit(uint32_t bytes, uint8_t newline)
 	}
 	switch (unit) {
 		case 0:
-			printf("%d %s",bytes,"bytes");
+			printf("%d %s",bytes,"b");
 			break;
 		case 1:
 			printf("%d %s",bytes / 1024,"KiB");

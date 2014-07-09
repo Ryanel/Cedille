@@ -27,13 +27,13 @@ KASM_FILES := $(patsubst %.s,%.o,$(wildcard ${ARCH_DIRECTORY}asm/*.s))
 #Compiler Options
 CC:=clang -DX86 -target i586-elf
 CPP:=clang++
-C_OPTIONS := -ffreestanding -std=gnu99  -nostartfiles
+C_OPTIONS := -ffreestanding -std=gnu99  -nostartfiles 
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
 C_OPTIONS += -Wno-unused-function
 C_OPTIONS += -s -g -Os
 C_OPTIONS += -z max-page-size=0x1000
 LD := ./toolkit/binutils/bin/i586-elf-ld -m elf_i386
-LFLAGS :=  -lgcc
+LFLAGS :=  -lgcc -nostdlib
 LD_SCRIPT := ${ARCH_DIRECTORY}/link.ld
 INCLUDE_DIR := "./kernel/includes"
 CROSS_CLANG := -target i586-elf
@@ -101,6 +101,12 @@ prep-dist:
 run:
 	@${EMU} -m 4 -serial stdio -cdrom ${BUILD_DIRECTORY}/cdrom.iso
 
+sparc-iso:
+	@echo "GEN [A]| ${BUILD_DIRECTORY}/sparc-bootblock.bin"
+	@dd if=/dev/zero of=${BUILD_DIRECTORY}/sparc-bootblock.bin bs=2048 count=4
+	@dd if=${BUILD_DIRECTORY}/kernel.aout of=${BUILD_DIRECTORY}/bootblock.bin bs=512 seek=1 conv=notrunc
+	@echo "ISO [A]| ${BUILD_DIRECTORY}/sparc-iso.iso"
+	@${GENISO} -quiet -o ${BUILD_DIRECTORY}/sparc-iso.iso -G ${BUILD_DIRECTORY}/bootblock.bin iso
 iso:
 	@echo "ISO [A]| ${BUILD_DIRECTORY}/cdrom/iso"
 	@cp ${BUILD_DIRECTORY}/kernel.elf iso/kernel.elf
@@ -126,7 +132,9 @@ run-arm-icp:
 	@qemu-system-arm -M integratorcp -serial stdio -kernel ${BUILD_DIRECTORY}/kernel.elf -nographic -monitor none -initrd iso/boot/initrd.img
 run-arm-rpi:
 	@qemu-system-arm -m 8 -M versatilepb -cpu arm1176 -serial stdio -kernel ${BUILD_DIRECTORY}/kernel.elf -initrd iso/boot/initrd.img
+run-sparc:
+	@qemu-system-sparc -serial stdio -cdrom build-sparc/sparc-iso.iso
 sparc:
-	@make ARCH=sparc ASM=sparc-elf-as LD=sparc-elf-ld CC="sparc-elf-gcc -DSPARC" kernel-sparc
+	@make ARCH=sparc ASM=sparc-elf-as LD=sparc-elf-ld CC="sparc-elf-gcc -DSPARC" BUILD_DIRECTORY=build-sparc build-dir kernel-sparc sparc-iso
 run-asm:
 	@qemu-system-i386 -m 8 -serial stdio -kernel ${BUILD_DIRECTORY}/kernel-asm.elf
