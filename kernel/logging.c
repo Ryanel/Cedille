@@ -36,7 +36,11 @@ void printk(const char * type, const char *fmt, ...)
 		printf("%-6s: ",type);
 		video_reset_attr();
 	}
-	else if(strcmp(type,"fail") == 0 || strcmp(type,"fault") == 0 || strcmp(type,"panic") == 0 || strcmp(type,"oops") == 0) //Bad
+	else if(strcmp(type,"fail") == 0 ||
+		strcmp(type,"fault") == 0 ||
+		strcmp(type,"panic") == 0 ||
+		strcmp(type,"oops") == 0 ||
+		strcmp(type,"error") == 0) //Bad
 	{
 		video_settextfore(0x4);
 		printf("%-6s: ",type);
@@ -48,7 +52,8 @@ void printk(const char * type, const char *fmt, ...)
 		printf("%-6s: ",type);
 		video_reset_attr();
 	}
-	else if(strcmp(type,"cpu") == 0 || strcmp(type,"debug") == 0 || strcmp(type,"device") == 0) //Debug
+	else if(strcmp(type,"cpu") == 0 ||
+		strcmp(type,"device") == 0) //Debug
 	{
 		DEBUG_ONLY_LOG
 		video_settextfore(0xD);

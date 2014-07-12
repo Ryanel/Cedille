@@ -1,6 +1,5 @@
 #include <logging.h>
 #include <vfs.h>
-void profiler_memory();
 
 void kmain()
 {

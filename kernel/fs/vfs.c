@@ -13,7 +13,6 @@ void debug_print_node(vfs_node_t * node);
 
 int init_vfs()
 {
-	printk("ok","Starting kvfsd...\n");
 	//Create the tree and ensure its valid
 	vfs_tree = tree_create();
 	if(vfs_tree == NULL)
@@ -120,7 +119,7 @@ char * vfs_canonicalize_path(char *cwd, char *input) {
 
 int vfs_add_node(char * path, vfs_node_t * node)
 {
-	char * apath = vfs_canonicalize_path("/", path);
+	//char * apath = vfs_canonicalize_path("/", path);
 	char * parent_path = malloc(strlen(path) + 4);
 	sprintf(parent_path, "%s", path);
 	printf("parent path: %s\n",parent_path);
@@ -136,6 +135,57 @@ uint8_t vfs_tree_comparator(vfs_node_t * a, vfs_node_t * b)
 	}
 	return 0;
 }
+
+uint32_t vfs_read(vfs_node_t * node, uint32_t offset, uint32_t size, uint8_t *buffer)
+{
+	if(node != NULL && node->read != NULL && ((node->type & VFS_DIRECTORY) != VFS_DIRECTORY))
+	{
+		return (uint32_t)node->read(node,offset,size,buffer);
+	}
+	else
+	{
+		printk("error","vfs_node 0x%X does not meet the requirements to read\n",node);
+		return 0;
+	}
+}
+
+uint32_t vfs_write(vfs_node_t * node, uint32_t offset, uint32_t size, uint8_t *buffer)
+{
+	if(node != NULL && node->write != NULL && ((node->type & VFS_DIRECTORY) != VFS_DIRECTORY))
+	{
+		return (uint32_t)node->write(node,offset,size,buffer);
+	}
+	else
+	{
+		printk("error","vfs_node 0x%X does not meet the requirements to write\n",node);
+		return 0;
+	}
+}
+
+void vfs_ioctl(vfs_node_t * node, unsigned long request, uint8_t * buffer)
+{
+	if(node != NULL && node->ioctl != NULL)
+	{
+		node->ioctl(node,request,buffer);
+	}
+	else
+	{
+		printk("error","vfs_node 0x%X does not meet the requirements to be ioctl'd\n",node);
+	}
+}
+
+vfs_node_t * vfs_openpath(char * input, char *cwd,uint32_t flags)
+{
+	char * path = vfs_canonicalize_path(cwd, input);
+	printf("vfs_open: %s\n",path);
+	size_t path_len = strlen(path);
+	if(path_len == 1)
+	{
+		return vfs_root;
+	}
+	return NULL;
+}
+
 
 void debug_print_node(vfs_node_t * node)
 {
