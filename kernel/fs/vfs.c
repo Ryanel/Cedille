@@ -174,6 +174,18 @@ void vfs_ioctl(vfs_node_t * node, unsigned long request, uint8_t * buffer)
 	}
 }
 
+void vfs_open(vfs_node_t * node, unsigned int flags)
+{
+	if(node != NULL && node->open != NULL)
+	{
+		node->open(node,flags);
+	}
+	else
+	{
+		printk("error","vfs_node 0x%X does not meet the requirements to be opened\n",node);
+	}
+}
+
 vfs_node_t * vfs_openpath(char * input, char *cwd,uint32_t flags)
 {
 	char * path = vfs_canonicalize_path(cwd, input);

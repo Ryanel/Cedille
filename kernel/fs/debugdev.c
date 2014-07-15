@@ -3,7 +3,8 @@
 #include <vfs.h>
 #include <string.h>
 #include <stdlib.h>
-uint8_t debug_buffer[0x1000];
+#define DEBUGDEV_BUFFERSIZE 0x1000
+uint8_t * debug_buffer;
 
 vfs_node_t * debug_vfs_node;
 
@@ -11,6 +12,10 @@ uint32_t debugdev_locked = 0;
 
 uint32_t debugdev_read(vfs_node_t *node, uint32_t offset, uint32_t size, uint8_t *buffer)
 {
+	if(offset + size > DEBUGDEV_BUFFERSIZE)
+	{
+		return 0xFFFFFFFF;
+	}
 	for(uint32_t i = 0; i != size; i++)
 	{
 		buffer[i] = debug_buffer[i + offset];
@@ -20,6 +25,10 @@ uint32_t debugdev_read(vfs_node_t *node, uint32_t offset, uint32_t size, uint8_t
 
 uint32_t debugdev_write(vfs_node_t *node, uint32_t offset, uint32_t size, uint8_t *buffer)
 {
+	if(offset + size > DEBUGDEV_BUFFERSIZE)
+	{
+		return 0xFFFFFFFF;
+	}
 	if(debugdev_locked)
 	{
 		return 1;
@@ -65,6 +74,8 @@ vfs_node_t * setup_debugdev()
 	debug_vfs_node->read = (read_type_t)&debugdev_read;
 	debug_vfs_node->write = (write_type_t)&debugdev_write;
 	debug_vfs_node->ioctl = (ioctl_type_t)&debugdev_ioctl;
+	
+	debug_buffer = malloc(DEBUGDEV_BUFFERSIZE); //Allocate 4k
 	return debug_vfs_node;
 }
 

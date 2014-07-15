@@ -10,6 +10,7 @@ void kmain()
 		return;
 	}
 	printk("ok","Entering idle loop...\n");
+	profiler_memory();
 	for(;;)
 	{
 
