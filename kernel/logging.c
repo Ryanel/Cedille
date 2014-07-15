@@ -53,7 +53,8 @@ void printk(const char * type, const char *fmt, ...)
 		video_reset_attr();
 	}
 	else if(strcmp(type,"cpu") == 0 ||
-		strcmp(type,"device") == 0) //Debug
+		strcmp(type,"device") == 0 ||
+		strcmp(type,"daemon") == 0)
 	{
 		DEBUG_ONLY_LOG
 		video_settextfore(0xD);

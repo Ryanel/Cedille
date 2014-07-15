@@ -1,10 +1,15 @@
 #include <arch/x86/descriptor_tables.h>
 #include <arch/x86/ports.h>
-uint64_t pit_internal_ticks = 0;
+uint32_t pit_internal_ticks = 0;
 ///Handles the PIT ticks and reports them to the central clock.
 void pit_handler()
 {
 	pit_internal_ticks++;
+	//timer_report_ticks(TIMER_PIT,pit_internal_ticks);
+	if(pit_internal_ticks % 1000 == 0)
+	{
+		printk("timer","%3d seconds have passed!\n",pit_internal_ticks / 1000);
+	}
 }
 ///Starts the PIT at frequency
 void pit_install(uint32_t frequency)
@@ -14,7 +19,6 @@ void pit_install(uint32_t frequency)
 	outb(0x43, 0x36);
 	uint8_t l = (uint8_t)(divisor & 0xFF);
 	uint8_t h = (uint8_t)( (divisor>>8) & 0xFF );
-	
 	// Send the frequency divisor.
 	outb(0x40, l);
 	outb(0x40, h);
