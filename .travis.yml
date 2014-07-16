@@ -1,6 +1,6 @@
 language: c
 compiler:
- - clang
+ - gcc
 before_install:
  - sudo apt-get update -qq
  - sudo apt-get install -qq nasm clang make flex bison libgmp3-dev libmpfr-dev libmpc-dev libmpc-dev xorriso doxygen
