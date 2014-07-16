@@ -33,7 +33,7 @@ C_OPTIONS := -ffreestanding -std=gnu99  -nostartfiles
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
 C_OPTIONS += -Wno-unused-function
 C_OPTIONS += -s -g -Os
-C_OPTIONS += -z max-page-size=0x1000
+#C_OPTIONS += -z max-page-size=0x1000
 LD := ./toolkit/binutils/bin/i586-elf-ld -m elf_i386
 LFLAGS :=  -lgcc -nostdlib
 LD_SCRIPT := ${ARCH_DIRECTORY}/link.ld
