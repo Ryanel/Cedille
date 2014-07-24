@@ -35,7 +35,7 @@ C_OPTIONS += -Wno-unused-function
 C_OPTIONS += -s -g -Os
 #C_OPTIONS += -z max-page-size=0x1000
 LD := ./toolkit/binutils/bin/i586-elf-ld -m elf_i386
-LFLAGS :=  -lgcc -nostdlib
+LFLAGS :=  -nostdlib
 LD_SCRIPT := ${ARCH_DIRECTORY}/link.ld
 INCLUDE_DIR := "./kernel/includes"
 CROSS_CLANG := -target i586-elf
