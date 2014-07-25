@@ -103,7 +103,7 @@ prep-dist:
 run:
 	@${EMU} -m 4 -serial stdio -cdrom ${BUILD_DIRECTORY}/cdrom.iso
 
-strip:
+strip: kernel
 	@echo "STRIP  | "${BUILD_DIRECTORY}/kernel.elf
 	@${STRIP} ${BUILD_DIRECTORY}/kernel.elf
 sparc-iso:
@@ -112,12 +112,12 @@ sparc-iso:
 	@dd if=${BUILD_DIRECTORY}/kernel.aout of=${BUILD_DIRECTORY}/bootblock.bin bs=512 seek=1 conv=notrunc
 	@echo "ISO [A]| ${BUILD_DIRECTORY}/sparc-iso.iso"
 	@${GENISO} -quiet -o ${BUILD_DIRECTORY}/sparc-iso.iso -G ${BUILD_DIRECTORY}/bootblock.bin iso
-iso:
+iso: kernel
 	@echo "ISO [A]| ${BUILD_DIRECTORY}/cdrom/iso"
 	@cp ${BUILD_DIRECTORY}/kernel.elf iso/kernel.elf
 	@${GENISO} -R -b boot/grub/stage2_eltorito -quiet -no-emul-boot -boot-load-size 4 -boot-info-table -o ${BUILD_DIRECTORY}/cdrom.iso iso
 
-gen-symbols:
+gen-symbols: kernel
 	@echo "GEN [M]| ${BUILD_DIRECTORY}/kernel.elf -> ${BUILD_DIRECTORY}/kernel.map"
 	@${NM} ${BUILD_DIRECTORY}/kernel.elf > ${BUILD_DIRECTORY}/kernel.map
 add-symbols: gen-symbols
