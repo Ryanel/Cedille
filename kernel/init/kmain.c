@@ -34,9 +34,11 @@ void kmain()
 	printk("ok","Entering Kernel Enviorment...\n");	
 
 	//Start services
+	
 	start_service("kvfsd",1,init_vfs);
 	start_service("timerd",1,init_timer);
-	printk("ok","No tasks to run... idling\n");
+	
+	printk("login","Login unimplemented; idling main kernel thread\n");
 	//profiler_memory();
 	for(;;)
 	{
