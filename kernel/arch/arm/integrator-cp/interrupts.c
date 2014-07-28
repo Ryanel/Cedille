@@ -1,6 +1,8 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <arch/arm/interrupts.h>
+#include <stdio.h>
+#include <logging.h>
 #include <cedille.h>
 void interrupt_handler(uint32_t lr, uint32_t type);
 void __attribute__((naked)) k_exphandler_irq_entry() { KEXP_TOP3; interrupt_handler(lr, ARM4_XRQ_IRQ); KEXP_BOT3; }
