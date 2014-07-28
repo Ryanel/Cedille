@@ -14,7 +14,7 @@ void profiler_log()
 	printk("debug","Profiling enabled~!\n");
 }
 
-#ifdef X86
+#ifdef BOARDx86generic
 
 void profiler_memory()
 {

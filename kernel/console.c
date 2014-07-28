@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <video.h>
-#ifdef X86
+#ifdef BOARDx86generic
 #include <arch/x86/ports.h>
 #endif
 
@@ -25,7 +25,6 @@ void scroll()
 ///
 ///Better than textmode_write, it formats the output at a basic level.
 ///
-#ifndef SPARC
 void printc(unsigned char c)
 {
 	if (c == 0x08 && term_x) //Backspace
@@ -43,9 +42,9 @@ void printc(unsigned char c)
 
 	else if (c == '\n') //Newline
 	{
-	   #ifndef X86
-		video_printchar(term_x,term_y,c);
-	   #endif
+		#ifndef BOARDx86generic
+			video_printchar(term_x,term_y,c);
+		#endif
 	   term_x = 0;
 	   term_y++;
 	}
@@ -65,7 +64,7 @@ void printc(unsigned char c)
 	// Move the hardware cursor.
 	video_setcursor(term_x,term_y);
 }
-#endif
+
 ///
 ///Prints a basic string
 ///
@@ -93,7 +92,7 @@ void console_clear()
 ///
 void console_init()
 {
-	#ifdef X86
+	#ifdef BOARDx86generic
 	unsigned short offset;
 	outb(0x3D4, 14);
 	offset = inb(0x3D5) << 8;

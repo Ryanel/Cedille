@@ -7,10 +7,7 @@ void pit_handler()
 {
 	pit_internal_ticks++;
 	//timer_report_ticks(TIMER_PIT,pit_internal_ticks);
-	if(pit_internal_ticks % 1000 == 0)
-	{
-		printk("timer","%3d seconds have passed!\n",pit_internal_ticks / 1000);
-	}
+	cycle_timers();
 }
 ///Starts the PIT at frequency
 void pit_install(uint32_t frequency)

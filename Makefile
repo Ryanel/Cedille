@@ -90,7 +90,7 @@ kernel/arch/x86/x64/bootstrap/bootstrap.o:
 
 %.o: %.c
 	@echo " CC    |" $@
-	@${CC} -c ${C_OPTIONS} ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
+	@${CC} -c ${C_OPTIONS} ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -DBOARD${ARCH}${BOARD} -o $@ $<
 
 clean:
 	@echo "CLN    | *.o" 
@@ -99,7 +99,7 @@ clean:
 iso: kernel
 	@echo "ISO [A]| build/cdrom.iso"
 	@cp build/kernel.elf iso/kernel.elf
-	@${GENISO} -R -b boot/grub/stage2_eltorito -quiet -no-emul-boot -boot-load-size 4 -boot-info-table -o ${BUILD_DIRECTORY}/cdrom.iso iso
+	@${GENISO} -R -b boot/grub/stage2_eltorito -quiet -no-emul-boot -boot-load-size 4 -boot-info-table -o build/cdrom.iso iso
 
 gen-symbols: kernel
 	@echo "GEN [M]| build/kernel.elf -> build/kernel.map"

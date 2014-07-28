@@ -2,7 +2,7 @@
 #include <logging.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef X86
+#ifdef BOARDx86generic
 uint32_t task_id_counter = 0;
 uint32_t thread_id_counter = 0;
 

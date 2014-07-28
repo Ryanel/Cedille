@@ -1,4 +1,4 @@
-#ifdef X86
+#ifdef BOARDx86generic
 #include <arch/x86/textmode_console.h>
 #else
 #include <arch/arm/serial.h>
@@ -6,18 +6,17 @@
 #include <stdint.h>
 void video_printchar(int x,int y, unsigned char c)
 {
-	#ifdef X86
+	#ifdef BOARDx86generic
 	textmode_write(x,y,c);
-	#else
+	#endif
 	#ifdef ARM
 	serial_write(c);
-	#endif
 	#endif
 }
 
 void video_printcoloredchar(int x,int y, unsigned char c, unsigned char attribute)
 {
-	#ifdef X86
+	#ifdef BOARDx86generic
 	textmode_write_color(x,y,c, attribute);
 	#endif
 }
@@ -43,21 +42,21 @@ void video_printcoloredstring(int x,int y,unsigned char attribute, char *c)
 }
 void video_scroll(int from,int to)
 {
-	#ifdef X86
+	#ifdef BOARDx86generic
 	textmode_scroll(from,to);
 	#endif
 }
 
 void video_setcursor(int x,int y)
 {
-	#ifdef X86
+	#ifdef BOARDx86generic
 	textmode_setcursor(x,y);
 	#endif
 }
 
 void video_settextfore(uint8_t color)
 {
-	#ifdef X86
+	#ifdef BOARDx86generic
 	extern uint8_t tm_cback;
 	textmode_setcolor(tm_cback,color);
 	#endif
@@ -65,14 +64,14 @@ void video_settextfore(uint8_t color)
 
 void video_reset_attr()
 {
-	#ifdef X86
+	#ifdef BOARDx86generic
 	textmode_resetcolor();
 	#endif
 }
 
 void video_clear()
 {
-	#ifdef X86
+	#ifdef BOARDx86generic
 	textmode_clear();
 	#endif
 }

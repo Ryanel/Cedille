@@ -7,6 +7,7 @@ void profiler_memory();
 
 int init_syscalls();
 int task_init();
+int init_timer();
 
 int start_service(char *daemon,int essential,int (*func)())
 {
@@ -24,11 +25,6 @@ int start_service(char *daemon,int essential,int (*func)())
 	{
 		 printk("daemon","Starting kernel daemon %s...",daemon); printf(" \tdone\n");
 	}
-	return 0;
-}
-
-int init_timer()
-{
 	return 0;
 }
 

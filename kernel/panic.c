@@ -8,7 +8,7 @@ void panic(char *s)
 {
 	panic_str = s;
 	printk("panic","Kernel Panic - %s\n",s);
-	#ifdef X86
+	#ifdef BOARDx86generic
 	asm("cli");
 	asm("sti");
 	#endif
