@@ -54,10 +54,12 @@ BOARD_FS_FILES := $(patsubst %.c,%.o,$(wildcard kernel/arch/${ARCH}/${BOARD}/fs/
 BOARD_LIB_FILES := $(patsubst %.c,%.o,$(wildcard kernel/arch/${ARCH}/${BOARD}/lib/*.c))
 BOARD_TEST_FILES := $(patsubst %.c,%.o,$(wildcard kernel/arch/${ARCH}/${BOARD}/test/*.c))
 
+BOARD_BOOTSTRP_FILES := $(patsubst %.c,%.o,$(wildcard kernel/arch/${ARCH}/${BOARD}/bootstrap/*.c))
+
 #Canonicate them together
 GLOBAL_FILES := ${GLOBAL_ROOT_FILES} ${GLOBAL_INIT_FILES} ${GLOBAL_DRIVERS_FILES} ${GLOBAL_LOW_FILES} ${GLOBAL_FS_FILES} ${GLOBAL_LIB_FILES} ${GLOBAL_TEST_FILES}
 ARCH_FILES := ${ARCH_ROOT_FILES} ${ARCH_DRIVERS_FILES} ${ARCH_LOW_FILES} ${ARCH_FS_FILES} ${ARCH_LIB_FILES} ${ARCH_TEST_FILES}
-BOARD_FILES := ${BOARD_ROOT_FILES} ${BOARD_INIT_FILES} ${BOARD_DRIVER_FILES} ${BOARD_LOW_FILES} ${BOARD_FS_FILES} ${BOARD_LIB_FILES} ${BOARD_TEST_FILES}
+BOARD_FILES :=${BOARD_ROOT_FILES} ${BOARD_INIT_FILES} ${BOARD_DRIVER_FILES} ${BOARD_LOW_FILES} ${BOARD_FS_FILES} ${BOARD_LIB_FILES} ${BOARD_TEST_FILES}
 
 ALL_SOURCE_FILES := ${GLOBAL_FILES} ${ARCH_FILES} ${BOARD_FILES}
 #RULES
@@ -70,7 +72,13 @@ kernel: ${GLOBAL_FILES} arch board
 	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o build/kernel.elf ${ALL_SOURCE_FILES}
 arch: ${ARCH_FILES}
 
-board: ${BOARD_FILES}
+board: ${BOARD_BOOTSTRP_FILES} ${BOARD_FILES}
+
+#Special targets
+kernel/arch/x86/x64/bootstrap/bootstrap.o:
+	@echo " CC  [B]" $@
+	@${CC} -c ${C_OPTIONS} -nostdlib -mcmodel=32 -m32 -I${INCLUDE_DIR} -o kernel/arch/x86/x64/bootstrap/bootstrap.o kernel/arch/x86/x64/bootstrap/bootstrap.c
+
 
 %.o: %.s
 	@echo " AS     " $@
@@ -94,6 +102,7 @@ gen-symbols: kernel
 	@${NM} build/kernel.elf > build/kernel.map
 
 #Special/Common Targets
+
 x86:
 
 icp:

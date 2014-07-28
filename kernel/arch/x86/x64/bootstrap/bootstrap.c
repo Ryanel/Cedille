@@ -1,0 +1,4 @@
+void bootstrap_init()
+{
+	
+}
