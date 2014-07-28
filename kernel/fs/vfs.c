@@ -17,7 +17,7 @@ int init_vfs()
 	vfs_tree = tree_create();
 	if(vfs_tree == NULL)
 	{
-		printk("fail","->\tCouldn't create tree\n");
+		printk("fail","=> Couldn't create tree\n");
 		return 1;
 	}
 	//Create root node and then set it as root. This is only temporary until
@@ -38,8 +38,6 @@ int init_vfs()
 	strcpy(test->fnode->name,"helloworld");
 
 	tree_node_insert_child(vfs_tree, vfs_tree->root, tree_node_create(test));
-	
-	printk("done","Started kvfsd\n");
 	return 0;
 }
 

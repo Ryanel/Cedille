@@ -83,10 +83,11 @@ int do_syscall_p2(uint32_t no, void* param,void* param2)
 
 }
 void init_syscall();
-void init_syscalls()
+int init_syscalls()
 {
 	#ifdef X86
 	register_interrupt_handler (0x64, &syscall_handler); //Setup Syscall Handler
 	#endif
 	init_syscall();
+	return 0;
 }

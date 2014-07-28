@@ -107,7 +107,7 @@ void task_perform_context_switch(task_t * task)
 #endif
 }
 #endif
-void task_init()
+int task_init()
 {
 	#if X86
 	//Setup the kernel task...
@@ -115,4 +115,5 @@ void task_init()
 	running_task->id = --task_id_counter;;
 	running_task->port = 0;
 	#endif
+	return 0;
 }

@@ -5,15 +5,15 @@
 
 void profiler_memory();
 
-void init_syscalls();
-void task_init();
+int init_syscalls();
+int task_init();
 
 int start_service(char *daemon,int essential,int (*func)())
 {
-	printk("daemon","Starting kernel daemon %s...",daemon);
-	if((*func)==0)
+	
+	if((*func)()!=0)
 	{
-		printf(" \tfailed\n");
+		printk("daemon","Starting kernel daemon %s...",daemon); printf(" \tfailed\n");
 		if(essential)
 		{
 			panic("Couldn't start required daemon!");
@@ -22,7 +22,7 @@ int start_service(char *daemon,int essential,int (*func)())
 	}
 	else
 	{
-		printf(" \tdone\n");
+		 printk("daemon","Starting kernel daemon %s...",daemon); printf(" \tdone\n");
 	}
 	return 0;
 }
@@ -38,9 +38,8 @@ void kmain()
 	//Start services
 	start_service("syscalld",1,init_syscalls);
 	start_service("taskd",1,task_init);
-	start_service("kvfsd",1,init_vfs);
+	start_service("kvfsd",0,init_vfs);
 	start_service("timerd",1,init_timer);
-	
 	printk("login","Login unimplemented; idling main kernel thread\n");
 	//profiler_memory();
 	for(;;)
