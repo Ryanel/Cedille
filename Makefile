@@ -70,9 +70,9 @@ kernel: arch-boot boot lib drivers arch-files arch-low arch-lib arch-drivers fs 
 	@echo " LD [K]| kernel.elf"
 	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o ${BUILD_DIRECTORY}/kernel.elf ${SRC_FILES}
 
-kernel-sparc: arch-boot arch-files arch-low arch-drivers lib arch-lib
+kernel-sparc: arch-boot arch-files arch-low arch-drivers
 	@echo " LD [K]| kernel.aout (sparc)"
-	@${LD} -T ${LD_SCRIPT} -o ${BUILD_DIRECTORY}/kernel.aout ${ARCH_BOOT_FILES} ${ARCH_FILES} ${ARCH_LOW_FILES} ${ARCH_DRIVER_FILES} ${LIB_FILES} ${ARCH_LIB_FILES}
+	@${LD} -T ${LD_SCRIPT} -o ${BUILD_DIRECTORY}/kernel.aout ${ARCH_BOOT_FILES} ${ARCH_FILES} ${ARCH_LOW_FILES} ${ARCH_DRIVER_FILES}
 
 asm-src: ${KASM_FILES}
 

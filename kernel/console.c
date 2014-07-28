@@ -25,6 +25,7 @@ void scroll()
 ///
 ///Better than textmode_write, it formats the output at a basic level.
 ///
+#ifndef SPARC
 void printc(unsigned char c)
 {
 	if (c == 0x08 && term_x) //Backspace
@@ -64,7 +65,7 @@ void printc(unsigned char c)
 	// Move the hardware cursor.
 	video_setcursor(term_x,term_y);
 }
-
+#endif
 ///
 ///Prints a basic string
 ///

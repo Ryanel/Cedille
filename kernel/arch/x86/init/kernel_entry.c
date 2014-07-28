@@ -12,8 +12,7 @@ extern uint32_t _kernel_start,_kernel_end;
 int x86_init_descriptor_tables();
 void pit_install(uint32_t frequency);
 void init_vmm();
-void init_syscalls();
-void task_init();
+
 void kmain();
 ///The entry point for the x86 version of the Cedille Microkernel
 void kernel_entry(int magic, multiboot_info_t * multiboot)
@@ -22,16 +21,19 @@ void kernel_entry(int magic, multiboot_info_t * multiboot)
 	console_printdiv();
 	printk("status","Kernel initialising...\n");
 	printk("ok","The C%cdille Microkernel v.%s. (c) Corwin McKnight 2014\n",130,CEDILLE_VERSION_S);
+	printk("ok","Branch: x86/generic\n");
 	#ifdef DEBUG
 	printk("debug","kernel image(ram): 0x%X - 0x%X (", &_kernel_start,&_kernel_end, &_kernel_end - &_kernel_start);
 	logging_printbestunit(&_kernel_end - &_kernel_start, 0); printf(")\n");
 	#endif
+
 	if(magic != MULTIBOOT_BOOTLOADER_MAGIC)
 	{
 		printk("fail","Cedille was booted improperly by the bootloader\n");
 		printk("info","\\==> Kernel is now halting\n");
 		return;
 	}
+
 	printk("status","Initialising the processor...\n");
 	x86_init_descriptor_tables();
 	printk("cpu","Starting interrupts...\n");
@@ -52,8 +54,6 @@ void kernel_entry(int magic, multiboot_info_t * multiboot)
 		//printf("0x%08X->0x%08X (type %d)\n",mmap->addr,mmap->len,mmap->type);
 		mmap = (multiboot_memory_map_t*) ( (unsigned int)mmap + mmap->size + sizeof(unsigned int) );
 	}
-	init_syscalls();
-	task_init();
 	printk("debug","Exiting Kernel Setup Enviorment...\n");
 	console_printdiv();
 	kmain();

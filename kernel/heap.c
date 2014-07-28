@@ -204,5 +204,13 @@ void* realloc(void* pointer, size_t size) {
 	}
 	return new_block;
 }
+#else
+void* malloc(size_t size) {
+	printk("fail","malloc() is not implemented\n");
+	return NULL;
+}
+void free(void* ptr) {
+	printk("fail","free() is not implemented\n");
+}
 
 #endif
