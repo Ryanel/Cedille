@@ -34,7 +34,7 @@ void kernel_entry(int magic, multiboot_info_t * multiboot)
 		return;
 	}
 
-	pritnk("status","Initialising the processor...\n");
+	printk("status","Initialising the processor...\n");
 	x86_init_descriptor_tables();
 	printk("cpu","Starting interrupts...\n");
 	asm("sti");
