@@ -21,6 +21,6 @@ void kernel_entry()
 	printk("status","Initialising the processor...\n");
 
 	printk("cpu","Starting interrupts....\n");
-	//arm_init_interrupts();
+	arm_init_interrupts();
 	kmain();
 }

@@ -51,9 +51,6 @@ void arm_init_interrupts()
 	arm_xrqinstall(ARM4_XRQ_IRQ, &k_exphandler_irq_entry);
 	arm_xrqinstall(ARM4_XRQ_FIQ, &k_exphandler_fiq_entry);
 	arm4_cpsrset(arm4_cpsrget() & ~(1 << 7)); //Enable interrupts
-
-
-	asm("swi #4");
 }
 void interrupt_handler(uint32_t lr, uint32_t type)
 {
@@ -69,7 +66,7 @@ void interrupt_handler(uint32_t lr, uint32_t type)
 			break;
 		case ARM4_XRQ_SWINT:
 			swi = ((uint32_t*)((uintptr_t)lr - 4))[0] & 0xffff;
-			//printf("SWI:%d\n",swi);
+			printf("SWI:%d\n",swi);
 			break;
 		case ARM4_XRQ_UNDEF :
 		case ARM4_XRQ_ABRTP :

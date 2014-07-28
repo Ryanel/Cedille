@@ -34,7 +34,7 @@ void kernel_entry(int magic, multiboot_info_t * multiboot)
 		return;
 	}
 
-	printk("status","Initialising the processor...\n");
+	pritnk("status","Initialising the processor...\n");
 	x86_init_descriptor_tables();
 	printk("cpu","Starting interrupts...\n");
 	asm("sti");
@@ -46,7 +46,7 @@ void kernel_entry(int magic, multiboot_info_t * multiboot)
 	printf("PMM ");
 	init_vmm();
 	printf("& VMM\n");
-
+	
 	//printf("Memory Map at:0x%X\n",multiboot->mmap_addr);
 	multiboot_memory_map_t * mmap = (multiboot_memory_map_t*)multiboot->mmap_addr;
 	while((uint32_t)mmap < (uint32_t)multiboot->mmap_addr + (uint32_t)multiboot->mmap_length)
