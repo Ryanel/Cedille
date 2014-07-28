@@ -63,7 +63,7 @@ ALL_SOURCE_FILES := ${GLOBAL_FILES} ${ARCH_FILES} ${BOARD_FILES}
 #RULES
 #--------------------------------------------
 
-all: kernel gen-symbols
+all: kernel gen-symbols iso
 
 kernel: ${GLOBAL_FILES} arch board
 	@echo " LD [K]| kernel.elf"
@@ -86,9 +86,23 @@ clean:
 
 iso: kernel
 	@echo "ISO [A]| build/cdrom.iso"
-	@cp ${BUILD_DIRECTORY}/kernel.elf iso/kernel.elf
+	@cp build/kernel.elf iso/kernel.elf
 	@${GENISO} -R -b boot/grub/stage2_eltorito -quiet -no-emul-boot -boot-load-size 4 -boot-info-table -o ${BUILD_DIRECTORY}/cdrom.iso iso
 
 gen-symbols: kernel
 	@echo "GEN [M]| build/kernel.elf -> build/kernel.map"
 	@${NM} build/kernel.elf > build/kernel.map
+
+#Special/Common Targets
+x86:
+
+icp:
+	make AS=arm-none-eabi-as LD="arm-none-eabi-gcc -lgcc -ffreestanding -fno-builtin -nostartfiles" LFLAGS="" CC="arm-none-eabi-gcc" ARCH=arm BOARD=integrator-cp
+gba:
+	@echo "Not avalable right now"
+
+#RUN
+run-x86:
+	@${EMU} -m 4 -serial stdio -cdrom build/cdrom.iso
+run-arm-icp:
+	@qemu-system-arm -M integratorcp -serial stdio -kernel build/kernel.elf -nographic -monitor none -initrd iso/boot/initrd.img
