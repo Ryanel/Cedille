@@ -40,12 +40,6 @@ void kmain()
 	start_service("taskd",1,task_init);
 	start_service("kvfsd",0,init_vfs);
 	start_service("timerd",1,init_timer);
-	#ifdef BOARD_x86
-	printk("x86","WOOOO");
-	#endif
-	#ifdef BOARD_arm/integratorcp
-	printk("icp","WOOOO");
-	#endif
 	printk("login","Login unimplemented; idling main kernel thread\n");
 	//profiler_memory();
 	for(;;)
