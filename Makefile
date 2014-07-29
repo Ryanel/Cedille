@@ -76,16 +76,20 @@ board: ${BOARD_BOOTSTRP_FILES} ${BOARD_FILES}
 
 #Special targets
 kernel/arch/x86/x64/bootstrap/bootstrap.o:
-	@echo " CC  [B]" $@
+	
+	@echo " CC [B]|" $@
 	@${CC} -c ${C_OPTIONS} -nostdlib -mcmodel=32 -m32 -I${INCLUDE_DIR} -o kernel/arch/x86/x64/bootstrap/bootstrap.o kernel/arch/x86/x64/bootstrap/bootstrap.c
+	@echo " AS [B]| kernel/arch/x86/x64/bootstrap/start.o"
+	@${AS} -march=i686 --32 -o kernel/arch/x86/x64/bootstrap/start.o kernel/arch/x86/x64/bootstrap/start.s
+	@${LD} ${C_OPTIONS} -Ttext 0x100000 -nostdlib -mcmodel=32 -m32 -I${INCLUDE_DIR} -o iso/ldcedilz kernel/arch/x86/x64/bootstrap/bootstrap.o
 
 
 %.o: %.s
-	@echo " AS     " $@
+	@echo " AS    |" $@
 	@${AS} -o $@ $<
 
 %.o: %.c
-	@echo " CC     " $@
+	@echo " CC    |" $@
 	@${CC} -c ${C_OPTIONS} ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -o $@ $<
 
 clean:
