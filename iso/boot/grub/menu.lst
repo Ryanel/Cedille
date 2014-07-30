@@ -1,8 +1,9 @@
 default=0
-timeout=0
+timeout=10
 
 title Cedille
 kernel /kernel.elf
 
 title Cedille x64
-kernel /
+kernel /ldcedilz
+module /kernel.elf

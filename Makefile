@@ -27,7 +27,10 @@ INCLUDE_DIR := "kernel/includes"
 GENISO := xorriso -as mkisofs
 EMU := qemu-system-i386
 
-
+#Specific to x64 stuff
+X64_32_CC = clang
+X64_32_AS = nasm -felf
+X64_32_LD = ld
 #FILES
 #--------------------------------------------
 
@@ -70,19 +73,20 @@ all: kernel gen-symbols iso
 kernel: ${GLOBAL_FILES} arch board
 	@echo " LD [K]| kernel.elf"
 	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o build/kernel.elf ${ALL_SOURCE_FILES}
+	@rm -f build/cdrom.iso
 arch: ${ARCH_FILES}
 
-board: ${BOARD_BOOTSTRP_FILES} ${BOARD_FILES}
+board: ${BOARD_FILES}
 
 #Special targets
-kernel/arch/x86/x64/bootstrap/bootstrap.o:
-	
-	@echo " CC [B]|" $@
-	@${CC} -c ${C_OPTIONS} -nostdlib -mcmodel=32 -m32 -I${INCLUDE_DIR} -o kernel/arch/x86/x64/bootstrap/bootstrap.o kernel/arch/x86/x64/bootstrap/bootstrap.c
-	@echo " AS [B]| kernel/arch/x86/x64/bootstrap/start.o"
-	@${AS} -march=i686 --32 -o kernel/arch/x86/x64/bootstrap/start.o kernel/arch/x86/x64/bootstrap/start.s
-	@${LD} ${C_OPTIONS} -Ttext 0x100000 -nostdlib -mcmodel=32 -m32 -I${INCLUDE_DIR} -o iso/ldcedilz kernel/arch/x86/x64/bootstrap/bootstrap.o
+x64_bootstrap:
+	@${X64_32_AS} -o kernel/arch/x86/x64/bootstrap/start.o kernel/arch/x86/x64/bootstrap/start.s
 
+	@${X64_32_CC} -c ${C_OPTIONS} -I${INCLUDE_DIR} -o kernel/arch/x86/x64/bootstrap/bootstrap.o kernel/arch/x86/x64/bootstrap/bootstrap.c
+	@${X64_32_CC} -c ${C_OPTIONS} -I${INCLUDE_DIR} -o kernel/arch/x86/x64/bootstrap/console.o kernel/arch/x86/x64/bootstrap/console.c
+	
+	@${X64_32_LD} -Tkernel/arch/x86/x64/bootstrap/link.ld -o iso/ldcedilz kernel/arch/x86/x64/bootstrap/*.o
+	@rm -f build/cdrom.iso
 
 %.o: %.s
 	@echo " AS    |" $@
@@ -96,7 +100,7 @@ clean:
 	@echo "CLN    | *.o" 
 	@-find . -name "*.o" -type f -delete
 
-iso: kernel
+build/cdrom.iso:
 	@echo "ISO [A]| build/cdrom.iso"
 	@cp build/kernel.elf iso/kernel.elf
 	@${GENISO} -R -b boot/grub/stage2_eltorito -quiet -no-emul-boot -boot-load-size 4 -boot-info-table -o build/cdrom.iso iso
