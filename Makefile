@@ -85,6 +85,8 @@ x64_bootstrap:
 	@${X64_32_CC} -c ${C_OPTIONS} -I${INCLUDE_DIR} -o kernel/arch/x86/x64/bootstrap/bootstrap.o kernel/arch/x86/x64/bootstrap/bootstrap.c
 	@${X64_32_CC} -c ${C_OPTIONS} -I${INCLUDE_DIR} -o kernel/arch/x86/x64/bootstrap/console.o kernel/arch/x86/x64/bootstrap/console.c
 	
+	@${X64_32_CC} -c ${C_OPTIONS} -I${INCLUDE_DIR} -o kernel/arch/x86/x64/bootstrap/printf.o kernel/lib/printf.c
+
 	@${X64_32_LD} -Tkernel/arch/x86/x64/bootstrap/link.ld -o iso/ldcedilz kernel/arch/x86/x64/bootstrap/*.o
 	@rm -f build/cdrom.iso
 
