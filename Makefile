@@ -68,7 +68,7 @@ ALL_SOURCE_FILES := ${GLOBAL_FILES} ${ARCH_FILES} ${BOARD_FILES}
 #RULES
 #--------------------------------------------
 
-all: kernel gen-symbols iso
+all: kernel gen-symbols build/cdrom.iso
 
 kernel: ${GLOBAL_FILES} arch board
 	@echo " LD [K]| kernel.elf"
