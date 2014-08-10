@@ -6,7 +6,6 @@ BOARD := generic
 BOARD_ID := ${ARCH}/${BOARD}
 COMPILE_OPTIONS := -DDEBUG
 
-
 #Tools
 #--------------------------------------------
 
@@ -68,7 +67,11 @@ ALL_SOURCE_FILES := ${GLOBAL_FILES} ${ARCH_FILES} ${BOARD_FILES}
 #RULES
 #--------------------------------------------
 
-all: kernel gen-symbols build/cdrom.iso
+all:build-dir kernel gen-symbols build/cdrom.iso
+
+build-dir:
+	@echo "DIR    | build"
+	@mkdir -p build
 
 kernel: ${GLOBAL_FILES} arch board
 	@echo " LD [K]| kernel.elf"
