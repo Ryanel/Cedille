@@ -48,13 +48,13 @@ void video_setcursor(int x, int y) {
     #endif
 }
 
-void video_settextfore(uint8_t color) {
+void video_settextfore(uint8_t color) 
+{
     #ifdef BOARDx86generic
     extern uint8_t tm_cback;
     textmode_setcolor(tm_cback, color);
     #endif
 }
-
 void video_reset_attr() {
     #ifdef BOARDx86generic
     textmode_resetcolor();
