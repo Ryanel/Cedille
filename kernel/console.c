@@ -42,11 +42,9 @@ void printc(unsigned char c)
 
 	else if (c == '\n') //Newline
 	{
-		#ifndef BOARDx86generic
-			video_printchar(term_x,term_y,c);
-		#endif
-	   term_x = 0;
-	   term_y++;
+		video_printchar(term_x,term_y,c);
+	    term_x = 0;
+	    term_y++;
 	}
 	else if(c >= ' ') //Anything else
 	{

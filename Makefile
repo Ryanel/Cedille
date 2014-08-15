@@ -99,7 +99,7 @@ x64_bootstrap:
 
 %.o: %.c
 	@echo " CC    |" $@
-	@${CC} -c ${C_OPTIONS} ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -DBOARD${ARCH}${BOARD} -o $@ $<
+	@${CC} -c ${C_OPTIONS} ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -DBOARD${ARCH}${BOARD} -DARCH${ARCH} -o $@ $<
 
 clean:
 	@echo "CLN    | *.o" 
