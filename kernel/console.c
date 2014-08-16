@@ -45,48 +45,39 @@ void printc(unsigned char c) {
     // Scroll the screen if needed.
     scroll();
     // Move the hardware cursor.
-    video_setcursor(term_x,term_y);
+    video_setcursor(term_x, term_y);
 }
 
-///
-///Prints a basic string
-///
-void print(const char *c)
-{
+///  Prints a basic string
+void print(const char *c) {
     int i = 0;
-    while (c[i])
-    {
+    while (c[i]) {
         printc(c[i++]);
     }
 }
-void console_printdiv()
-{
+void console_printdiv() {
     #ifndef OPT_NO_ENCHANCED_LOGGING
     printf("------+---------------------------------");
-    printf("----------------------------------------");//80 lines
+    printf("----------------------------------------");  // 80 lines
     #endif
 }
-void console_clear()
-{
+void console_clear() {
     video_clear();
 }
-///
-///Initialises the whole thing
-///
-void console_init()
-{
-    #ifdef BOARDx86generic
-    unsigned short offset;
-    outb(0x3D4, 14);
-    offset = inb(0x3D5) << 8;
-    outb(0x3D4, 15);
-    offset |= inb(0x3D5);
-    term_x=offset%80;
-    term_y=offset/80;
+/// Initialises the whole thing
+void console_init() {
+    #ifdef ARCHx86
+        uint16_t offset;
+        outb(0x3D4, 14);
+        offset = inb(0x3D5) << 8;
+        outb(0x3D4, 15);
+        offset |= inb(0x3D5);
+        term_x = offset % 80;
+        term_y = offset / 80;
     #else
-    term_x = 0;
-    term_y = 0;
-    console_clear();
+        term_x = 0;
+        term_y = 0;
+        console_clear();
     #endif
-    video_setcursor(term_x,term_y);
+    video_setcursor(term_x, term_y);
 }
