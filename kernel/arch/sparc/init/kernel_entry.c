@@ -8,7 +8,7 @@ void printc(unsigned char c)
 {
 	serial_write(c);
 }
-const static char * test = "Hello World!\n";
+char * test = "Hello World!\n";
 void kernel_entry(prom_vec_t * pv)
 {
 	if(pv->pv_magic_cookie != ROMVEC_MAGIC)
@@ -17,5 +17,5 @@ void kernel_entry(prom_vec_t * pv)
 		return;
 	}
 	prom_vec = pv;
-	serial_writes(test);
+	printk("ok","Branch: sparc/v8\n");
 }

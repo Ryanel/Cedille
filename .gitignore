@@ -38,3 +38,5 @@ libiconv*
 
 initutil
 *.log
+*.tags*
+ldcedilz

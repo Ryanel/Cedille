@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <memory.h>
-#ifdef X86
+#ifdef BOARDx86generic
 #include <arch/x86/paging.h>
 #endif
 #include <cedille.h>
@@ -14,7 +14,7 @@ extern uint32_t _kernel_end;
 uintptr_t pre_placementaddr;
 uint32_t kmalloc_status = 0;
 
-#ifdef X86
+#ifdef BOARDx86generic
 
 extern page_directory_t * kernel_page_directory;
 
@@ -203,6 +203,14 @@ void* realloc(void* pointer, size_t size) {
 		free(pointer);
 	}
 	return new_block;
+}
+#else
+void* malloc(size_t size) {
+	printk("fail","malloc() is not implemented\n");
+	return NULL;
+}
+void free(void* ptr) {
+	printk("fail","free() is not implemented\n");
 }
 
 #endif

@@ -1,6 +1,8 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <arch/arm/interrupts.h>
+#include <stdio.h>
+#include <logging.h>
 #include <cedille.h>
 void interrupt_handler(uint32_t lr, uint32_t type);
 void __attribute__((naked)) k_exphandler_irq_entry() { KEXP_TOP3; interrupt_handler(lr, ARM4_XRQ_IRQ); KEXP_BOT3; }
@@ -51,9 +53,6 @@ void arm_init_interrupts()
 	arm_xrqinstall(ARM4_XRQ_IRQ, &k_exphandler_irq_entry);
 	arm_xrqinstall(ARM4_XRQ_FIQ, &k_exphandler_fiq_entry);
 	arm4_cpsrset(arm4_cpsrget() & ~(1 << 7)); //Enable interrupts
-
-
-	asm("swi #4");
 }
 void interrupt_handler(uint32_t lr, uint32_t type)
 {
@@ -69,7 +68,7 @@ void interrupt_handler(uint32_t lr, uint32_t type)
 			break;
 		case ARM4_XRQ_SWINT:
 			swi = ((uint32_t*)((uintptr_t)lr - 4))[0] & 0xffff;
-			//printf("SWI:%d\n",swi);
+			printf("SWI:%d\n",swi);
 			break;
 		case ARM4_XRQ_UNDEF :
 		case ARM4_XRQ_ABRTP :

@@ -1,3 +1,13 @@
+interrupt_vector_table:
+    b . @ Reset
+    b . 
+    b . @ SWI instruction
+    b . 
+    b .
+    b .
+    b .
+    b .
+
 .comm stack, 0x1000              @ Reserve 4k stack in the BSS
 
 _start:

@@ -2,7 +2,7 @@
 #include <logging.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef X86
+#ifdef BOARDx86generic
 uint32_t task_id_counter = 0;
 uint32_t thread_id_counter = 0;
 
@@ -106,12 +106,14 @@ void task_perform_context_switch(task_t * task)
 	asm volatile ("mov %0, %%esp" : : "r" (task->main_thread->context->stack));
 #endif
 }
-
-void task_init()
+#endif
+int task_init()
 {
+	#if X86
 	//Setup the kernel task...
 	running_task = task_create_task(NULL);
 	running_task->id = --task_id_counter;;
 	running_task->port = 0;
+	#endif
+	return 0;
 }
-#endif

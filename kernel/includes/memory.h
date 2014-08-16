@@ -7,7 +7,7 @@ void init_malloc(uint32_t status,uint32_t addr_bytes);
 uintptr_t * kmalloc(size_t sz);
 uintptr_t * kmalloc_aligned(size_t sz);
 uintptr_t * kmalloc_aligned_phys(size_t sz, uintptr_t * phys);
-#ifdef X86
+#ifdef BOARDx86generic
 uintptr_t * sbrk(size_t amount);
 #endif
 void init_pmm(uint32_t total_kb);

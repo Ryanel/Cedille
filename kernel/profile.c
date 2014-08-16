@@ -8,7 +8,13 @@ extern uint32_t memory_bytes_avalable;
 
 void console_printdiv();
 
-#ifdef X86
+void profiler_log()
+{
+	START_PROFILE
+	printk("debug","Profiling enabled~!\n");
+}
+
+#ifdef BOARDx86generic
 
 void profiler_memory()
 {

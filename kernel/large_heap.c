@@ -3,7 +3,7 @@
 #include <memory.h>
 #include <logging.h>
 #define PAGE_SIZE 0x1000
-#ifdef X86
+#ifdef BOARDx86generic
 extern page_directory_t * kernel_page_directory;
 
 //TODO: Replace with better algorithm, one that DEALLOCS
