@@ -28,8 +28,10 @@ void printc(unsigned char c) {
         term_x = (term_x+8) & ~(8-1);
     } else if (c == '\r') {
        term_x = 0;
-    } else if (c == '\n' {
+    } else if (c == '\n') {
+        #ifndef ARCHx86
         video_printchar(term_x, term_y, c);
+        #endif
         term_x = 0;
         term_y++;
     } else if (c >= ' ') {
