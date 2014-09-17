@@ -18,7 +18,7 @@ LD := ./toolkit/binutils/bin/i586-elf-ld -m elf_i386
 C_OPTIONS := -ffreestanding -std=gnu99  -nostartfiles 
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
 C_OPTIONS += -Wno-unused-function
-C_OPTIONS += -s -g -Os -lenyos -L../libenyos
+C_OPTIONS += -s -g -Os
 
 LD_SCRIPT := kernel/arch/${ARCH}/${BOARD}/link.ld
 INCLUDE_DIR := "kernel/includes"
@@ -75,7 +75,7 @@ build-dir:
 
 kernel: ${GLOBAL_FILES} arch board
 	@echo " LD [K]| kernel.elf"
-	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -lenyos -L../libenyos -o build/kernel.elf ${ALL_SOURCE_FILES}
+	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o build/kernel.elf ${ALL_SOURCE_FILES}
 	@rm -f build/cdrom.iso
 arch: ${ARCH_FILES}
 
