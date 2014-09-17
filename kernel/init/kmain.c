@@ -35,9 +35,9 @@ void kmain()
 	start_service("syscalld",1,init_syscalls);
 	start_service("taskd",1,task_init);
 	start_service("kvfsd",0,init_vfs);
-	start_service("timerd",1,init_timer);
+	//start_service("timerd",1,init_timer);
 	printk("login","Login unimplemented; idling main kernel thread\n");
-	//profiler_memory();
+	profiler_memory();
 	for(;;)
 	{
 

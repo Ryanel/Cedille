@@ -10,7 +10,7 @@ COMPILE_OPTIONS := -DDEBUG
 #--------------------------------------------
 
 AS := nasm -felf 
-CC:=clang -target i586-elf
+CC:=clang -target i686-elf
 STRIP:= strip
 NM := nm
 LD := ./toolkit/binutils/bin/i586-elf-ld -m elf_i386
@@ -18,7 +18,7 @@ LD := ./toolkit/binutils/bin/i586-elf-ld -m elf_i386
 C_OPTIONS := -ffreestanding -std=gnu99  -nostartfiles 
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
 C_OPTIONS += -Wno-unused-function
-C_OPTIONS += -s -g -Os
+C_OPTIONS += -s -g -Os -lenyos -L../libenyos
 
 LD_SCRIPT := kernel/arch/${ARCH}/${BOARD}/link.ld
 INCLUDE_DIR := "kernel/includes"
@@ -67,7 +67,7 @@ ALL_SOURCE_FILES := ${GLOBAL_FILES} ${ARCH_FILES} ${BOARD_FILES}
 #RULES
 #--------------------------------------------
 
-all:build-dir kernel gen-symbols build/cdrom.iso
+all:build-dir prebuild kernel gen-symbols build/cdrom.iso
 
 build-dir:
 	@echo "DIR    | build"
@@ -75,11 +75,15 @@ build-dir:
 
 kernel: ${GLOBAL_FILES} arch board
 	@echo " LD [K]| kernel.elf"
-	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o build/kernel.elf ${ALL_SOURCE_FILES}
+	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -lenyos -L../libenyos -o build/kernel.elf ${ALL_SOURCE_FILES}
 	@rm -f build/cdrom.iso
 arch: ${ARCH_FILES}
 
 board: ${BOARD_FILES}
+
+prebuild:
+	@echo "PRE    |"
+	@util/gen-git-info-c.sh build/git-info.h
 
 #Special targets
 x64_bootstrap:

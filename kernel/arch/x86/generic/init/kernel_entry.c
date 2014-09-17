@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <multiboot.h>
 #include <memory.h>
+#include "../../build/git-info.h"
 extern uint32_t _kernel_start, _kernel_end;
 
 int x86_init_descriptor_tables();
@@ -18,9 +19,15 @@ void kmain();
 void kernel_entry(int magic, multiboot_info_t * multiboot) {
     console_init();
     console_printdiv();
-    printk("ok", "The C%cdille Microkernel v.%s. (c) Corwin McKnight 2014\n", \
-        130, CEDILLE_VERSION_S);
+    #ifdef DEBUG
+    printk("ok", "The C%cdille Microkernel [rev %s] (c) Corwin McKnight 2014\n", \
+        130, GIT_SHORT_HASH);  //130 is ASCII for é
     printk("ok", "Branch: x86/generic\n");
+    #else
+    printk("ok", "The C%cdille Microkernel v.%s. (c) Corwin McKnight 2014\n", \
+        130, CEDILLE_VERSION_S);  //130 is ASCII for é
+    printk("ok", "Branch: x86/generic\n");
+    #endif
     #ifdef DEBUG
         printk("debug", "kernel image(ram): 0x%X - 0x%X (", \
             &_kernel_start, &_kernel_end, &_kernel_end - &_kernel_start);

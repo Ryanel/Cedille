@@ -40,3 +40,5 @@ initutil
 *.log
 *.tags*
 ldcedilz
+
+build/
