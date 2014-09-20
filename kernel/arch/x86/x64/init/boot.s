@@ -1,3 +1,0 @@
-.global start
-start:
-	hlt
