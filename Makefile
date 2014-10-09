@@ -133,4 +133,4 @@ run-x86:
 run-arm-icp:
 	@qemu-system-arm -M integratorcp -serial stdio -kernel build/kernel.elf -nographic -monitor none -initrd iso/boot/initrd.img
 run-sparc:
-	@qemu-system-sparc -kernel build/kernel.elf -nographic -serial stdio
+	@qemu-system-sparc -kernel build/kernel.elf -nographic -serial stdio	

@@ -1,7 +1,26 @@
-.section .text
-.align 16
-.global _start
- 
+    .file   "boot.s"
+    .data
+    .global cputyp, nbpg, pgofset, pgshift
+cputyp:
+    .word   1
+nbpg:
+    .word   1
+pgofset:
+    .word   1
+pgshift:
+    .word   1
+prom_address:
+    .long 1
+
+    .section bss
+    
+    .text
+    .global _start
+    .extern kernel_entry
 _start:
-    call _start                      ! loop forever
-          nop
+    call kernel_entry
+        nop
+
+halt:
+    call halt
+        nop
