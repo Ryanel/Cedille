@@ -30,6 +30,10 @@ EMU := qemu-system-i386
 X64_32_CC = clang
 X64_32_AS = nasm -felf
 X64_32_LD = ld
+
+C_PASSED_VARIABLES := -DCCOMPILER_OPTIONS_S="\"${C_OPTIONS}\"" -DARCH_S="\"${ARCH}\"" -DBOARD_S="\"${BOARD}\""
+C_PASSED_VARIABLES += 
+
 #FILES
 #--------------------------------------------
 
@@ -103,7 +107,7 @@ x64_bootstrap:
 
 %.o: %.c
 	@echo " CC    |" $@
-	@${CC} -c ${C_OPTIONS} ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -DARCH${ARCH} -o $@ $<
+	@${CC} -c ${C_OPTIONS} ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -DARCH${ARCH} ${C_PASSED_VARIABLES} -o $@ $<
 
 clean:
 	@echo "CLN    | *.o" 
@@ -133,4 +137,11 @@ run-x86:
 run-arm-icp:
 	@qemu-system-arm -M integratorcp -serial stdio -kernel build/kernel.elf -nographic -monitor none -initrd iso/boot/initrd.img
 run-sparc:
-	@qemu-system-sparc -kernel build/kernel.elf -nographic -serial stdio	
+	@qemu-system-sparc -serial stdio -cdrom build/sparc-iso.iso -nographic
+
+sparc-iso:
+	@echo "GEN [A]| build/sparc-bootblock.bin"
+	@dd if=/dev/zero of=build/sparc-bootblock.bin bs=2048 count=4
+	@dd if=build/kernel.elf of=build/bootblock.bin bs=512 seek=1 conv=notrunc
+	@echo "ISO [A]| build/sparc-iso.iso"
+	@${GENISO} -quiet -o build/sparc-iso.iso -G build/bootblock.bin iso
