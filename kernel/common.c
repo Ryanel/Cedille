@@ -6,5 +6,6 @@ void low_printname() {
     log_low(" => Source: "); log_low(BUILD_SOURCE); log_low("\n");
     log_low(" => Architecture: "); log_low(ARCH_S); log_low("/"); log_low(BOARD_S); log_low("\n");
     log_low(" => Build Flags:{"); log_low( CCOMPILER_OPTIONS_S ); log_low("}\n");
+	log_low("\n");
     #endif
 }

@@ -7,10 +7,11 @@ volatile uint8_t term_x = 0;
 volatile uint8_t term_y = 0;
 
 void text_console_printchar(char c, uint8_t x, uint8_t y);
-
+void text_console_setcursor(uint8_t x,uint8_t y);
+void text_console_scroll(int from,int to);
 void scroll() {
     if (term_y >= 25) {
-        //video_scroll(0, 24);
+        text_console_scroll(0, 24);
         term_y = 24;
     }
 }
@@ -39,7 +40,7 @@ void text_console_printc(char c) {
     // Scroll the screen if needed.
     scroll();
     // Move the hardware cursor.
-    //video_setcursor(term_x, term_y);
+    text_console_setcursor(term_x, term_y);
 }
 
 void text_console_print(const char *c) {
