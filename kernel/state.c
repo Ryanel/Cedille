@@ -1,6 +1,6 @@
 #include <state.h>
-
-int system_state = STATE_EARLY;
+#include <stdint.h>
+uint32_t system_state = STATE_EARLY;
 
 void sys_change_state(int state)
 {
@@ -8,6 +8,7 @@ void sys_change_state(int state)
 }
 
 void idle() {
+	system_state = 0;
     for(;;){
         //Insert statement to turn off processor here.
     }

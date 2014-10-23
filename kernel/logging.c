@@ -121,9 +121,6 @@ void logging_printbestunit(uint32_t bytes, uint8_t newline)
 		case 3:
 			printf("%d %s",(bytes / 1024) / 1024,"MiB");
 			break;
-		default:
-			oops("Best unit is OOB!");
-			break;
 	}
 	if(newline)
 	{
