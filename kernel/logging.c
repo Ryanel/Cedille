@@ -14,7 +14,7 @@ Logs output to system console. Works as an enchanced printf.
 #endif
 
 void text_console_change_color(uint8_t color);
-
+void text_console_reset_color();
 void printk(const char * type, const char *fmt, ...)
 {
 	#ifndef OPT_NO_ENCHANCED_LOGGING

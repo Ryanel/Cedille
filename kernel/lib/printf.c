@@ -15,6 +15,8 @@
 #define	PR_BUFLEN	16
 //#define NULL 0
 
+void text_console_printc(char);
+
 unsigned int strlen_unsigned(const unsigned char *str)
 {
 	unsigned const char *wrk=str;
