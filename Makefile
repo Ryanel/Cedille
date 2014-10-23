@@ -86,7 +86,7 @@ arch: ${ARCH_FILES}
 board: ${BOARD_FILES}
 
 prebuild:
-	@echo "PRE    |"
+	@echo "PRE    | Generate Git Info"
 	@util/gen-git-info-c.sh build/git-info.h
 
 #Special targets
@@ -128,8 +128,6 @@ x86:
 
 icp:
 	make AS=arm-none-eabi-as LD="arm-none-eabi-gcc -lgcc -ffreestanding -fno-builtin -nostartfiles" LFLAGS="" CC="arm-none-eabi-gcc" ARCH=arm BOARD=integrator-cp
-gba:
-	@echo "Not avalable right now"
 
 #RUN
 run-x86:
