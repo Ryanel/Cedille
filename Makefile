@@ -14,7 +14,7 @@ CC:=clang -target i686-elf
 STRIP:= strip
 NM := nm
 LD := ./toolkit/binutils/bin/i586-elf-ld -m elf_i386
-LFLAGS := -lgcc
+LFLAGS :=
 
 
 C_OPTIONS := -ffreestanding -std=gnu99  -nostartfiles 
