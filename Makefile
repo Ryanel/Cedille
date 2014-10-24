@@ -14,6 +14,8 @@ CC:=clang -target i686-elf
 STRIP:= strip
 NM := nm
 LD := ./toolkit/binutils/bin/i586-elf-ld -m elf_i386
+LFLAGS := -lgcc
+
 
 C_OPTIONS := -ffreestanding -std=gnu99  -nostartfiles 
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
