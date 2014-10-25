@@ -3,12 +3,10 @@
 #ifdef ARCHx86
 #include <arch/x86/ports.h>
 #endif
+#include <text_console.h>
 volatile uint8_t term_x = 0;
 volatile uint8_t term_y = 0;
 
-void text_console_printchar(char c, uint8_t x, uint8_t y);
-void text_console_setcursor(uint8_t x,uint8_t y);
-void text_console_scroll(int from,int to);
 void scroll() {
     if (term_y >= 25) {
         text_console_scroll(0, 24);

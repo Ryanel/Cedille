@@ -42,7 +42,7 @@ const char *exception_messages[] =
 	"Reserved"
 };
 /// Function pointer array of interrupt handlers
-interrupt_handler_t interrupt_handlers [256];
+interrupt_handler_t interrupt_handlers [0xff];
 
 /*
 	unsigned int gs, fs, es, ds;      // pushed the segs last
@@ -54,7 +54,17 @@ interrupt_handler_t interrupt_handlers [256];
 extern void fault_handler(struct regs *r)
 {
 	if (interrupt_handlers[r->int_no] != 0)
+	{
 		interrupt_handlers[r->int_no] (r);
+		return;
+	} else {
+			printk("fault","code     | %d (error %d),(%s)\n",r->int_no,r->err_code,exception_messages[r->int_no]);
+			printk("fault","segment  | gs:0x%x fs:0x%x es:0x%x ds:0x%x cs:0x%x ss:0x%x\n",r->gs,r->fs,r->es,r->ds,r->cs,r->ss);
+			printk("fault","stack    | esp: 0x%x ebp: 0x%x uesp: 0x%x\n",r->useless_value,r->ebp,r->useresp);
+			printk("fault","gp regs  | eax: 0x%x ebx: 0x%x ecx: 0x%x edx: 0x%x\n",r->eax,r->ebx,r->ecx,r->edx);
+			printk("fault",".......  | esi: 0x%x edi: 0x%x eip: 0x%x eflags: 0x%x \n",r->esi,r->edi,r->eip,r->eflags);
+			oops("Unassigned interrupt\n");
+	}
 	if(r->int_no < 32)
 	{
 		printk("fault","code     | %d (error %d),(%s)\n",r->int_no,r->err_code,exception_messages[r->int_no]);
@@ -96,7 +106,6 @@ void irq_remap(void)
 void irq_install()
 {
 	irq_remap();
-
 	idt_set_gate(32, (unsigned)irq0, 0x08, 0x8E);
 	idt_set_gate(33, (unsigned)irq1, 0x08, 0x8E);
 	idt_set_gate(34, (unsigned)irq2, 0x08, 0x8E);
@@ -123,7 +132,8 @@ void irq_handler(struct regs *r)
 		interrupt_handlers[r->int_no] (r);
 	}
 	else {
-		printk("warn","Recieved unhandled interrupt %d\n",r->int_no);
+		printk("warn","Recieved unhandled interrupt %d (IRQ%d)\n",r->int_no,r->int_no-32);
+		oops("Unhandled interrupt");
 	}
 	/* If the IDT entry that was invoked was greater than 40
 	*  (meaning IRQ8 - 15), then we need to send an EOI to
