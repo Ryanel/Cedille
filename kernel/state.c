@@ -10,6 +10,5 @@ void sys_change_state(int state)
 void idle() {
 	system_state = 0;
     for(;;){
-        //Insert statement to turn off processor here.
     }
 }

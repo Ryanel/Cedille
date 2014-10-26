@@ -19,10 +19,6 @@ int kernel_entry (void) {
 	pit_install(1000);
 	asm("sti"); // Start interrupts
 	printk("status","Ending Boot Phase...\n");
-	pmm_free_page(NULL);
-	while(1)
-	{
-	}
     idle();
     return 0;
 }

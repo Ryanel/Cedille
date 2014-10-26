@@ -2,6 +2,7 @@
 #include <arch/x86/ports.h>
 #include <stdint.h>
 #include <logging.h>
+#include <error.h>
 ///Table of all exception messages
 const char *exception_messages[] =
 {

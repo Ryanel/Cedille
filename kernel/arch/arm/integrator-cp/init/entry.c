@@ -8,8 +8,13 @@ int kernel_entry (void) {
 	log_low("\n");
 	text_console_init();
 	low_printname();
+	log_low("Using advanced logging...\n\n");
 	printk("status","Logging on UART0!\n");
-	printk("status","Entering boot\n");
+    printk("status","Entering boot phase\n");
+    printk("cpu","Initialising hardware\n");
+	//
+	printk("cpu","Initialised basic hardware tables\n");
+	printk("status","Ending Boot Phase...\n");
 	idle();
     return 0;
 }

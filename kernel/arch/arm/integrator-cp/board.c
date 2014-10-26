@@ -22,3 +22,10 @@ void text_console_scroll(int x, int x2) {
 
 void text_console_setcursor(int x, int y) {
 }
+
+void processor_halt()
+{
+	for(;;) {
+		
+	}
+}
