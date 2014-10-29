@@ -1,10 +1,8 @@
 #include <assert.h>
 #include <stddef.h>
 #include <stdint.h>
-uintptr_t * pmm_get_page() {
-	return NULL;
+#include <cedille/pmm.h>
+void pmm_shim_alloc_frame(uint32_t address, int kernel, int rw) {
 }
-
-void pmm_free_page(uintptr_t * page) {
-	assert(page != NULL);
+void pmm_shim_free_frame(uint32_t address) {
 }
