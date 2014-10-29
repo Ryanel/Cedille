@@ -66,6 +66,10 @@ void pmm_alloc_frame(uint32_t address, int kernel, int rw) {
 void pmm_free_frame(uint32_t address) {
 	pmm_free_frame(address);
 }
+void pmm_set_maxmem(uintptr_t max) {
+	mem_end = max;
+}
+
 void init_pmm() {
 	//printf("Allocating pages...\n");
 	mem_end_aligned = (mem_end & 0xFFFFF000);

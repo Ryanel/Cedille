@@ -25,4 +25,6 @@ void pmm_shim_alloc_frame(uint32_t address, int kernel, int rw);
 ///Free a frame
 void pmm_free_frame(uint32_t address);
 void pmm_shim_free_frame(uint32_t address);
+
+void pmm_set_maxmem(uintptr_t max);
 #endif
