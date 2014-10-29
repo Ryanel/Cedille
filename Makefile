@@ -4,7 +4,7 @@ ARCH := x86
 BOARD := generic
 
 BOARD_ID := ${ARCH}/${BOARD}
-COMPILE_OPTIONS := -DDEBUG
+COMPILE_OPTIONS := -DDEBUG -DGRAPHICS_DEVICE_PL110
 
 #Tools
 #--------------------------------------------
@@ -135,7 +135,7 @@ icp:
 run-x86:
 	@${EMU} -m 4 -serial stdio -cdrom build/cdrom.iso
 run-arm-icp:
-	@qemu-system-arm -M integratorcp -serial stdio -kernel build/kernel.elf -nographic -monitor none -initrd iso/boot/initrd.img
+	@qemu-system-arm -M integratorcp -serial stdio -kernel build/kernel.elf -monitor none -initrd iso/boot/initrd.img
 run-sparc:
 	@qemu-system-sparc -serial stdio -cdrom build/sparc-iso.iso -nographic
 
