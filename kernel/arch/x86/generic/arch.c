@@ -10,3 +10,6 @@ void processor_halt() {
 	}
 	
 }
+
+void graphics_terminal_drawpixel() {
+}
