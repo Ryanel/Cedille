@@ -4,5 +4,5 @@
 #include <stdint.h>
 
 void oops(char * s);
-
+void panic(char *s);
 #endif
