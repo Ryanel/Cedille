@@ -4,7 +4,7 @@ ARCH := x86
 BOARD := generic
 
 BOARD_ID := ${ARCH}/${BOARD}
-COMPILE_OPTIONS := -DDEBUG -DGRAPHICS_DEVICE_PL110
+COMPILE_OPTIONS := -DDEBUG -DENABLE_GRAPHICS_DEVICE_PL110
 
 #Tools
 #--------------------------------------------
