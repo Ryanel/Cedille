@@ -8,7 +8,7 @@ void graphics_terminal_setrgb(uint8_t r,uint8_t g,uint8_t b);
 
 void text_console_printchar(char c, uint8_t x, uint8_t y) {
     arm_integratorcp_driver_serial_putc(c);
-#ifdef GRAPHICS_DEVICE_PL110
+#ifdef ENABLE_GRAPHICS_DEVICE_PL110
 	graphics_terminal_drawchar(c,x,y);
 #endif
 }
@@ -20,7 +20,7 @@ void log_low(const char * str) {
 void text_console_change_color(uint8_t color) {
 
 	//0x0 -> 0xF are supported
-#ifdef GRAPHICS_DEVICE_PL110
+#ifdef ENABLE_GRAPHICS_DEVICE_PL110
 	switch(color) {
 		case 0x0:
 			graphics_terminal_setrgb(0,0,0);

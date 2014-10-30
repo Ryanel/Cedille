@@ -8,7 +8,7 @@
 #include <stdio.h>
 #endif
 
-uint32_t *bitmap; //Pointer to first frame, first index. The actual bitmap
+uintptr_t *bitmap; //Pointer to first frame, first index. The actual bitmap
 uint32_t frame_amount; //How many frames CAN there be?
 uint32_t mem_end = 0x1000000; //Where does memory end. Default's to all addressable ram
 uint32_t mem_end_aligned; //Where does memory end, page aligned.
@@ -81,6 +81,6 @@ void init_pmm() {
 	memset(bitmap, 0, INDEX_FROM_BIT(frame_amount)); //Clear frame
 
 	#ifdef DEBUG
-	printf("---> Allocatable frames: 0x%X, bitmap @ 0x%X => 0x%X\n",frame_amount,(uint32_t)bitmap,(uint32_t)bitmap + (frame_amount)/8);
+	printk("ok","Allocatable frames: 0x%X, bitmap @ 0x%X => 0x%X\n",frame_amount,(uint32_t)bitmap,(uint32_t)bitmap + (frame_amount)/8);
 	#endif
 }

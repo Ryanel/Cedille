@@ -1,5 +1,6 @@
 #include <../../build/git-info.h>
 #include <logging.h>
+#include <stdio.h>
 void low_printname() {
     printf("The Cedille Kernel (v.000.7-rw) [rev. %s]\n",GIT_SHORT_HASH);
     #ifdef DEBUG
