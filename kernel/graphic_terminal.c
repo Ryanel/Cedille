@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <data/font-8x8.h>
+
 void graphics_terminal_drawpixel(int x,int y, uint8_t r,uint8_t g,uint8_t b);
 
 static const uint8_t graphics_terminal_default_r = 0xFF;
@@ -23,6 +24,10 @@ void graphics_terminal_resetrgb() {
 	graphics_terminal_b = graphics_terminal_default_b;
 }
 
+void graphics_terminal_scroll() {
+	
+}
+
 void graphics_terminal_drawchar(char c, int x, int y)
 {
 	uint8_t row = 0;
@@ -37,5 +42,4 @@ void graphics_terminal_drawchar(char c, int x, int y)
 			}
 		}
 	}
-	
 }

@@ -23,17 +23,19 @@ int kernel_entry (void) {
 	low_printname();
 	log_low("Using advanced logging...\n\n");
 	printk("debug","Kernel Resides @ 0x%X => 0x%X\n",&_kernel_start,&_kernel_end);
-	printk("status","Logging on UART0!\n");
+	printk("debug","Logging on UART0!\n");
     printk("status","Entering boot phase\n");
     printk("info","Initialising hardware\n");
 	printk("cpu","arm4 => Initialising Interrupts...\n");
-	
+
 	arm4_init_interrupts();
 	asm("swi 0");
+	
 	printk("info","Initialising physical memory manager.\n");
 	init_early_malloc(&_kernel_end);
 	pmm_set_maxmem(0x4000000);
 	init_pmm();
+	
 	printk("status","Ending Boot Phase...\n");
 	
 	idle();

@@ -4,7 +4,7 @@ ARCH := x86
 BOARD := generic
 
 BOARD_ID := ${ARCH}/${BOARD}
-COMPILE_OPTIONS := -DDEBUG -DENABLE_GRAPHICS_DEVICE_PL110
+COMPILE_OPTIONS := -DDEBUG -DENABLE_GRAPHICS_DEVICE_PL110 -DOPTION_ENABLE_BUILDENV_PRINTING
 
 #Tools
 #--------------------------------------------
@@ -20,7 +20,7 @@ LFLAGS :=
 C_OPTIONS := -ffreestanding -std=gnu99  -nostartfiles 
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
 C_OPTIONS += -Wno-unused-function
-C_OPTIONS += -s -g -Os
+C_OPTIONS += -s -g
 
 LD_SCRIPT := kernel/arch/${ARCH}/${BOARD}/link.ld
 INCLUDE_DIR := "kernel/includes"
@@ -33,7 +33,7 @@ X64_32_CC = clang
 X64_32_AS = nasm -felf
 X64_32_LD = ld
 
-C_PASSED_VARIABLES := -DCCOMPILER_OPTIONS_S="\"${C_OPTIONS}\"" -DARCH_S="\"${ARCH}\"" -DBOARD_S="\"${BOARD}\""
+C_PASSED_VARIABLES := -DCCOMPILER_OPTIONS_S="\"${C_OPTIONS}\"" -DARCH_S="\"${ARCH}\"" -DBOARD_S="\"${BOARD}\"" -DBUILD_OPTIONS_S="\"${COMPILE_OPTIONS}\""
 C_PASSED_VARIABLES += 
 
 #FILES
