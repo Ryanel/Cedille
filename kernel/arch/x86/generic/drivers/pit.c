@@ -1,11 +1,13 @@
 #include <arch/x86/tables.h>
 #include <arch/x86/ports.h>
 #include <logging.h>
+#include <cedille/timing.h>
 uint64_t pit_internal_ticks = 0;
 ///Handles the PIT ticks and reports them to the central clock.
 void pit_handler()
 {
 	pit_internal_ticks++;
+	timing_system_engine_dotick(1);
 }
 ///Starts the PIT at frequency
 void pit_install(uint32_t frequency)

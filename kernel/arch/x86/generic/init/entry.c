@@ -34,6 +34,8 @@ int kernel_entry (void) {
 	init_pmm();
 	
 	printk("status","Ending Boot Phase...\n");
+	while(1) {
+	}
     idle();
     return 0;
 }
