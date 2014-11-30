@@ -4,10 +4,11 @@
 #include <state.h>
 #include <logging.h>
 #include <error.h>
+#include <text_console.h>
 
 #include <cedille/pmm.h>
 #include <cedille/heap.h>
-extern uint32_t _kernel_end;
+extern uint32_t _kernel_start,_kernel_end;
 
 uint32_t x86_init_descriptor_tables();
 void pit_install(uint32_t frequency);
@@ -16,7 +17,7 @@ int kernel_entry (void) {
 	
     text_console_init();
     low_printname();
-	
+
 	log_low("Using advanced logging...\n\n");
 	
     printk("status","Entering boot phase\n");

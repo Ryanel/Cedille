@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
 #ifdef ARCHx86
 #include <arch/x86/ports.h>
 #endif
@@ -15,22 +16,31 @@ void scroll() {
 }
 
 void text_console_printc(char c) {
-    if (c == 0x08 && term_x) {
-        term_x--;
-    } else if (c == 0x09) {
-        term_x = (term_x+8) & ~(8-1);
-    } else if (c == '\r') {
-       term_x = 0;
-    } else if (c == '\n') {
-        #ifndef ARCHx86
-        text_console_printchar(c,term_x, term_y);
-        #endif
-        term_x = 0;
-        term_y++;
-    } else if (c >= ' ') {
-        text_console_printchar(c,term_x, term_y);
-        term_x++;
-    }
+	switch(c) {
+		case 0x08:
+			if(term_x) {
+				term_x--;
+			}
+			break;
+		case 0x09:
+			term_x = (term_x+8) & ~(8-1);
+			break;
+		case '\r':
+			term_x = 0;
+			break;
+		case '\n':
+			#ifndef ARCHx86
+			text_console_printchar(c,term_x, term_y);
+			#endif
+			term_x = 0;
+			term_y++;
+			break;
+		default:
+			text_console_printchar(c,term_x, term_y);	
+			term_x++;
+			break;		
+	}
+	
     if (term_x >= 80) {
         term_x = 0;
         term_y++;
