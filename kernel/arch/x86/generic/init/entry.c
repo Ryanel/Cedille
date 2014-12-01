@@ -8,10 +8,12 @@
 
 #include <cedille/pmm.h>
 #include <cedille/heap.h>
+#include <arch/x86/tables.h>
 extern uint32_t _kernel_start,_kernel_end;
 
 uint32_t x86_init_descriptor_tables();
 void pit_install(uint32_t frequency);
+void irq1fix();
 
 int kernel_entry (void) {
 	
@@ -27,7 +29,7 @@ int kernel_entry (void) {
 	
 	//Initialise PIT so interrupt handler can shut up
 	pit_install(1000);
-	
+	register_interrupt_handler (IRQ1, irq1fix); //Temp IRQ1 fix
 	asm("sti"); // Start interrupts
 	
 	printk("info","Initialising physical memory manager.\n");
@@ -35,6 +37,7 @@ int kernel_entry (void) {
 	init_pmm();
 	
 	printk("status","Ending Boot Phase...\n");
+	profile_kmemory();
 	while(1) {
 	}
     idle();

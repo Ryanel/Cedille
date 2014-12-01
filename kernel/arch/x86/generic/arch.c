@@ -13,3 +13,7 @@ void processor_halt() {
 
 void graphics_terminal_drawpixel() {
 }
+//TEMP: IRQ1 will not complain about being unassigned
+void irq1fix()
+{
+}
