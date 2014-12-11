@@ -5,6 +5,10 @@
 #include <logging.h>
 #include <error.h>
 #include <text_console.h>
+
+#define PROFILER_COLOR_KERNELMEM 0xA
+#define PROFILER_COLOR_KERNELRES 0xC
+#define PROFILER_COLOR_KERNELUNK 0x7
 extern uint32_t _kernel_start;
 extern uint32_t _kernel_end;
 extern uintptr_t * em_placement_addr;
@@ -28,34 +32,34 @@ void profile_kmemory()
 	{
 		if(((x * scale)<=(uint32_t)&_kernel_end - (uint32_t)&_kernel_start) && ((x * scale)>=(uint32_t)&_kernel_start) - start) // Kernel memory
 		{
-			text_console_change_color(0xA);
+			text_console_change_color(PROFILER_COLOR_KERNELMEM);
 			isdrawn_KernelImage = 1;
 		}
 		else if(((x * scale)<=(uint32_t)em_placement_addr - (uint32_t)em_placement_addr_original) && ((x * scale)>=(uint32_t)em_placement_addr_original) - (uint32_t)&_kernel_end) // Non heap allocated
 		{
-			text_console_change_color(0xC);
+			text_console_change_color(PROFILER_COLOR_KERNELRES);
 			isdrawn_PreAllocRes = 1;
 		}
 		else
 		{
 			isdrawn_Unknown = 1;
-			text_console_change_color(0x7);
+			text_console_change_color(PROFILER_COLOR_KERNELUNK);
 		}
 		printf("%c",219);
 	}
 	if(isdrawn_KernelImage)
 	{
-		text_console_change_color(0xA);
+		text_console_change_color(PROFILER_COLOR_KERNELMEM);
 		printf(" * Kernel Image (from ELF)\n");
 	}
 	if(isdrawn_PreAllocRes)
 	{
-		text_console_change_color(0xC);
+		text_console_change_color(PROFILER_COLOR_KERNELRES);
 		printf(" * Allocated Resources (before heap) [Nonfreeable]\n");
 	}
 	if(isdrawn_Unknown)
 	{
-		text_console_change_color(0x7);
+		text_console_change_color(PROFILER_COLOR_KERNELUNK);
 		printf(" * Unknown (in Kernel Address Space)\n");
 	}
 	if(isdrawn_Heap)

@@ -19,9 +19,6 @@ int kernel_entry (void) {
 	
     text_console_init();
     low_printname();
-
-	log_low("Using advanced logging...\n\n");
-	
     printk("status","Entering boot phase\n");
     printk("info","Initialising hardware\n");
 	x86_init_descriptor_tables();
