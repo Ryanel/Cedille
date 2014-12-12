@@ -14,6 +14,7 @@ extern uint32_t _kernel_start,_kernel_end;
 uint32_t x86_init_descriptor_tables();
 void pit_install(uint32_t frequency);
 void irq1fix();
+void profile_kmemory();
 
 int kernel_entry (void) {
 	
@@ -34,7 +35,9 @@ int kernel_entry (void) {
 	init_pmm();
 	
 	printk("status","Ending Boot Phase...\n");
+#ifdef DEBUG
 	profile_kmemory();
+#endif
 	while(1) {
 	}
     idle();

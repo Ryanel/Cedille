@@ -1,7 +1,7 @@
 #Configuration
 #--------------------------------------------
 ARCH := x86
-BOARD := generic
+BOARD := i386
 
 BOARD_ID := ${ARCH}/${BOARD}
 COMPILE_OPTIONS := -DDEBUG -DENABLE_GRAPHICS_DEVICE_PL110
