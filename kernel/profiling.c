@@ -9,33 +9,33 @@
 #define PROFILER_COLOR_KERNELMEM 0xA
 #define PROFILER_COLOR_KERNELRES 0xC
 #define PROFILER_COLOR_KERNELUNK 0x7
-extern uint32_t _kernel_start;
-extern uint32_t _kernel_end;
+extern uintptr_t _kernel_start;
+extern uintptr_t _kernel_end;
 extern uintptr_t * em_placement_addr;
 extern uintptr_t * em_placement_addr_original;
 
 //Assumes memory is contiguous
 void profile_kmemory()
 {
-	uint32_t start = (uint32_t)&_kernel_start;
-	uint32_t end   = ((uint32_t)&_kernel_end - (uint32_t)&_kernel_start) + ((uint32_t)em_placement_addr - (uint32_t)em_placement_addr_original);
+	uintptr_t start = (uintptr_t)&_kernel_start;
+	uintptr_t end   = ((uintptr_t)&_kernel_end - (uintptr_t)&_kernel_start) + ((uintptr_t)em_placement_addr - (uintptr_t)em_placement_addr_original);
 	
-	uint32_t scale = end / 80;
+	uintptr_t scale = end / 80;
 	
-	uint32_t isdrawn_KernelImage = 0;
-	uint32_t isdrawn_PreAllocRes = 0;
-	uint32_t isdrawn_Unknown = 0;
-	uint32_t isdrawn_Heap = 0;
+	uintptr_t isdrawn_KernelImage = 0;
+	uintptr_t isdrawn_PreAllocRes = 0;
+	uintptr_t isdrawn_Unknown = 0;
+	uintptr_t isdrawn_Heap = 0;
 	
 	printk("debug","Starting display of kernel memory...\n");
 	for(int x = 0; x < 80; x++)
 	{
-		if(((x * scale)<=(uint32_t)&_kernel_end - (uint32_t)&_kernel_start) && ((x * scale)>=(uint32_t)&_kernel_start) - start) // Kernel memory
+		if(((x * scale)<=(uintptr_t)&_kernel_end - (uintptr_t)&_kernel_start) && ((x * scale)>=(uintptr_t)&_kernel_start) - start) // Kernel memory
 		{
 			text_console_change_color(PROFILER_COLOR_KERNELMEM);
 			isdrawn_KernelImage = 1;
 		}
-		else if(((x * scale)<=(uint32_t)em_placement_addr - (uint32_t)em_placement_addr_original) && ((x * scale)>=(uint32_t)em_placement_addr_original) - (uint32_t)&_kernel_end) // Non heap allocated
+		else if(((x * scale)<=(uintptr_t)em_placement_addr - (uintptr_t)em_placement_addr_original) && ((x * scale)>=(uintptr_t)em_placement_addr_original) - (uintptr_t)&_kernel_end) // Non heap allocated
 		{
 			text_console_change_color(PROFILER_COLOR_KERNELRES);
 			isdrawn_PreAllocRes = 1;

@@ -9,47 +9,47 @@
 #endif
 
 uintptr_t *bitmap; //Pointer to first frame, first index. The actual bitmap
-uint32_t frame_amount; //How many frames CAN there be?
-uint32_t mem_end = 0x1000000; //Where does memory end. Default's to all addressable ram
-uint32_t mem_end_aligned; //Where does memory end, page aligned.
+uintptr_t frame_amount; //How many frames CAN there be?
+uintptr_t mem_end = 0x1000000; //Where does memory end. Default's to all addressable ram
+uintptr_t mem_end_aligned; //Where does memory end, page aligned.
 
-uint32_t pmm_frame_amount()
+uintptr_t pmm_frame_amount()
 {
 	return frame_amount;
 }
 
-void pmm_set_frame(uint32_t address)
+void pmm_set_frame(uintptr_t address)
 {
-	uint32_t frame_addr = address / 0x1000;
-	uint32_t index = INDEX_FROM_BIT(frame_addr);
-	uint32_t offset = OFFSET_FROM_BIT(frame_addr);
+	uintptr_t frame_addr = address / 0x1000;
+	uintptr_t index = INDEX_FROM_BIT(frame_addr);
+	uintptr_t offset = OFFSET_FROM_BIT(frame_addr);
 	bitmap[index] |= (0x1 << offset);
 }
-void pmm_clear_frame(uint32_t address)
+void pmm_clear_frame(uintptr_t address)
 {
-	uint32_t frame_addr = address / 0x1000;
-	uint32_t index = INDEX_FROM_BIT(frame_addr);
-	uint32_t offset = OFFSET_FROM_BIT(frame_addr);
+	uintptr_t frame_addr = address / 0x1000;
+	uintptr_t index = INDEX_FROM_BIT(frame_addr);
+	uintptr_t offset = OFFSET_FROM_BIT(frame_addr);
 	bitmap[index] &= ~(0x1 << offset);
 }
-uint32_t pmm_test_frame(uint32_t address)
+uintptr_t pmm_test_frame(uintptr_t address)
 {
-	uint32_t frame_addr = address / 0x1000;
-	uint32_t index = INDEX_FROM_BIT(frame_addr);
-	uint32_t offset = OFFSET_FROM_BIT(frame_addr);
+	uintptr_t frame_addr = address / 0x1000;
+	uintptr_t index = INDEX_FROM_BIT(frame_addr);
+	uintptr_t offset = OFFSET_FROM_BIT(frame_addr);
 	return (bitmap[index] & (0x1 << offset));
 }
 
-uint32_t pmm_first_frame()
+uintptr_t pmm_first_frame()
 {
-	uint32_t i,j;
+	uintptr_t i,j;
 	for (i = 0; i < INDEX_FROM_BIT(frame_amount); i++)
 	{
 		if(bitmap[i] != 0xFFFFFFFF)
 		{
 			for(j = 0; j < 32; j++)
 			{
-				uint32_t testFrame = 0x1 << j;
+				uintptr_t testFrame = 0x1 << j;
 				if (!(bitmap[i] & testFrame)) {
 					return i * 0x20 + j;
 				}
@@ -59,11 +59,11 @@ uint32_t pmm_first_frame()
 	return -1;
 }
 
-void pmm_alloc_frame(uint32_t address, int kernel, int rw) {
+void pmm_alloc_frame(uintptr_t address, int kernel, int rw) {
 	pmm_shim_alloc_frame(address, kernel, rw);
 }
 
-void pmm_free_frame(uint32_t address) {
+void pmm_free_frame(uintptr_t address) {
 	pmm_free_frame(address);
 }
 void pmm_set_maxmem(uintptr_t max) {
@@ -81,6 +81,6 @@ void init_pmm() {
 	memset(bitmap, 0, INDEX_FROM_BIT(frame_amount)); //Clear frame
 
 	#ifdef DEBUG
-	printk("ok","Allocatable frames: 0x%X, bitmap @ 0x%X => 0x%X\n",frame_amount,(uint32_t)bitmap,(uint32_t)bitmap + (frame_amount)/8);
+	printk("ok","Allocatable frames: 0x%X, bitmap @ 0x%X => 0x%X\n",frame_amount,(uintptr_t)bitmap,(uintptr_t)bitmap + (frame_amount)/8);
 	#endif
 }
