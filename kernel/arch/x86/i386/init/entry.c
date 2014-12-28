@@ -20,6 +20,7 @@ int kernel_entry (void) {
 	
     text_console_init();
     low_printname();
+	printk("debug","Kernel Resides @ 0x%X => 0x%X\n",&_kernel_start,&_kernel_end);
     printk("status","Entering boot phase\n");
     printk("info","Initialising hardware\n");
 	x86_init_descriptor_tables();

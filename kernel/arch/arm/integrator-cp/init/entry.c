@@ -21,7 +21,6 @@ int kernel_entry (void) {
 	}
 	log_low("\n");
 	low_printname();
-	log_low("Using advanced logging...\n\n");
 	printk("debug","Kernel Resides @ 0x%X => 0x%X\n",&_kernel_start,&_kernel_end);
 	printk("debug","Logging on UART0!\n");
     printk("status","Entering boot phase\n");

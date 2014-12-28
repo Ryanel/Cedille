@@ -36,6 +36,7 @@ void text_console_setcursor(uint8_t x,uint8_t y)
 	outb(0x3D5, location >> 8);
 	outb(0x3D4, 15);
 	outb(0x3D5, location);
+	
 }
 void text_console_scroll(int from,int to) {
 	uint16_t blank = 0x20  | (textmode_color << 8);

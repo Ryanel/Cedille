@@ -1,13 +1,22 @@
-ENTRY(_start)
+ENTRY(bootstrap)
 KERNEL_VMA = 0xC0000000;
+KERNEL_LMA = 1M;
 SECTIONS
 {
-    . = KERNEL_VMA;
+	. = KERNEL_LMA;
+	
+    .bootstrap :
+    {
+        kernel/arch/x86/amd64/init/bootstrap.o (.text)
+    }
+
+    . += KERNEL_VMA;
+	
 	_kernel_start = .;
     .text : AT(ADDR(.text) - KERNEL_VMA)
     {
         _code = .;
-        *(.text)
+		*(EXCLUDE_FILE(*kernel/arch/x86/amd64/init/bootstrap.o) .text)
         *(.rodata*)
         . = ALIGN(4096);
     }
@@ -39,7 +48,7 @@ SECTIONS
         *(COMMON)
        . = ALIGN(4096);
    }
-	
+
    _kernel_end = .;
 
    /DISCARD/ :

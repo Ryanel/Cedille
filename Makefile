@@ -9,29 +9,26 @@ COMPILE_OPTIONS := -DDEBUG -DENABLE_GRAPHICS_DEVICE_PL110
 #Tools
 #--------------------------------------------
 
-AS := nasm -felf 
-CC:=clang -target i686-elf
-STRIP:= strip
-NM := nm
-LD := ./toolkit/binutils/bin/i586-elf-ld -m elf_i386
-LFLAGS :=
+AS 		:= nasm -felf 
+CC		:=clang -target i686-elf
+STRIP	:= strip
+NM 		:= nm
+LD 		:= ./toolkit/binutils/bin/i586-elf-ld -m elf_i386
+LFLAGS 	:=
 
-
+C_OPTIMIZ := -Os -pipe -fomit-frame-pointer -falign-functions=16 -falign-loops=16
 C_OPTIONS := -ffreestanding -std=gnu99  -nostartfiles 
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
 C_OPTIONS += -Wno-unused-function
-C_OPTIONS += -s -g
+C_OPTIONS += -s
+C_OPTIONS += ${C_OPTIMIZ}
 
-LD_SCRIPT := kernel/arch/${ARCH}/${BOARD}/link.ld
+
+LD_SCRIPT 	:= kernel/arch/${ARCH}/${BOARD}/link.ld
 INCLUDE_DIR := "kernel/includes"
 
-GENISO := xorriso -as mkisofs
-EMU := qemu-system-i386
-
-#Specific to x64 stuff
-X64_32_CC = clang
-X64_32_AS = nasm -felf
-X64_32_LD = ld
+GENISO 	:= xorriso -as mkisofs -R -b boot/grub/stage2_eltorito -quiet -no-emul-boot -boot-load-size 4 -boot-info-table
+EMU 	:= qemu-system-i386
 
 C_PASSED_VARIABLES := -DCCOMPILER_OPTIONS_S="\"${C_OPTIONS}\"" -DARCH_S="\"${ARCH}\"" -DBOARD_S="\"${BOARD}\"" -DBUILD_OPTIONS_S="\"${COMPILE_OPTIONS}\""
 C_PASSED_VARIABLES += 
@@ -91,18 +88,6 @@ prebuild:
 	@echo "PRE    | Generate Git Info"
 	@util/gen-git-info-c.sh build/git-info.h
 
-#Special targets
-x64_bootstrap:
-	@${X64_32_AS} -o kernel/arch/x86/x64/bootstrap/start.o kernel/arch/x86/x64/bootstrap/start.s
-
-	@${X64_32_CC} -c ${C_OPTIONS} -I${INCLUDE_DIR} -o kernel/arch/x86/x64/bootstrap/bootstrap.o kernel/arch/x86/x64/bootstrap/bootstrap.c
-	@${X64_32_CC} -c ${C_OPTIONS} -I${INCLUDE_DIR} -o kernel/arch/x86/x64/bootstrap/console.o kernel/arch/x86/x64/bootstrap/console.c
-	
-	@${X64_32_CC} -c ${C_OPTIONS} -I${INCLUDE_DIR} -o kernel/arch/x86/x64/bootstrap/printf.o kernel/lib/printf.c
-
-	@${X64_32_LD} -Tkernel/arch/x86/x64/bootstrap/link.ld -o iso/ldcedilz kernel/arch/x86/x64/bootstrap/*.o
-	@rm -f build/cdrom.iso
-
 %.o: %.s
 	@echo " AS    |" $@
 	@${AS} -o $@ $<
@@ -118,7 +103,7 @@ clean:
 build/cdrom.iso:
 	@echo "ISO [A]| build/cdrom.iso"
 	@cp build/kernel.elf iso/kernel.elf
-	@${GENISO} -R -b boot/grub/stage2_eltorito -quiet -no-emul-boot -boot-load-size 4 -boot-info-table -o build/cdrom.iso iso
+	@${GENISO} -o build/cdrom.iso iso
 
 gen-symbols: kernel
 	@echo "GEN [M]| build/kernel.elf -> build/kernel.map"
@@ -127,13 +112,13 @@ gen-symbols: kernel
 #Special/Common Targets
 
 x86:
-
+	make
 icp:
 	make AS=arm-none-eabi-as LD="arm-none-eabi-gcc -lgcc -ffreestanding -fno-builtin -nostartfiles" LFLAGS="" CC="arm-none-eabi-gcc" ARCH=arm BOARD=integrator-cp
 
 #RUN
 run-x86:
-	@${EMU} -m 4 -serial stdio -cdrom build/cdrom.iso
+	@${EMU} -serial stdio -cdrom build/cdrom.iso
 run-arm-icp:
 	@qemu-system-arm -M integratorcp -serial stdio -kernel build/kernel.elf -monitor none -initrd iso/boot/initrd.img
 run-sparc:
