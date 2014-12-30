@@ -15,7 +15,8 @@ uint32_t x86_init_descriptor_tables();
 void pit_install(uint32_t frequency);
 void irq1fix();
 void profile_kmemory();
-
+int kmain();
+void init_vmm();
 int kernel_entry (void) {
 	
     text_console_init();
@@ -34,13 +35,8 @@ int kernel_entry (void) {
 	printk("info","Initialising physical memory manager.\n");
 	init_early_malloc(&_kernel_end);
 	init_pmm();
+	init_vmm();
 	
-	printk("status","Ending Boot Phase...\n");
-#ifdef DEBUG
-	profile_kmemory();
-#endif
-	while(1) {
-	}
-    idle();
+	kmain();
     return 0;
 }

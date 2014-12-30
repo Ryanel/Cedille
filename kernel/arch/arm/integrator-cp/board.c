@@ -94,3 +94,6 @@ void processor_halt()
 		
 	}
 }
+
+void vmm_shim_doboardsetup() {
+}

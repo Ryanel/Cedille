@@ -35,8 +35,6 @@ int kernel_entry (void) {
 	pmm_set_maxmem(0x4000000);
 	init_pmm();
 	
-	printk("status","Ending Boot Phase...\n");
-	
-	idle();
+	kmain();
     return 0;
 }

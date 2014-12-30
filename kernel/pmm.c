@@ -83,4 +83,5 @@ void init_pmm() {
 	#ifdef DEBUG
 	printk("ok","Allocatable frames: 0x%X, bitmap @ 0x%X => 0x%X\n",frame_amount,(uintptr_t)bitmap,(uintptr_t)bitmap + (frame_amount)/8);
 	#endif
+	printk("ok","PMM started with 0 errors\n");
 }
