@@ -115,10 +115,10 @@ uint32_t x86_init_descriptor_tables() ///Returns how many tables were initialise
 	gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); // User mode data segment
 	write_tss(5, 0x10, 0x0);
 	
-	
 	gdt_flush((uint32_t)&gdt_ptr);
-	
 	tss_flush();
+	printk("cpu","kernel[hw]-> Installed GDT and TSS structures\n");
+	
 	idt_ptr.limit = sizeof(struct idt_entry) * 256 -1;
    	idt_ptr.base  = (uint32_t)&idt_entries;
 	
@@ -127,5 +127,6 @@ uint32_t x86_init_descriptor_tables() ///Returns how many tables were initialise
 	idt_init_isrs();
 	idt_flush();
 	irq_install();
+	printk("cpu","kernel[hw]-> Installed IDT and interrupt handlers\n");
 	return 0;
 }

@@ -74,14 +74,16 @@ void init_pmm() {
 	//printf("Allocating pages...\n");
 	mem_end_aligned = (mem_end & 0xFFFFF000);
 	int amm_alloc_mb = ((mem_end_aligned/1024)/1024);
-	printk("ok","kernel[pmm]-> Can allocate for 0x%X (~%d MB) of ram\n",mem_end_aligned,amm_alloc_mb);
+	
 
 	frame_amount = mem_end_aligned / 4;
 	bitmap = early_malloc(INDEX_FROM_BIT(frame_amount));
 	memset(bitmap, 0, INDEX_FROM_BIT(frame_amount)); //Clear frame
 
 	#ifdef DEBUG
-	printk("ok","Allocatable frames: 0x%X, bitmap @ 0x%X => 0x%X\n",frame_amount,(uintptr_t)bitmap,(uintptr_t)bitmap + (frame_amount)/8);
+	printk("debug","kernel[pmm]-> Can allocate for 0x%X (~%d MB) of ram\n",mem_end_aligned,amm_alloc_mb);
+	printk("debug","kernel[pmm]-> Allocatable frames: 0x%X\n",frame_amount);
+	printk("debug","kernel[pmm]-> Bitmap @ 0x%X => 0x%X\n",(uintptr_t)bitmap,(uintptr_t)bitmap + (frame_amount)/8);
 	#endif
 	printk("ok","PMM started with 0 errors\n");
 }

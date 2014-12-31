@@ -1,6 +1,6 @@
 #include <logging.h>
 int kmain() {
-	printk("info","Control transfered to kmain().\n");
+	printk("ok","Control transfered to kmain()\n");
 	while(1) {
 		
 	}

@@ -2,7 +2,7 @@
 #include <logging.h>
 #include <stdio.h>
 void low_printname() {
-    printf("The Cedille Kernel (v.000.7-rw) [rev. %s]\n",GIT_SHORT_HASH);
+    printf("The Cedille Kernel (v.000.8-dev) [rev. %s]\n",GIT_SHORT_HASH);
     #ifdef OPTION_ENABLE_BUILDENV_PRINTING
     printf(" => Source: %s\n",BUILD_SOURCE);
     printf(" => Architecture: %s/%s\n",ARCH_S,BOARD_S);

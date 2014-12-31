@@ -21,18 +21,19 @@ int kernel_entry (void) {
 	
     text_console_init();
     low_printname();
+    #ifdef DEBUG
 	printk("debug","Kernel Resides @ 0x%X => 0x%X\n",&_kernel_start,&_kernel_end);
-    printk("status","Entering boot phase\n");
-    printk("info","Initialising hardware\n");
+    #endif
+
 	x86_init_descriptor_tables();
-	printk("cpu","Initialised basic hardware tables\n");
-	
+
+    /*----- TODO: Make dynamic / prettier -----*/
 	//Initialise PIT so interrupt handler can shut up
 	pit_install(1000);
 	register_interrupt_handler (IRQ1, irq1fix); //Temp IRQ1 fix
 	asm("sti"); // Start interrupts
-	
-	printk("info","Initialising physical memory manager.\n");
+    /*----- TODO: Make dynamic / prettier -----*/
+    printk("ok","Basic computer hardware started with 0 errors\n");
 	init_early_malloc(&_kernel_end);
 	init_pmm();
 	init_vmm();
