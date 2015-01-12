@@ -11,7 +11,7 @@ COMPILE_OPTIONS := -DDEBUG -DENABLE_GRAPHICS_DEVICE_PL110
 
 AS 		:= nasm -felf 
 CC		:= clang -target i686-elf
-STRIP		:= strip
+STRIP	:= strip
 NM 		:= nm
 LD 		:= ${CC}
 LFLAGS 	:= -ffreestanding -nostdlib -nostartfiles -lgcc
@@ -20,7 +20,7 @@ C_OPTIMIZ := -Os -pipe -fomit-frame-pointer
 C_OPTIONS := -ffreestanding -std=gnu99  -nostartfiles
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
 C_OPTIONS += -Wno-unused-function
-C_OPTIONS += -s
+C_OPTIONS += -s -g
 C_OPTIONS += ${C_OPTIMIZ}
 
 
@@ -31,7 +31,6 @@ GENISO 	:= xorriso -as mkisofs -R -b boot/grub/stage2_eltorito -quiet -no-emul-b
 EMU 	:= qemu-system-i386
 
 C_PASSED_VARIABLES := -DCCOMPILER_OPTIONS_S="\"${C_OPTIONS}\"" -DARCH_S="\"${ARCH}\"" -DBOARD_S="\"${BOARD}\"" -DBUILD_OPTIONS_S="\"${COMPILE_OPTIONS}\""
-C_PASSED_VARIABLES +=
 
 #FILES
 #--------------------------------------------
