@@ -10,11 +10,11 @@ COMPILE_OPTIONS := -DDEBUG -DENABLE_GRAPHICS_DEVICE_PL110
 #--------------------------------------------
 
 AS 		:= nasm -felf 
-CC		:=clang -target i686-elf
+CC		:= clang -target i686-elf
 STRIP	:= strip
 NM 		:= nm
-LD 		:= ./toolkit/binutils/bin/i586-elf-ld -m elf_i386
-LFLAGS 	:=
+LD 		:= ${CC}
+LFLAGS 	:= -ffreestanding -nostdlib -nostartfiles -lgcc
 
 C_OPTIMIZ := -Os -pipe -fomit-frame-pointer
 C_OPTIONS := -ffreestanding -std=gnu99  -nostartfiles 
