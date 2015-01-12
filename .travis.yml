@@ -1,8 +1,8 @@
 language: c
 compiler:
- - gcc
+ - clang
 before_install:
  - sudo apt-get update -qq
  - sudo apt-get install -qq nasm clang make flex bison libgmp3-dev libmpfr-dev libmpc-dev libmpc-dev xorriso
  - cd toolkit && chmod +x ./makebinutils.sh && ./makebinutils.sh && cd ../
-script: make all iso
+script: make all CC=clang LD='./toolkit/binutils/bin/i586-elf-ld -m elf_i386' LFLAGS=''
