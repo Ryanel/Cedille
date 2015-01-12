@@ -11,13 +11,13 @@ COMPILE_OPTIONS := -DDEBUG -DENABLE_GRAPHICS_DEVICE_PL110
 
 AS 		:= nasm -felf 
 CC		:= clang -target i686-elf
-STRIP	:= strip
+STRIP		:= strip
 NM 		:= nm
 LD 		:= ${CC}
 LFLAGS 	:= -ffreestanding -nostdlib -nostartfiles -lgcc
 
 C_OPTIMIZ := -Os -pipe -fomit-frame-pointer
-C_OPTIONS := -ffreestanding -std=gnu99  -nostartfiles 
+C_OPTIONS := -ffreestanding -std=gnu99  -nostartfiles
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
 C_OPTIONS += -Wno-unused-function
 C_OPTIONS += -s
@@ -31,7 +31,7 @@ GENISO 	:= xorriso -as mkisofs -R -b boot/grub/stage2_eltorito -quiet -no-emul-b
 EMU 	:= qemu-system-i386
 
 C_PASSED_VARIABLES := -DCCOMPILER_OPTIONS_S="\"${C_OPTIONS}\"" -DARCH_S="\"${ARCH}\"" -DBOARD_S="\"${BOARD}\"" -DBUILD_OPTIONS_S="\"${COMPILE_OPTIONS}\""
-C_PASSED_VARIABLES += 
+C_PASSED_VARIABLES +=
 
 #FILES
 #--------------------------------------------
@@ -97,12 +97,13 @@ prebuild:
 	@${CC} -c ${C_OPTIONS} ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -DARCH${ARCH} ${C_PASSED_VARIABLES} -o $@ $<
 
 clean:
-	@echo "CLN    | *.o" 
+	@echo "CLN    | *.o"
 	@-find . -name "*.o" -type f -delete
 
 build/cdrom.iso:
 	@echo "ISO [A]| build/cdrom.iso"
-	@cp build/kernel.elf iso/kernel.elf
+	@cp build/kernel.elf iso/system/cedille
+	-@cp build/kernel.map iso/system/kernel.map
 	@${GENISO} -o build/cdrom.iso iso
 
 gen-symbols: kernel
