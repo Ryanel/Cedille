@@ -1,9 +1,14 @@
 #include <stdint.h>
 #include <stddef.h>
-uint32_t page_directory[1024] __attribute__((aligned(4096)));
+
+uintptr_t * early_malloc_aligned(uint32_t sz);
+
+uintptr_t * page_directory;
+
 uint32_t first_page_table[1024] __attribute__((aligned(4096)));
 int create_pagedir() {
-	//Todo, actually dynamically create this from info from PMM. For now, using osdev to get a working interface working
+	// Todo, actually dynamically create this from info from PMM. For now, using osdev to get a working interface working
+	page_directory = early_malloc_aligned(0x1000 * 4); // Allocate page size times bytes per int (4)
 	for(int i = 0; i < 1024; i++) {
 	    // This sets the following flags to the pages:
 	    //   Supervisor: Only kernel-mode can access them
@@ -11,6 +16,7 @@ int create_pagedir() {
 	    //   Not Present: The page table is not present
 	    page_directory[i] = 0x00000002;
 	}
+	page_directory[1023] = (unsigned int)page_directory | 3; // Map it to iself
 	return 0;
 }
 int paging_setup() {
@@ -27,8 +33,4 @@ int paging_setup() {
 	cr0 |= 0x80000000;
 	asm volatile("mov %0, %%cr0":: "b"(cr0));
 	return 0;
-}
-int vmm_shim_doboardsetup() {
-	int ret = paging_setup();
-	return ret;
 }

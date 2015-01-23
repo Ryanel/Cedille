@@ -3,7 +3,7 @@
 uint32_t cedille_criticalsection_semaphore = 1;
 
 void cedille_enter_criticalsection() {
-	assert(cedille_criticalsection_semaphore == 1);
+	assert(cedille_criticalsection_semaphore >= 1);
 	cedille_criticalsection_semaphore = 0;
 	return;
 }

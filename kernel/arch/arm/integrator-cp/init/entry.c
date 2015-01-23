@@ -7,6 +7,8 @@
 #include <arch/arm/arm4/integrator-cp/pl110.h>
 #endif
 
+void kmain();
+
 extern uintptr_t _kernel_start,_kernel_end;
 
 int kernel_entry (void) {
@@ -14,6 +16,7 @@ int kernel_entry (void) {
 #ifdef ENABLE_GRAPHICS_DEVICE_PL110
 	arm4_integrator_cp_pl110_start();
 	printk("boot","Started graphics device \"PL110\"\n");
+	printk("","===> Warning! PL110 support is supplimental! NORMAL OUTPUT IS ON SERIAL\r\n");
 #endif
 	
 	for(int i = 0; i!=80; i++) {
@@ -32,7 +35,7 @@ int kernel_entry (void) {
 	
 	printk("info","Initialising physical memory manager.\n");
 	init_early_malloc(&_kernel_end);
-	pmm_set_maxmem(0x4000000);
+	pmm_set_maxmem(0x8000000);
 	init_pmm();
 	
 	kmain();
