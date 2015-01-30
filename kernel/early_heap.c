@@ -15,8 +15,11 @@ void init_early_malloc(uintptr_t address) {
 }
 // Bug: Does not work for larger then 32-bit addressing.
 uintptr_t * early_malloc(uint32_t sz) {
+	// Fix   : (Applied) Enforce cpu aligned pointers
+	uint32_t aligned_sz = sz + (sz % sizeof(uintptr_t)); // (sz % sizeof(uintptr_t)) + sz takes the original value, figures out how much to add to align it, then adds it.
+	                                                     // This is safe to do, as it will always add more, so demands are met.
 	uintptr_t * tmp = (uintptr_t *)em_placement_addr;
-	em_placement_addr += sz;
+	em_placement_addr += aligned_sz;
 	return tmp;
 }
 // Bug: Does not work for larger then 32-bit addressing.
@@ -32,5 +35,4 @@ uintptr_t * early_malloc_aligned(uint32_t sz) {
 	uintptr_t * tmp = (uintptr_t *)em_placement_addr;
 	em_placement_addr += sz;
 	return tmp;
-
-
+}
