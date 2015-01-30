@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include <logging.h>
 #include <cedille/timing.h>
+#include <ktypes.h>
 /**
 Timing system
 **/
