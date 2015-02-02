@@ -4,5 +4,5 @@
 void vmm_shim_doboardsetup();
 void init_vmm() {
 	vmm_shim_doboardsetup();
-	printk("ok","VMM started with 0 errors\n");
+	printk("ok","VMM started with no errors\n");
 }

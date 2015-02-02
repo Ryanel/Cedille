@@ -16,7 +16,7 @@ NM 		:= nm
 LD 		:= ${CC}
 LFLAGS 	:= -ffreestanding -nostdlib -nostartfiles -lgcc
 
-C_OPTIMIZ := -Os -pipe -fomit-frame-pointer
+C_OPTIMIZ := -O0
 C_OPTIONS := -ffreestanding -std=gnu99  -nostartfiles
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter
 C_OPTIONS += -Wno-unused-function

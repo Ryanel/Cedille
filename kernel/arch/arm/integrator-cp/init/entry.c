@@ -34,9 +34,7 @@ int kernel_entry (void) {
 	asm("swi 0");
 	
 	printk("info","Initialising physical memory manager.\n");
-	init_early_malloc(&_kernel_end);
 	pmm_set_maxmem(0x8000000);
-	init_pmm();
 	
 	kmain();
     return 0;

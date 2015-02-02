@@ -16,7 +16,7 @@ void pit_install(uint32_t frequency);
 void irq1fix();
 void profile_kmemory();
 int kmain();
-void init_vmm();
+
 int kernel_entry (void) {
 	
     text_console_init();
@@ -33,10 +33,6 @@ int kernel_entry (void) {
 	register_interrupt_handler (IRQ1, irq1fix); //Temp IRQ1 fix
 	asm("sti"); // Start interrupts
     /*----- TODO: Make dynamic / prettier -----*/
-    printk("ok","Basic computer hardware started with 0 errors\n");
-	init_early_malloc(&_kernel_end);
-	init_pmm();
-	init_vmm();
 	
 	kmain();
     return 0;
