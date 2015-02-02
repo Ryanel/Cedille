@@ -42,3 +42,7 @@ initutil
 ldcedilz
 iso/system/cedille
 build/
+
+.cproject
+.project
+.settings/

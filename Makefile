@@ -27,7 +27,8 @@ C_OPTIONS += ${C_OPTIMIZ}
 LD_SCRIPT 	:= kernel/arch/${ARCH}/${BOARD}/link.ld
 INCLUDE_DIR := "kernel/includes"
 
-GENISO 	:= xorriso -as mkisofs -R -b boot/grub/stage2_eltorito -quiet -no-emul-boot -boot-load-size 4 -boot-info-table
+GENISO 	:= xorriso -as mkisofs
+GENISOF	:= -R -b boot/grub/stage2_eltorito -quiet -no-emul-boot -boot-load-size 4 -boot-info-table
 EMU 	:= qemu-system-i386
 
 C_PASSED_VARIABLES := -DCCOMPILER_OPTIONS_S="\"${C_OPTIONS}\"" -DARCH_S="\"${ARCH}\"" -DBOARD_S="\"${BOARD}\"" -DBUILD_OPTIONS_S="\"${COMPILE_OPTIONS}\""
@@ -103,7 +104,7 @@ build/cdrom.iso:
 	@echo "ISO [A]| build/cdrom.iso"
 	@cp build/kernel.elf iso/system/cedille
 	-@cp build/kernel.map iso/system/kernel.map
-	@${GENISO} -o build/cdrom.iso iso
+	@${GENISO} ${GENISOF} -o build/cdrom.iso iso
 
 gen-symbols: kernel
 	@echo "GEN [M]| build/kernel.elf -> build/kernel.map"
