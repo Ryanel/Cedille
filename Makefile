@@ -111,7 +111,7 @@ gen-symbols: kernel
 
 strip:
 	@echo "STRIP[K]| build/kernel.elf"
-	@${STRIP} build/kernel.elf 
+	@${STRIP} -s build/kernel.elf 
 
 #Special/Common Targets
 

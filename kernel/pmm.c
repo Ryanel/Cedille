@@ -58,10 +58,16 @@ void pmm_alloc_frame(uintptr_t address, int kernel, int rw) {
 
 void pmm_free_frame(uintptr_t address) {
 	pmm_shim_free_frame(address);
-	pmm_free_frame(address);
+	pmm_clear_frame(address);
 }
 void pmm_set_maxmem(uintptr_t max) {
 	mem_end = max;
+}
+
+inline uintptr_t pmm_alloc_first() {
+	uintptr_t address = pmm_first_frame();
+	pmm_alloc_frame(address,1,1);
+	return address;
 }
 
 void init_pmm() {
