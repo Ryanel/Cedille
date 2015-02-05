@@ -1,7 +1,7 @@
+#ifdef ARCH_arm
 #include <stdint.h>
 #include <stddef.h>
 #include <data/font-8x8.h>
-
 void graphics_terminal_drawpixel(int x,int y, uint8_t r,uint8_t g,uint8_t b);
 
 static const uint8_t graphics_terminal_default_r = 0xFF;
@@ -43,3 +43,4 @@ void graphics_terminal_drawchar(char c, int x, int y)
 		}
 	}
 }
+#endif

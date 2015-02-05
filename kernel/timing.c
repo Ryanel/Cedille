@@ -12,10 +12,10 @@ kernel_time_t timing_tick = 0;
 // A timing tick that resets at timing_tick_resolution in order to never overflow.
 kernel_time_t timing_tick_local = 0;
 kernel_time_t timing_tick_resolution = 1000; // How long a tick is in microseconds from miliseconds (resolution * tick = 1ms)
-int timing_active = 0;
+int timing_active = 1;
 
 void timing_system_engine_reportstatustoconsole() {
-	printk("debug","Timing Engine => active:%d; tick:%d; sec(k):%d; sec(r):%d;\n", \
+	printk("info","Timing Engine => active:%d; tick:%d; sec(k):%d; sec(r):%d;\n", \
 		timing_active,timing_tick,(((timing_tick * timing_tick_resolution) / 1000 )/ 1000),0);
 }
 
