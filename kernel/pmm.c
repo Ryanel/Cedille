@@ -80,9 +80,9 @@ void init_pmm() {
 
 	#ifdef DEBUG
 	int amm_alloc_mb = ((mem_end_aligned/1024)/1024);
-	printk("debug","kernel[pmm]-> Can allocate for 0x%X (~%d MB) of ram\n",mem_end_aligned,amm_alloc_mb);
-	printk("debug","kernel[pmm]-> Allocatable frames: 0x%X\n",frame_amount);
-	printk("debug","kernel[pmm]-> Bitmap @ 0x%X => 0x%X\n",(uintptr_t)bitmap,(uintptr_t)bitmap + (frame_amount)/8);
+	printk(LOG_DEBUG,"pmm","Can allocate for 0x%X (~%d MB) of ram\n",mem_end_aligned,amm_alloc_mb);
+	printk(LOG_DEBUG,"pmm","Allocatable frames: 0x%X\n",frame_amount);
+	printk(LOG_DEBUG,"pmm","Bitmap @ 0x%X => 0x%X\n",(uintptr_t)bitmap,(uintptr_t)bitmap + (frame_amount)/8);
 	#endif
-	printk("ok","PMM started with 0 errors\n");
+	printk(LOG_COMPLETE,"pmm","Started with no errors\n");
 }

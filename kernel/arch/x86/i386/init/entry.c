@@ -22,7 +22,7 @@ int kernel_entry (void) {
     text_console_init();
     low_printname();
     #ifdef DEBUG
-	printk("debug","Kernel Resides @ 0x%X => 0x%X\n",&_kernel_start,&_kernel_end);
+	printk(LOG_DEBUG,"mem","Kernel Resides @ 0x%X => 0x%X\n",&_kernel_start,&_kernel_end);
     #endif
 
 	x86_init_descriptor_tables();

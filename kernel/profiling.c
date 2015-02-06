@@ -27,7 +27,7 @@ void profile_kmemory()
 	uintptr_t isdrawn_Unknown = 0;
 	uintptr_t isdrawn_Heap = 0;
 	
-	printk("debug","Starting display of kernel memory...\n");
+	printk(LOG_DEBUG,"memprof","Starting display of kernel memory...\n");
 	for(int x = 0; x < 80; x++)
 	{
 		if(((x * scale)<=(uintptr_t)&_kernel_end - (uintptr_t)&_kernel_start) && ((x * scale)>=(uintptr_t)&_kernel_start) - start) // Kernel memory

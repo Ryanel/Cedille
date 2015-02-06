@@ -15,7 +15,7 @@ kernel_time_t timing_tick_resolution = 1000; // How long a tick is in microsecon
 int timing_active = 1;
 
 void timing_system_engine_reportstatustoconsole() {
-	printk("info","Timing Engine => active:%d; tick:%d; sec(k):%d; sec(r):%d;\n", \
+	printk(LOG_INFO,"timing","Timing Engine => active:%d; tick:%d; sec(k):%d; sec(r):%d;\n", \
 		timing_active,timing_tick,(((timing_tick * timing_tick_resolution) / 1000 )/ 1000),0);
 }
 
@@ -23,7 +23,7 @@ void timing_system_engine_dotick(kernel_time_t tick) {
 	// Hard limit; don't let the tick accelerate this many ticks in the future. Prevents signed numbers working as well.
 	if(tick > TIMING_ENGINE_HARDTICK) {
 		if(DO_DEBUG_LOGGING) {
-			printk("warn","Timing engine attempted to accelerate %d ticks into the future! [Hard limit reached(%d)]\n", \
+			printk(LOG_WARN,"timing","Timing engine attempted to accelerate %d ticks into the future! [Hard limit reached(%d)]\n", \
 				tick,TIMING_ENGINE_HARDTICK);
 		}
 		return;
