@@ -84,7 +84,7 @@ board: ${BOARD_FILES}
 
 prebuild:
 	@echo " PRE    | Generate Git Info"
-	@util/gen-git-info-c.sh build/git-info.h
+	@toolkit/gen-git-info-c.sh build/git-info.h
 
 %.o: %.s
 	@echo "  AS    |" $@
