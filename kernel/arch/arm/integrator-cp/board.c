@@ -95,5 +95,5 @@ void processor_halt()
 	}
 }
 
-void vmm_shim_doboardsetup() {
+void vmm_shim_doBoardSetup() {
 }

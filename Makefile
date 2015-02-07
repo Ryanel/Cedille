@@ -18,7 +18,7 @@ LFLAGS 	:= ${C_OPTIONS} -nostdlib -lgcc
 C_OPTIMIZ := -Os
 C_OPTIONS := -ffreestanding -std=gnu99  -nostartfiles
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter -Wno-unused-function
-C_OPTIONS += -fstack-protector-all
+C_OPTIONS += -fstack-protector
 C_OPTIONS += -s
 C_OPTIONS += ${C_OPTIMIZ}
 

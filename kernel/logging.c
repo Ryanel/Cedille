@@ -16,82 +16,6 @@ Logs output to system console. Works as an enchanced printf.
 
 void text_console_change_color(uint8_t color);
 void text_console_reset_color();
-#if 0
-void printk(const char * type, const char *fmt, ...)
-{
-	#ifndef OPT_NO_ENCHANCED_LOGGING
-	if(strlen(type) > 6)
-	{
-		char array[7];
-		array[0] = type[0];
-		array[1] = type[1];
-		array[2] = type[2];
-		array[3] = type[3];
-		array[4] = type[4];
-		array[5] = type[5];
-		array[6] = 0;
-		printf("%-6s| ",array);
-	}
-	else if(strcmp(type,"ok") == 0 || strcmp(type,"done") == 0) //Good
-	{
-		text_console_change_color(0xA);
-		printf("%-6s: ",type);
-		text_console_reset_color();
-	}
-	else if(strcmp(type,"fail") == 0 ||
-		strcmp(type,"fault") == 0 ||
-		strcmp(type,"panic") == 0 ||
-		strcmp(type,"oops") == 0 ||
-		strcmp(type,"error") == 0) //Bad
-	{
-		text_console_change_color(0x4);
-		printf("%-6s: ",type);
-		text_console_reset_color();
-	}
-	else if(strcmp(type,"info") == 0 || strcmp(type,"status") == 0) // Info
-	{
-		text_console_change_color(0xB);
-		printf("%-6s: ",type);
-		text_console_reset_color();
-	}
-	else if(strcmp(type,"cpu") == 0 ||
-		strcmp(type,"device") == 0 ||
-		strcmp(type,"daemon") == 0)
-	{
-		DEBUG_ONLY_LOG
-		text_console_change_color(0xD);
-		printf("%-6s: ",type);
-		text_console_reset_color();
-	}
-	else if(strcmp(type,"warn") == 0) //Warnings
-	{
-		DEBUG_ONLY_LOG
-		text_console_change_color(0xE);
-		printf("%-6s: ",type);
-		text_console_reset_color();
-	}
-	else if(strcmp(type,"debug") == 0)
-	{
-		DEBUG_ONLY_LOG;
-		text_console_change_color(0xE);
-		printf("%-6s: ",type);
-		text_console_reset_color();
-	}
-	else
-	{
-		text_console_change_color(0x8);
-		printf("%-6s: ",type);
-		text_console_reset_color();
-	}
-	#else
-	printf("%s: ",type);
-	#endif
-	va_list args;
-	va_start(args, fmt);
-	vprintf(fmt,args);
-	va_end(args);
-}
-#endif
 
 void printk(const int severity,const char * type, const char *fmt, ...) {
 	switch(severity) {
@@ -118,7 +42,7 @@ void printk(const int severity,const char * type, const char *fmt, ...) {
 			text_console_change_color(0x8);
 			break;
 	}
-	printf("kernel[%s]->",type);
+	printf("kernel[%s]\t->",type);
 	text_console_reset_color();
 	va_list args;
 	va_start(args, fmt);

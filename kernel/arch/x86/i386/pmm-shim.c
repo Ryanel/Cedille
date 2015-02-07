@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <cedille/pmm.h>
+#include <arch/x86/paging.h>
 void pmm_shim_alloc_frame(uintptr_t address, int kernel, int rw) {
 	
 }

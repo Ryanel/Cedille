@@ -200,6 +200,7 @@ OK, I found my mistake. The math here is _always_ unsigned */
 /* disallow pad-left-with-zeroes for %s */
 				flags &= ~PR_LZ;
 				where = va_arg(args, unsigned char *);
+				if(where == NULL) { where = (unsigned char *)"(null)";}
 EMIT:
 				actual_wd = strlen_unsigned(where);
 				if(flags & PR_WS)

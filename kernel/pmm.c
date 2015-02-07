@@ -7,7 +7,9 @@
 #ifdef DEBUG
 #include <stdio.h>
 #endif
-
+#ifdef ARCHx86
+#include <arch/x86/paging.h>
+#endif
 uintptr_t *bitmap; //Pointer to first frame, first index. The actual bitmap
 uintptr_t frame_amount; //How many frames CAN there be?
 uintptr_t mem_end = 0x1000000; //Where does memory end. Default's to all addressable ram
@@ -50,16 +52,16 @@ uintptr_t pmm_first_frame() {
 	}
 	return -1;
 }
-
+//TODO: Force PMM to check status and report statuses back instead of assuming it works
 void pmm_alloc_frame(uintptr_t address, int kernel, int rw) {
 	pmm_shim_alloc_frame(address, kernel, rw);
-	pmm_set_frame(address);
 }
 
 void pmm_free_frame(uintptr_t address) {
 	pmm_shim_free_frame(address);
 	pmm_clear_frame(address);
 }
+
 void pmm_set_maxmem(uintptr_t max) {
 	mem_end = max;
 }

@@ -11,7 +11,9 @@ Timing system
 kernel_time_t timing_tick = 0;
 // A timing tick that resets at timing_tick_resolution in order to never overflow.
 kernel_time_t timing_tick_local = 0;
-kernel_time_t timing_tick_resolution = 1000; // How long a tick is in microseconds from miliseconds (resolution * tick = 1ms)
+// How long a tick is in microseconds from miliseconds (resolution * tick = 1ms)
+kernel_time_t timing_tick_resolution = 1000;
+// Is the system engaged?
 int timing_active = 1;
 
 void timing_system_engine_reportstatustoconsole() {

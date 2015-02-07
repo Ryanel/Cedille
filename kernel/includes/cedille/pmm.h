@@ -3,6 +3,9 @@
 
 #ifndef PMM_H
 #define PMM_H
+#ifdef ARCHx86
+#include <arch/x86/paging.h>
+#endif
 ///Page index from address
 #define INDEX_FROM_BIT(b) (b / 0x20)
 ///Page offest from address
@@ -25,6 +28,5 @@ void pmm_shim_alloc_frame(uintptr_t address, int kernel, int rw);
 ///Free a frame
 void pmm_free_frame(uintptr_t address);
 void pmm_shim_free_frame(uintptr_t address);
-
 void pmm_set_maxmem(uintptr_t max);
 #endif
