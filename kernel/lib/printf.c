@@ -126,7 +126,6 @@ int do_printf(const char *fmt, va_list args, fnptr_t fn, void *ptr)
 			case 'X':
 				flags |= PR_CA;
 				/* FALL THROUGH */
-/* xxx - far pointers (%Fp, %Fn) not yet supported */
 			case 'x':
 			case 'p':
 			case 'n':

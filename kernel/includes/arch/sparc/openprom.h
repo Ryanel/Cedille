@@ -66,7 +66,7 @@ struct prom_arguments_v0 {
     int boot_dev_unit;
     int dev_partition;
     char *kernel_file_name;
-    void *aieee1;           /* XXX */
+    void *aieee1;
 };
 
 /* V2 and up boot things. */

@@ -7,18 +7,18 @@ SECTIONS
     .main : 
     {
         LONG(0x01030107);
-        LONG(_boot_end - _boot_start);
+        LONG(_kernel_end - _kernel_start);
         LONG(0);
         LONG(0);
         LONG(0);
         LONG(0);
         LONG(0);
         LONG(0);
-        _boot_start = .;
+        _kernel_start = .;
         *(.text*)
         *(.rodata*)
         *(.data*)
         *(.bss*)
-        _boot_end = .;
+        _kernel_end = .;
     }
 }

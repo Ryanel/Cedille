@@ -96,9 +96,11 @@ prebuild:
 
 clean:
 	@echo " CLN    | *.o"
-	@-find . -name "*.o" -type f -delete
+	-@find . -name "*.o" -type f -delete
+	-@find build -name "*" -type f -delete
+	
 
-build/cdrom.iso:
+build/cdrom.iso: kernel strip
 	@echo " ISO [A]| build/cdrom.iso"
 	@cp build/kernel.elf iso/system/cedille
 	-@cp build/kernel.map iso/system/kernel.map
@@ -106,12 +108,12 @@ build/cdrom.iso:
 
 gen-symbols: kernel
 	@echo " GEN [M]| build/kernel.elf -> build/kernel.map"
-	@${NM} build/kernel.elf > build/kernel.map
-	@objdump -x build/kernel.elf > build/kernel.dump
+	-@${NM} build/kernel.elf > build/kernel.map
+	-@objdump -x build/kernel.elf > build/kernel.dump
 
-strip:
+strip: kernel gen-symbols
 	@echo "STRIP[K]| build/kernel.elf"
-	@${STRIP} -s build/kernel.elf 
+	-@${STRIP} -s build/kernel.elf 
 
 #Special/Common Targets
 
