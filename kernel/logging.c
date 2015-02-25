@@ -42,7 +42,7 @@ void printk(const int severity,const char * type, const char *fmt, ...) {
 			text_console_change_color(0x8);
 			break;
 	}
-	printf("kernel[%s]\t->",type);
+	printf("%s: ",type);
 	text_console_reset_color();
 	va_list args;
 	va_start(args, fmt);

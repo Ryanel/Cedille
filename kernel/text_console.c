@@ -1,12 +1,23 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <text_console.h>
 #ifdef ARCHx86
 #include <arch/x86/ports.h>
 #endif
-#include <text_console.h>
+#define TERM_FB_MX 80
+#define TERM_FB_MY 25
+#define TERM_FB_SCREENS 2
 volatile uint8_t term_x = 0;
 volatile uint8_t term_y = 0;
+
+int term_fb_flag_modified = 1;
+
+#ifdef ARCHx86
+uint8_t text_console_fb[TERM_FB_MX * TERM_FB_MY * TERM_FB_SCREENS * 2]; // Stores attribute byte as well on x86.
+#else
+uint8_t text_console_fb[TERM_FB_MX * TERM_FB_MY * TERM_FB_SCREENS]; 
+#endif
 
 void scroll() {
     if (term_y >= 25) {
@@ -30,13 +41,15 @@ void text_console_printc(char c) {
 			break;
 		case '\n':
 			#ifndef ARCHx86
-			text_console_printchar(c,term_x, term_y);
+            text_console_fb_addchar(c,term_x,term_y);
+			//text_console_printchar(c,term_x, term_y);
 			#endif
 			term_x = 0;
 			term_y++;
 			break;
 		default:
-			text_console_printchar(c,term_x, term_y);	
+            text_console_fb_addchar(c,term_x,term_y);
+			//text_console_printchar(c,term_x, term_y);	
 			term_x++;
 			break;		
 	}
@@ -59,17 +72,25 @@ void text_console_print(const char *c) {
 }
 
 void text_console_init() {
+
+}
+#ifdef ARCHx86
+uint8_t text_console_fb_shim_x86_addattribute();
+#endif
+void text_console_fb_addchar(char c, uint8_t x, uint8_t y) {
     #ifdef ARCHx86
-        uint16_t offset;
-        outb(0x3D4, 14);
-        offset = inb(0x3D5) << 8;
-        outb(0x3D4, 15);
-        offset |= inb(0x3D5);
-        term_x = offset % 80;
-        term_y = offset / 80;
+    text_console_fb[((y * TERM_FB_MX) + x) * 2] = c; // Multiply by 2 so you can add attribute byte.
+    text_console_fb[(((y * TERM_FB_MX) + x) * 2) + 1] = text_console_fb_shim_x86_addattribute();
     #else
-        term_x = 0;
-        term_y = 0;
+    text_console_fb[(y * TERM_FB_MX) + x] = c; 
     #endif
-    //video_setcursor(term_x, term_y);
+    term_fb_flag_modified = 1;
+}
+
+void text_console_fb_flush() {
+    if(term_fb_flag_modified) {
+        text_console_fb_shim_flush(&text_console_fb);
+        term_fb_flag_modified = 0;
+    }
+    
 }

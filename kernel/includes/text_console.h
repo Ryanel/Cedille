@@ -13,4 +13,7 @@ void text_console_scroll(int from,int to);
 void text_console_change_color(uint8_t color);
 void text_console_reset_color();
 
+
+void text_console_fb_addchar(char c, uint8_t x, uint8_t y);
+void text_console_fb_shim_flush(uint8_t *flush);
 #endif
