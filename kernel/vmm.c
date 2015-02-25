@@ -32,8 +32,3 @@ void vmm_map_entry(vmm_mapping_entry_t * entry) {
 void vmm_unmap_entry(vmm_mapping_entry_t * entry) {
 
 }
-
-void vmm_debug_printentry(vmm_mapping_entry_t * entry) {
-	printk(LOG_DEBUG,"vmm","Entry 0x%x; %d:%d [%x->%x] => [%x->%x]\n", \
-			entry,entry->type,entry->owned_process,entry->phys,entry->physend,entry->virt,entry->virtend);
-}

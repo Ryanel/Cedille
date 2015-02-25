@@ -23,7 +23,6 @@ toolkit/*.tar.bz2
 toolkit/cross/*
 toolkit/bin/*
 toolkit/gcc/*
-doc/*
 *.elf
 *.aout
 toolkit/arm-2008q3/

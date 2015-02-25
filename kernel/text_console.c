@@ -11,7 +11,7 @@
 volatile uint8_t term_x = 0;
 volatile uint8_t term_y = 0;
 
-int term_fb_flag_modified = 1;
+int term_fb_flag_modified = 0;
 
 #ifdef ARCHx86
 uint8_t text_console_fb[TERM_FB_MX * TERM_FB_MY * TERM_FB_SCREENS * 2]; // Stores attribute byte as well on x86.
@@ -42,7 +42,6 @@ void text_console_printc(char c) {
 		case '\n':
 			#ifndef ARCHx86
             text_console_fb_addchar(c,term_x,term_y);
-			//text_console_printchar(c,term_x, term_y);
 			#endif
 			term_x = 0;
 			term_y++;
@@ -88,8 +87,8 @@ void text_console_fb_addchar(char c, uint8_t x, uint8_t y) {
 }
 
 void text_console_fb_flush() {
-    if(term_fb_flag_modified) {
-        text_console_fb_shim_flush(&text_console_fb);
+    if(term_fb_flag_modified == 1) {
+        text_console_fb_shim_flush((uint8_t*)&text_console_fb);
         term_fb_flag_modified = 0;
     }
     
