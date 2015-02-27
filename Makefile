@@ -13,8 +13,8 @@ CC		:= clang -target i686-elf
 STRIP	:= strip
 NM 		:= nm
 LD 		:= ${CC}
-LFLAGS 	:= ${C_OPTIONS} -nostdlib -lgcc
-
+LFLAGS 	:= ${C_OPTIONS} -nostdlib 
+LFLAGS_SUFFIX:= -lgcc
 C_OPTIMIZ := -Os
 C_OPTIONS := -ffreestanding -std=gnu99  -nostartfiles
 C_OPTIONS += -Wall -Wextra -Wno-unused-function -Wno-unused-parameter -Wno-unused-function
@@ -76,7 +76,7 @@ build-dir:
 
 kernel: ${GLOBAL_FILES} arch board
 	@echo "  LD [K]| kernel.elf"
-	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o build/kernel.elf ${ALL_SOURCE_FILES}
+	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o build/kernel.elf ${ALL_SOURCE_FILES} ${LFLAGS_SUFFIX}
 	@rm -f build/cdrom.iso
 arch: ${ARCH_FILES}
 
@@ -126,7 +126,7 @@ icp:
 run-x86:
 	@${EMU} -serial stdio -cdrom build/cdrom.iso
 run-arm-icp:
-	@qemu-system-arm -M integratorcp -serial stdio -kernel build/kernel.elf -monitor none -initrd iso/boot/initrd.img
+	@qemu-system-arm -M integratorcp -serial stdio -kernel build/kernel.elf -monitor none -nographic -initrd iso/boot/initrd.img
 run-sparc:
 	@qemu-system-sparc -serial stdio -cdrom build/sparc-iso.iso -nographic
 
