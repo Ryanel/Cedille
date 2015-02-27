@@ -71,11 +71,11 @@ ALL_SOURCE_FILES := ${GLOBAL_FILES} ${ARCH_FILES} ${BOARD_FILES}
 all:build-dir prebuild kernel gen-symbols strip build/cdrom.iso
 
 build-dir:
-	@echo " DIR    | build"
+	@echo "DIR     build"
 	@mkdir -p build
 
 kernel: ${GLOBAL_FILES} arch board
-	@echo "  LD [K]| kernel.elf"
+	@echo "LD      kernel.elf"
 	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o build/kernel.elf ${ALL_SOURCE_FILES} ${LFLAGS_SUFFIX}
 	@rm -f build/cdrom.iso
 arch: ${ARCH_FILES}
@@ -83,19 +83,19 @@ arch: ${ARCH_FILES}
 board: ${BOARD_FILES}
 
 prebuild:
-	@echo " PRE    | Generate Git Info"
+	@echo "PRE     Generate Git Info"
 	@toolkit/gen-git-info-c.sh build/git-info.h
 
 %.o: %.s
-	@echo "  AS    |" $@
+	@echo "AS     " $@
 	@${AS} -o $@ $<
 
 %.o: %.c
-	@echo "  CC    |" $@
+	@echo "CC     " $@
 	@${CC} -c ${C_OPTIONS} ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -DARCH${ARCH} ${C_PASSED_VARIABLES} -o $@ $<
 
 clean:
-	@echo " CLN    | *.o"
+	@echo "CLN     *.o"
 	-@find . -name "*.o" -type f -delete
 	-@find build -name "*" -type f -delete
 
@@ -105,18 +105,18 @@ distclean: clean
 	rm iso/system/kernel.map
 	
 build/cdrom.iso: kernel strip
-	@echo " ISO [A]| build/cdrom.iso"
+	@echo "GENISO  build/cdrom.iso"
 	@cp build/kernel.elf iso/system/cedille
 	-@cp build/kernel.map iso/system/kernel.map
 	@${GENISO} ${GENISOF} -o build/cdrom.iso iso
 
 gen-symbols: kernel
-	@echo " GEN [M]| build/kernel.elf -> build/kernel.map"
+	@echo "GENMAP  build/kernel.elf -> build/kernel.map"
 	-@${NM} build/kernel.elf > build/kernel.map
 	-@objdump -x build/kernel.elf > build/kernel.dump
 
 strip: kernel gen-symbols
-	@echo "STRIP[K]| build/kernel.elf"
+	@echo "STRIP   build/kernel.elf"
 	-@${STRIP} -s build/kernel.elf 
 
 #Special/Common Targets
@@ -135,8 +135,8 @@ run-sparc:
 	@qemu-system-sparc -serial stdio -cdrom build/sparc-iso.iso -nographic
 
 sparc-iso:
-	@echo " GEN [A]| build/sparc-bootblock.bin"
+	@echo "GENISO  build/sparc-bootblock.bin"
 	@dd if=/dev/zero of=build/sparc-bootblock.bin bs=2048 count=4
 	@dd if=build/kernel.elf of=build/bootblock.bin bs=512 seek=1 conv=notrunc
-	@echo " ISO [A]| build/sparc-iso.iso"
+	@echo "GENISO  build/sparc-iso.iso"
 	@${GENISO} -quiet -o build/sparc-iso.iso -G build/bootblock.bin iso
