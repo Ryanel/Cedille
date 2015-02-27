@@ -4,7 +4,7 @@
 #include <text_console.h>
 #include <string.h>
 #define X86_CONSOLE_WIDTH  80
-#define X86_CONSOLE_HEIGHT 24
+#define X86_CONSOLE_HEIGHT 25
 
 #define X86_CONSOLE_COLOR 0x0F
 
@@ -28,6 +28,7 @@ void text_console_setcursor(uint8_t x,uint8_t y)
 	outb(0x3D4, 15);
 	outb(0x3D5, location);
 }
+/*
 void text_console_scroll(int from,int to) { //TODO: Either depreciate, or convert to framebuffer.
 	uint16_t blank = 0x20  | (textmode_color << 8);
 	int i;
@@ -40,9 +41,9 @@ void text_console_scroll(int from,int to) { //TODO: Either depreciate, or conver
 		textmode_buffer_16[i] = blank;
 	}
 }
-
-void text_console_fb_shim_flush(uint8_t *flush) {
-	memcpy((void*)textmode_buffer,(void*)flush,X86_CONSOLE_WIDTH*X86_CONSOLE_HEIGHT*2); //Todo: fix this for scrolling
+*/
+void text_console_fb_shim_flush(uint8_t *flush,uint32_t scroll_y) {
+	memcpy((void*)textmode_buffer,(void*)flush+((X86_CONSOLE_WIDTH*2)*scroll_y),X86_CONSOLE_WIDTH*X86_CONSOLE_HEIGHT*2);
 }
 
 uint8_t text_console_fb_shim_x86_addattribute() {

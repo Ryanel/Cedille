@@ -15,7 +15,6 @@ kernel_time_t timing_tick_local = 0;
 kernel_time_t timing_tick_resolution = 1000;
 // Is the system engaged?
 int timing_active = 1;
-
 void text_console_fb_flush();
 void kprocess_doUpdate(kernel_time_t localtime);
 void timing_system_engine_reportstatustoconsole() {

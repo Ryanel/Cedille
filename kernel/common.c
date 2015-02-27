@@ -10,3 +10,19 @@ void low_printname() {
     #endif
     printf("\n");
 }
+
+
+void kprocess_doUpdateForced();
+void text_console_fb_flush();
+/**
+Does periodic tasks
+force: Forces all tasks to be run.
+tick: Used in timing functions.
+**/
+//TODO: Move to scheduler code
+void kernel_doperiodic(int force, int tick) {
+	if(force) {
+		kprocess_doUpdateForced();
+		text_console_fb_flush(); //This gets called as a kernel process, but its okay to do it as no data should have been printed to screen.
+	}
+}
