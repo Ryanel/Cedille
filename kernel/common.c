@@ -1,4 +1,4 @@
-#include <../../build/git-info.h>
+#include <../../temp/git-info.h>
 #include <logging.h>
 #include <stdio.h>
 void low_printname() {

@@ -22,9 +22,10 @@ C_OPTIONS += -fstack-protector
 C_OPTIONS += -s
 C_OPTIONS += ${C_OPTIMIZ}
 
+BUILDDIR := build
 
 LD_SCRIPT 	:= kernel/arch/${ARCH}/${BOARD}/link.ld
-INCLUDE_DIR := "kernel/includes"
+INCLUDE_OPTIONS := "-Ikernel/includes"
 
 GENISO 	:= xorriso -as mkisofs
 GENISOF	:= -R -b boot/grub/stage2_eltorito -quiet -no-emul-boot -boot-load-size 4 -boot-info-table
@@ -68,23 +69,25 @@ ALL_SOURCE_FILES := ${GLOBAL_FILES} ${ARCH_FILES} ${BOARD_FILES}
 #RULES
 #--------------------------------------------
 
-all:build-dir prebuild kernel gen-symbols strip build/cdrom.iso
+all:build-dir prebuild kernel gen-symbols strip ${BUILDDIR}/cdrom.iso
 
 build-dir:
-	@echo "DIR     build"
-	@mkdir -p build
+	@echo "DIR     ${BUILDDIR}"
+	@mkdir -p ${BUILDDIR} #Ensure it exists
+	@echo "DIR     temp"
+	@mkdir -p temp #Ensure it exists
 
 kernel: ${GLOBAL_FILES} arch board
 	@echo "LD      kernel.elf"
-	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o build/kernel.elf ${ALL_SOURCE_FILES} ${LFLAGS_SUFFIX}
-	@rm -f build/cdrom.iso
+	@${LD} ${LFLAGS} -T ${LD_SCRIPT} -o ${BUILDDIR}/kernel.elf ${ALL_SOURCE_FILES} ${LFLAGS_SUFFIX}
+	@rm -f ${BUILDDIR}/cdrom.iso
 arch: ${ARCH_FILES}
 
 board: ${BOARD_FILES}
 
 prebuild:
 	@echo "PRE     Generate Git Info"
-	@toolkit/gen-git-info-c.sh build/git-info.h
+	@toolkit/gen-git-info-c.sh temp/git-info.h
 
 %.o: %.s
 	@echo "AS     " $@
@@ -92,32 +95,34 @@ prebuild:
 
 %.o: %.c
 	@echo "CC     " $@
-	@${CC} -c ${C_OPTIONS} ${COMPILE_OPTIONS} -I${INCLUDE_DIR} -DARCH${ARCH} ${C_PASSED_VARIABLES} -o $@ $<
+	@${CC} -c ${C_OPTIONS} ${COMPILE_OPTIONS} ${INCLUDE_OPTIONS} -DARCH${ARCH} ${C_PASSED_VARIABLES} -o $@ $<
 
 clean:
 	@echo "CLN     *.o"
 	-@find . -name "*.o" -type f -delete
-	-@find build -name "*" -type f -delete
+	-@find ${BUILDDIR} -name "*" -type f -delete
+	-@find temp -name "*" -type f -delete
 
 distclean: clean
-	rmdir build
+	rmdir ${BUILDDIR}
+	rmdir temp
 	rm iso/system/cedille
 	rm iso/system/kernel.map
 	
-build/cdrom.iso: kernel strip
-	@echo "GENISO  build/cdrom.iso"
-	@cp build/kernel.elf iso/system/cedille
-	-@cp build/kernel.map iso/system/kernel.map
-	@${GENISO} ${GENISOF} -o build/cdrom.iso iso
+${BUILDDIR}/cdrom.iso: kernel strip
+	@echo "GENISO  ${BUILDDIR}/cdrom.iso"
+	@cp ${BUILDDIR}/kernel.elf iso/system/cedille
+	-@cp ${BUILDDIR}/kernel.map iso/system/kernel.map
+	@${GENISO} ${GENISOF} -o ${BUILDDIR}/cdrom.iso iso
 
 gen-symbols: kernel
-	@echo "GENMAP  build/kernel.elf -> build/kernel.map"
-	-@${NM} build/kernel.elf > build/kernel.map
-	-@objdump -x build/kernel.elf > build/kernel.dump
+	@echo "GENMAP  ${BUILDDIR}/kernel.elf -> ${BUILDDIR}/kernel.map"
+	-@${NM} ${BUILDDIR}/kernel.elf > ${BUILDDIR}/kernel.map
+	-@objdump -x ${BUILDDIR}/kernel.elf > ${BUILDDIR}/kernel.dump
 
 strip: kernel gen-symbols
-	@echo "STRIP   build/kernel.elf"
-	-@${STRIP} -s build/kernel.elf 
+	@echo "STRIP   ${BUILDDIR}/kernel.elf"
+	-@${STRIP} -s ${BUILDDIR}/kernel.elf 
 
 #Special/Common Targets
 
@@ -128,15 +133,15 @@ icp:
 
 #RUN
 run-x86:
-	@${EMU} -serial stdio -cdrom build/cdrom.iso
+	@${EMU} -serial stdio -cdrom ${BUILDDIR}/cdrom.iso
 run-arm-icp:
-	@qemu-system-arm -M integratorcp -serial stdio -kernel build/kernel.elf -monitor none -nographic -initrd iso/boot/initrd.img
+	@qemu-system-arm -M integratorcp -serial stdio -kernel ${BUILDDIR}/kernel.elf -monitor none -nographic -initrd iso/boot/initrd.img
 run-sparc:
-	@qemu-system-sparc -serial stdio -cdrom build/sparc-iso.iso -nographic
+	@qemu-system-sparc -serial stdio -cdrom ${BUILDDIR}/sparc-iso.iso -nographic
 
 sparc-iso:
-	@echo "GENISO  build/sparc-bootblock.bin"
-	@dd if=/dev/zero of=build/sparc-bootblock.bin bs=2048 count=4
-	@dd if=build/kernel.elf of=build/bootblock.bin bs=512 seek=1 conv=notrunc
-	@echo "GENISO  build/sparc-iso.iso"
-	@${GENISO} -quiet -o build/sparc-iso.iso -G build/bootblock.bin iso
+	@echo "GENISO  ${BUILDDIR}/sparc-bootblock.bin"
+	@dd if=/dev/zero of=${BUILDDIR}/sparc-bootblock.bin bs=2048 count=4
+	@dd if=${BUILDDIR}/kernel.elf of=${BUILDDIR}/bootblock.bin bs=512 seek=1 conv=notrunc
+	@echo "GENISO  ${BUILDDIR}/sparc-iso.iso"
+	@${GENISO} -quiet -o ${BUILDDIR}/sparc-iso.iso -G ${BUILDDIR}/bootblock.bin iso
