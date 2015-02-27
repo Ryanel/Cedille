@@ -98,8 +98,12 @@ clean:
 	@echo " CLN    | *.o"
 	-@find . -name "*.o" -type f -delete
 	-@find build -name "*" -type f -delete
-	
 
+distclean: clean
+	rmdir build
+	rm iso/system/cedille
+	rm iso/system/kernel.map
+	
 build/cdrom.iso: kernel strip
 	@echo " ISO [A]| build/cdrom.iso"
 	@cp build/kernel.elf iso/system/cedille
