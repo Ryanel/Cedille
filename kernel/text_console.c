@@ -46,7 +46,10 @@ void text_console_printc(char c) {
 			break;
 		case '\n':
 			#ifndef ARCHx86
+			#ifndef ARCHarm
 			text_console_fb_addchar(c,term_x,term_y);
+			#endif
+			text_console_printchar(c,term_x, term_y);	
 			#else
 			term_fb_flag_modified = 1;
 			#endif
@@ -54,8 +57,10 @@ void text_console_printc(char c) {
 			term_y++;
 			break;
 		default:
+			#ifdef ARCHarm
 			text_console_fb_addchar(c,term_x,term_y);
-			//text_console_printchar(c,term_x, term_y);	
+			#endif
+			text_console_printchar(c,term_x, term_y);	
 			term_x++;
 			break;		
 	}
@@ -80,7 +85,9 @@ void text_console_print(const char *c) {
 
 
 void text_console_init() {
+#ifndef ARCHarm
 	kprocess_create("kfbrefresh",50,100,&text_console_fb_flush);
+#endif
 }
 
 #ifdef ARCHx86

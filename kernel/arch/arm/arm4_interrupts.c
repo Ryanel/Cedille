@@ -71,7 +71,7 @@ void arm4_interrupt_handler(uint32_t lr, uint32_t type) {
 		case ARM4_XRQ_SWINT:
 			swi = ((uint32_t*)((uintptr_t)lr - 4))[0] & 0xffff;
 			if(swi == 0 && self_test_swi0) {
-				printk("cpu","kernel[test]-> ARM4 SWI is working!\n");
+				printk(LOG_DEBUG,"cpu","kernel[test]-> ARM4 SWI is working!\n");
 				self_test_swi0=0;
 				break;
 			}
@@ -81,7 +81,7 @@ void arm4_interrupt_handler(uint32_t lr, uint32_t type) {
 		case ARM4_XRQ_ABRTP :
 		case ARM4_XRQ_ABRTD :
 		case ARM4_XRQ_RESV1 :
-			printk("error","Unhandled exception!\n");
+			printk(LOG_FAIL,"error","Unhandled exception!\n");
 			panic("Unhandled exception!");
 			break;
 		default:

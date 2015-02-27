@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <stdint.h>
+
 void arm_integratorcp_driver_serial_puts (const char * str);
 void arm_integratorcp_driver_serial_putc (char c);
 void graphics_terminal_drawchar(char c, int x, int y);
@@ -82,9 +83,6 @@ void text_console_reset_color() {
 #endif
 }
 
-void text_console_scroll(int x, int x2) {
-}
-
 void text_console_setcursor(int x, int y) {
 }
 
@@ -96,4 +94,8 @@ void processor_halt()
 }
 
 void vmm_shim_doBoardSetup() {
+}
+
+void text_console_fb_shim_flush(uint8_t *flush,uint32_t scroll_y) {
+	
 }
