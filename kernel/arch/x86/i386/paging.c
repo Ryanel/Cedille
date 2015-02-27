@@ -5,9 +5,9 @@
 #include <logging.h>
 #include <error.h>
 #include <cedille/pmm.h>
+#include <cedille/heap.h>
 #include <arch/x86/paging.h>
 #include <arch/x86/tables.h>
-uintptr_t * early_malloc_aligned(uint32_t sz);
 extern uintptr_t em_placement_addr;
 extern uint32_t _kernel_start,_kernel_end;
 page_directory_t * kernel_directory = NULL;
@@ -20,7 +20,7 @@ int create_pagedir() {
 	kernel_directory = (page_directory_t*)early_malloc_aligned(sizeof(page_directory_t));
 	memset((page_directory_t*)kernel_directory, 0, sizeof(page_directory_t));
 	current_directory = kernel_directory;
-	printk(LOG_INFO,"paging","Page directory 0x%x\n",current_directory);
+	printk(LOG_INTERNALS,"paging","Page directory @ 0x%x\n",current_directory);
 	return 0;
 }
 

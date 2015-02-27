@@ -4,7 +4,7 @@ ARCH := x86
 BOARD := i386
 
 BOARD_ID := ${ARCH}/${BOARD}
-COMPILE_OPTIONS := -DDEBUG
+COMPILE_OPTIONS := -DDEBUG -DOPTION_ENABLE_BUILDENV_PRINTING
 #Tools
 #--------------------------------------------
 

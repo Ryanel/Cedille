@@ -14,13 +14,13 @@ extern uint32_t _kernel_start,_kernel_end;
 uint32_t x86_init_descriptor_tables();
 void pit_install(uint32_t frequency);
 void irq1fix();
-void profile_kmemory();
+void kprocess_init();
 int kmain();
 
 int kernel_entry (void) {
-	
+	kprocess_init();
     text_console_init();
-    low_printname();
+    
     #ifdef DEBUG
 	printk(LOG_DEBUG,"mem","Kernel Resides @ 0x%X => 0x%X\n",&_kernel_start,&_kernel_end);
     #endif

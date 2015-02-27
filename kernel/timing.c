@@ -17,7 +17,7 @@ kernel_time_t timing_tick_resolution = 1000;
 int timing_active = 1;
 
 void text_console_fb_flush();
-
+void kprocess_doUpdate(kernel_time_t localtime);
 void timing_system_engine_reportstatustoconsole() {
 	printk(LOG_INFO,"timing","Timing Engine => active:%d; tick:%d; sec(k):%d; sec(r):%d;\n", \
 		timing_active,timing_tick,(((timing_tick * timing_tick_resolution) / 1000 )/ 1000),0);
@@ -39,8 +39,8 @@ void timing_system_engine_dotick(kernel_time_t tick) {
 		timing_tick_local -= timing_tick_resolution;
 	}
 	if(timing_active) {
-		if ((timing_tick_local % 16) == 0) { // Flush text console
-			text_console_fb_flush();
+		if ((timing_tick_local % 10) == 0) { // Flush text console
+			kprocess_doUpdate(timing_tick_local);
 		}
 		// Do fancy callbacks and stuff
 	}

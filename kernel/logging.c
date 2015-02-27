@@ -35,7 +35,7 @@ void printk(const int severity,const char * type, const char *fmt, ...) {
 			text_console_change_color(0xD);
 			break;
 		case LOG_INTERNALS:
-			text_console_change_color(0x1E);
+			text_console_change_color(0xD);
 			break;
 		case LOG_UNKN:
 		default: // LOG_UNKN

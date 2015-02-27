@@ -1,6 +1,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <ktypes.h>
 #include <text_console.h>
 #ifdef ARCHx86
 #include <arch/x86/ports.h>
@@ -70,9 +71,13 @@ void text_console_print(const char *c) {
     }
 }
 
-void text_console_init() {
+void kprocess_create(char * name,kernel_time_t localtime,kernel_time_t deltatime, void (*callback)(void));
+void text_console_fb_flush();
 
+void text_console_init() {
+	kprocess_create("kfbrefresh",50,100,&text_console_fb_flush);
 }
+
 #ifdef ARCHx86
 uint8_t text_console_fb_shim_x86_addattribute();
 #endif

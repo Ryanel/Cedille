@@ -77,7 +77,7 @@ void text_console_change_color(uint8_t color) {
 }
 
 void text_console_reset_color() {
-#ifdef GRAPHICS_DEVICE_PL100
+#ifdef ENABLE_GRAPHICS_DEVICE_PL110
 	graphics_terminal_resetrgb();
 #endif
 }
