@@ -57,10 +57,11 @@ void text_console_printc(char c) {
 			term_y++;
 			break;
 		default:
-			#ifdef ARCHarm
+			#ifndef ARCHarm
 			text_console_fb_addchar(c,term_x,term_y);
-			#endif
-			text_console_printchar(c,term_x, term_y);	
+			#else
+			text_console_printchar(c,term_x, term_y);
+			#endif	
 			term_x++;
 			break;		
 	}
