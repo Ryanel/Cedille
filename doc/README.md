@@ -9,16 +9,18 @@ Priority Goals
 * System Calls
 * Usermode
 * Processes + Scheduler
+* Retest all code
+* Move all prototypes to their respective headers.
 
 Regular Goals
 --------------------
+* Physical Memory Manager doesn't understand sections. Either set those frames as used, or scrap it
 * Document interfaces for porting (shims)
-* Real Memory Detection (currently assumes 16 MB on x86)
 * Kernel Debugger
 
 Easy Goals
 --------------------
-* Make scrolling work with Framebuffer
+* None?
 
 Stretch Goals
 --------------------

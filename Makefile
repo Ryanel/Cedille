@@ -101,7 +101,7 @@ clean:
 	@echo "CLN     *.o"
 	-@find . -name "*.o" -type f -delete
 	-@find ${BUILDDIR} -name "*" -type f -delete
-	-@find temp -name "*" -type f -delete
+	-@find temp	 -name "*" -type f -delete
 
 distclean: clean
 	rmdir ${BUILDDIR}

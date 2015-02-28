@@ -22,9 +22,13 @@ section .bootstrap_stack
             times 8192 db 0
         stack_top:
 
+; Note, do not modify eax / ebx, contain grub data.
 _start:
 	; Setup Stack
     mov esp, stack_top
+    ; Push multiboot data
+    push eax
+    push ebx
 	; Call kernel
     call kernel_entry
     cli
