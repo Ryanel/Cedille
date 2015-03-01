@@ -1,7 +1,6 @@
 #include <assert.h>
 #include <logging.h>
-
-void panic(char * s);
+#include <error.h>
 
 void k_assert( char const * const s) {
 	printk(LOG_FAIL,"assert","%s\n",s);

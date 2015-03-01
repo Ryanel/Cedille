@@ -31,6 +31,7 @@ Stretch Goals
 Bugs
 --------------------
 * Fix IRQ1 on x86 by either binding ALL IRQ's to a dummy handler or writing a real keyboard driver
+* IRQ code may corrupt the stack if optimizations are enabled. Check if its passing a pointer or a register image.
 
 Technical Debt
 --------------------

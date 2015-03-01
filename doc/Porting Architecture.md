@@ -13,6 +13,7 @@ Code requirements
 Prefer nasm, then yasm, then as. The entry point is `_start` and should setup the stack. Then it calls `kernel_entry()`
 2. `kernel_entry()` must be void, and stored in `init/entry.c`. 
 It needs to initialise the board to a point where all interrupts, paging, and other board setup is done and handled properly.
+It can contain parameters, like r0,r1,r2 on ARM and multiboot data on x86
 3. `kernel_entry()` needs to then hand control over to `kmain()`.
 Do not expect `kmain()` to return. The execution is mostly out of your hands now.
 4. Keep all architecture specific code out of `kernel/` unless it is necessary and wrapped in `#ifdef ARCH${NAME}` blocks.
