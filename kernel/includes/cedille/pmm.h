@@ -3,9 +3,7 @@
 
 #ifndef PMM_H
 #define PMM_H
-#ifdef ARCHx86
-#include <arch/x86/paging.h>
-#endif
+
 ///Page index from address
 #define INDEX_FROM_BIT(b) (b / 0x20)
 ///Page offest from address

@@ -1,5 +1,5 @@
-#include <arch/x86/ports.h>
 #include <stdint.h>
+#include <arch/x86/ports.h>
 ///Outputs a byte to port
 void outb(uint16_t port, uint8_t value)
 {

@@ -1,8 +1,9 @@
 #include <stddef.h>
 #include <stdint.h>
-#include <arch/x86/ports.h>
-#include <text_console.h>
 #include <string.h>
+#include <cedille/text_console.h>
+#include <arch/x86/ports.h>
+
 #define X86_CONSOLE_WIDTH  80
 #define X86_CONSOLE_HEIGHT 25
 

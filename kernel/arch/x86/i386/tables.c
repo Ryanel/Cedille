@@ -1,15 +1,14 @@
 #include <stdint.h>
-#include <logging.h>
 #include <string.h>
-#include <arch/x86/tables.h>
 #include <assert.h>
+#include <cedille/logging.h>
+#include <arch/x86/tables.h>
+
 struct gdt_entry gdt_entries[6];
 struct gdt_ptr   gdt_ptr;
 struct idt_entry idt_entries[256];
 struct idt_ptr   idt_ptr;
 tss_entry_t tss_entry;
-
-extern void tss_flush();
 
 ///Sets a gate in the GDT
 void gdt_set_gate(signed int num, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran)

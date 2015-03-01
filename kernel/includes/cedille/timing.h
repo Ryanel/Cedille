@@ -2,7 +2,7 @@
 #define TIMING_H
 #include <stdint.h>
 #include <stddef.h>
-#include <ktypes.h>
+#include <cedille/ktypes.h>
 #define TIMING_ENGINE_HARDTICK 0xFFFFFF
 
 void timing_system_engine_dotick(kernel_time_t tick);

@@ -1,16 +1,11 @@
-#include <logging.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
-#include <ktypes.h>
-#include <error.h>
-#define KPROCESS_MAX 10
-typedef struct {
-	void (*update)(void);
-	kernel_time_t updateTime;
-	kernel_time_t deltaTime;
-	char * name;
-} kprocess_t;
+#include <cedille/ktypes.h>
+#include <cedille/kprocess.h>
+#include <cedille/error.h>
+#include <cedille/logging.h>
+#define KPROCESS_MAX 10 //TODO: Move this and other configuration variables to a kconfig.h
 
 kprocess_t kprocess_list[KPROCESS_MAX];
 

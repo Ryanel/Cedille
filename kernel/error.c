@@ -1,8 +1,11 @@
 #include <stdint.h>
-#include <logging.h>
-uint32_t oops_counter = 0;
-void processor_halt();
+#include <cedille/logging.h>
+#include <cedille/error.h>
+static uint32_t oops_counter = 0;
+
 void kernel_doperiodic(int force, int tick);
+void processor_halt();
+
 void halt() {
 	printk(LOG_FAIL,"halt","Halting...\n");
 	kernel_doperiodic(1,0);

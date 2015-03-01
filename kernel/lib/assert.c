@@ -1,6 +1,6 @@
 #include <assert.h>
-#include <logging.h>
-#include <error.h>
+#include <cedille/logging.h>
+#include <cedille/error.h>
 
 void k_assert( char const * const s) {
 	printk(LOG_FAIL,"assert","%s\n",s);

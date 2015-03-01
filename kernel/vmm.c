@@ -1,9 +1,10 @@
 #include <stdint.h>
 #include <stddef.h>
-#include <logging.h>
+#include <assert.h>
+#include <cedille/logging.h>
 #include <cedille/pmm.h>
 #include <cedille/vmm.h>
-#include <assert.h>
+
 void vmm_shim_doBoardSetup();
 
 void vmm_init() {

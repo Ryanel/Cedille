@@ -1,11 +1,12 @@
 #include <stdint.h>
 #include <stddef.h>
+#include <cedille/heap.h>
 uintptr_t em_placement_addr;
 uintptr_t em_placement_addr_original;
 // Bug: Does not work for larger then 32-bit addressing.
-void init_early_malloc(uintptr_t address) {
-	em_placement_addr = address;
-	em_placement_addr_original = address;
+void init_early_malloc(uintptr_t * address) {
+	em_placement_addr = (uintptr_t)address;
+	em_placement_addr_original = (uintptr_t)address;
 	//Fix: Forces it to be paged aligned if it's not. See early_malloc_aligned for explanation
 	if((em_placement_addr & 0xFFFFF000) != em_placement_addr) {
 		em_placement_addr &= 0xFFFFF000;

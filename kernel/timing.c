@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stddef.h>
-#include <logging.h>
+#include <cedille/logging.h>
 #include <cedille/timing.h>
-#include <ktypes.h>
+#include <cedille/ktypes.h>
 /**
 Timing system
 **/

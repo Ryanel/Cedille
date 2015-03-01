@@ -1,22 +1,22 @@
 #include <stdio.h>
 #include <string.h>
-#include <logging.h>
-/**
-Logs output to system console. Works as an enchanced printf.
-@param[in] type  The kind or type of the entry. Is autocolored if it is common.
-@param[in] fmt  The message format. Passed directly to printf.
-@param[in] ...  Any paramaters to pass
-**/
+#include <cedille/logging.h>
+#include <cedille/text_console.h>
 
+//TODO: Move this to config logic header kconfig.h
 #ifndef DEBUG
 	#define DEBUG_ONLY_LOG return;
 #else
 	#define DEBUG_ONLY_LOG
 #endif
 
-void text_console_change_color(uint8_t color);
-void text_console_reset_color();
-
+/**
+Logs output to system console. Works as an enchanced printf.
+@param[in] severity  The log level - determines color and visibility.
+@param[in] type  The kind or type of the entry. The named unit
+@param[in] fmt  The message format. Passed directly to printf.
+@param[in] ...  Any paramaters to pass
+**/
 void printk(const int severity,const char * type, const char *fmt, ...) {
 	switch(severity) {
 		case LOG_COMPLETE:

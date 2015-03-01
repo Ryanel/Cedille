@@ -6,7 +6,10 @@
 
 #include <stdint.h>
 
-#define FEATURE_ALIGN_4K 1
+#define FEATURE_VMM_ALIGN_4K 1
+
+#define VMM_MAP_TYPE_FORBIDDEN 0
+#define VMM_MAP_TYPE_HEAP 1
 
 typedef struct {
 	uintptr_t   type;
@@ -17,8 +20,6 @@ typedef struct {
 	uintptr_t * virtend;
 } vmm_mapping_entry_t;
 
-#define VMM_MAP_TYPE_FORBIDDEN 0
-#define VMM_MAP_TYPE_HEAP 1
 void vmm_shim_doBoardSetup();
 void vmm_init();
 void vmm_doNormalSetup();

@@ -1,6 +1,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdarg.h>
+#include <cedille/text_console.h>
 /* flags used in processing format string */
 #define	PR_LJ	0x01	/* left justify */
 #define	PR_CA	0x02	/* use A-F instead of a-f for hex */
@@ -14,8 +15,6 @@
 2^32-1 in base 8 has 11 digits (add 5 for trailing NUL and for slop) */
 #define	PR_BUFLEN	16
 //#define NULL 0
-
-void text_console_printc(char);
 
 unsigned int strlen_unsigned(const unsigned char *str)
 {

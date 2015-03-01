@@ -1,6 +1,5 @@
 #include <arch/x86/tables.h>
 #include <arch/x86/ports.h>
-#include <logging.h>
 #include <cedille/timing.h>
 uint64_t pit_internal_ticks = 0;
 ///Handles the PIT ticks and reports them to the central clock.

@@ -20,7 +20,7 @@ Regular Goals
 
 Easy Goals
 --------------------
-* None?
+* Move configuation variables to their own file, or cedille/kconfig.h
 
 Stretch Goals
 --------------------

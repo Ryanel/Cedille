@@ -2,18 +2,17 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include <ktypes.h>
-#include <text_console.h>
+#include <cedille/ktypes.h>
+#include <cedille/text_console.h>
+#include <cedille/kprocess.h>
 #ifdef ARCHx86
 #include <arch/x86/ports.h>
 #endif
+//TODO: Move this and other configuration variables to a kconfig.h
 #define TERM_FB_MX 80
 #define TERM_FB_MY 25
 #define TERM_FB_SCREENS 4
 
-void kprocess_create(char * name,kernel_time_t localtime,kernel_time_t deltatime, void (*callback)(void));
-void text_console_fb_flush();
-void text_console_scroll();
 volatile uint8_t term_x = 0;
 volatile uint8_t term_y = 0;
 uint32_t scroll_y = 0;

@@ -30,5 +30,5 @@ typedef struct page_directory {
 void paging_alloc_frame(page_t *page, int kernel, int rw);
 page_t * paging_get_page(uintptr_t addr, int create, page_directory_t *dir);
 void paging_free_frame(page_t *page);
-
+int paging_setup();
 #endif /* KERNEL_INCLUDES_ARCH_X86_PAGING_H */

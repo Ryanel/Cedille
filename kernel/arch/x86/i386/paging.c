@@ -2,8 +2,8 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdio.h>
-#include <logging.h>
-#include <error.h>
+#include <cedille/logging.h>
+#include <cedille/error.h>
 #include <cedille/pmm.h>
 #include <cedille/heap.h>
 #include <arch/x86/paging.h>

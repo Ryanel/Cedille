@@ -1,6 +1,7 @@
 #ifndef TEXT_CONSOLE_H
 #define TEXT_CONSOLE_H
-
+#include <stdint.h>
+#include <stddef.h>
 void text_console_printc(char c);
 void text_console_print(const char *c);
 void text_console_init();
@@ -16,4 +17,5 @@ void text_console_reset_color();
 
 void text_console_fb_addchar(char c, uint8_t x, uint8_t y);
 void text_console_fb_shim_flush(uint8_t *flush,uint32_t scroll_y);
+void text_console_fb_flush();
 #endif

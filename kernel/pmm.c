@@ -3,10 +3,7 @@
 #include <stddef.h>
 #include <cedille/pmm.h>
 #include <cedille/heap.h>
-#include <logging.h>
-#ifdef DEBUG
-#include <stdio.h>
-#endif
+#include <cedille/logging.h>
 #ifdef ARCHx86
 #include <arch/x86/paging.h>
 #endif

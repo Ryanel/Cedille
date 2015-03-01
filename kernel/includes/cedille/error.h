@@ -5,4 +5,5 @@
 
 void oops(char * s);
 void panic(char *s);
+
 #endif

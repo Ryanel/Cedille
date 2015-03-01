@@ -1,4 +1,5 @@
-void text_console_print(const char *c);
+#include <cedille/text_console.h>
+
 void log_low(const char * str) {
     text_console_print(str);
 }

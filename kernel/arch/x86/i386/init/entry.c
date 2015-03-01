@@ -1,21 +1,22 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <state.h>
-#include <logging.h>
-#include <error.h>
-#include <text_console.h>
-
+#include <cedille/error.h>
+#include <cedille/state.h>
+#include <cedille/logging.h>
+#include <cedille/text_console.h>
 #include <cedille/pmm.h>
 #include <cedille/heap.h>
+#include <cedille/kprocess.h>
 #include <arch/x86/tables.h>
 #include <interface/multiboot1.h>
+
 extern uint32_t _kernel_start,_kernel_end;
 
 uint32_t x86_init_descriptor_tables();
 void pit_install(uint32_t frequency);
 void irq1fix();
-void kprocess_init();
+
 int kmain();
 
 int kernel_entry (multiboot_info_t* mbd, unsigned int magic) {

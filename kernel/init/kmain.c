@@ -1,4 +1,4 @@
-#include <logging.h>
+#include <cedille/logging.h>
 #include <cedille/pmm.h>
 #include <cedille/heap.h>
 extern uint32_t _kernel_start,_kernel_end;
