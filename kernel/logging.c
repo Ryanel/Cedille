@@ -2,13 +2,7 @@
 #include <string.h>
 #include <cedille/logging.h>
 #include <cedille/text_console.h>
-
-//TODO: Move this to config logic header kconfig.h
-#ifndef DEBUG
-	#define DEBUG_ONLY_LOG return;
-#else
-	#define DEBUG_ONLY_LOG
-#endif
+#include <cedille/kconfig.h>
 
 /**
 Logs output to system console. Works as an enchanced printf.
@@ -49,43 +43,4 @@ void printk(const int severity,const char * type, const char *fmt, ...) {
 	vprintf(fmt,args);
 	va_end(args);
 
-}
-
-/**
- Logs a version of bytes that is best for human readablity. Does not print a newline 
- @param[in] bytes How many bytes are there to judge?
- **/
-void logging_printbestunit(uint32_t bytes, uint8_t newline)
-{
-	uint8_t unit = 0; // 0 bytes, 1 kib, 2 mib, 3 gib
-	if(bytes >= 1024)
-	{
-		unit = 1;
-	}
-	if(bytes >= 1048576)
-	{
-		unit = 2;
-	}
-	if(bytes >= 1073741824)
-	{
-		unit = 3;
-	}
-	switch (unit) {
-		case 0:
-			printf("%d %s",bytes,"b");
-			break;
-		case 1:
-			printf("%d %s",bytes / 1024,"KiB");
-			break;
-		case 2:
-			printf("%d %s",(bytes / 1024) / 1024,"MiB");
-			break;
-		case 3:
-			printf("%d %s",(bytes / 1024) / 1024,"MiB");
-			break;
-	}
-	if(newline)
-	{
-		printf("\n");
-	}
 }

@@ -2,25 +2,22 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <cedille/kconfig.h>
 #include <cedille/ktypes.h>
 #include <cedille/text_console.h>
 #include <cedille/kprocess.h>
 #ifdef ARCHx86
 #include <arch/x86/ports.h>
 #endif
-//TODO: Move this and other configuration variables to a kconfig.h
-#define TERM_FB_MX 80
-#define TERM_FB_MY 25
-#define TERM_FB_SCREENS 4
 
 volatile uint8_t term_x = 0;
 volatile uint8_t term_y = 0;
 uint32_t scroll_y = 0;
 int term_fb_flag_modified = 0;
 #ifdef ARCHx86
-uint8_t text_console_fb[TERM_FB_MX * TERM_FB_MY * TERM_FB_SCREENS * 2]; // Stores attribute byte as well on x86.
+uint8_t text_console_fb[CONFIG_TEXTCONSOLE_FB_MX * CONFIG_TEXTCONSOLE_FB_MY * CONFIG_TEXTCONSOLE_FB_SCREENS * 2]; // Stores attribute byte as well on x86.
 #else
-uint8_t text_console_fb[TERM_FB_MX * TERM_FB_MY * TERM_FB_SCREENS]; 
+uint8_t text_console_fb[CONFIG_TEXTCONSOLE_FB_MX * CONFIG_TEXTCONSOLE_FB_MY * CONFIG_TEXTCONSOLE_FB_SCREENS]; 
 #endif
 
 void scroll() {
@@ -65,7 +62,7 @@ void text_console_printc(char c) {
 			break;		
 	}
 	
-	if (term_x >= TERM_FB_MX) {
+	if (term_x >= CONFIG_TEXTCONSOLE_FB_MX) {
 		term_x = 0;
 		term_y++;
 	}
@@ -95,10 +92,10 @@ uint8_t text_console_fb_shim_x86_addattribute();
 #endif
 void text_console_fb_addchar(char c, uint8_t x, uint8_t y) {
 	#ifdef ARCHx86
-	text_console_fb[((y * TERM_FB_MX) + x) * 2] = c; // Multiply by 2 so you can add attribute byte.
-	text_console_fb[(((y * TERM_FB_MX) + x) * 2) + 1] = text_console_fb_shim_x86_addattribute();
+	text_console_fb[((y * CONFIG_TEXTCONSOLE_FB_MX) + x) * 2] = c; // Multiply by 2 so you can add attribute byte.
+	text_console_fb[(((y * CONFIG_TEXTCONSOLE_FB_MX) + x) * 2) + 1] = text_console_fb_shim_x86_addattribute();
 	#else
-	text_console_fb[(y * TERM_FB_MX) + x] = c; 
+	text_console_fb[(y * CONFIG_TEXTCONSOLE_FB_MX) + x] = c; 
 	#endif
 	term_fb_flag_modified = 1;
 }
@@ -111,17 +108,17 @@ void text_console_fb_flush() {
 }
 
 void text_console_scroll() {
-	if(TERM_FB_MY + scroll_y < term_y){
+	if(CONFIG_TEXTCONSOLE_FB_MY + scroll_y < term_y){
 		scroll_y++;
 	}
 	// Resets if it gets to big
 	// TODO: Replace this with a less destructive thingy
-	if(scroll_y >= (TERM_FB_MY - 2) * TERM_FB_SCREENS) {
-		uint32_t screensize = (TERM_FB_MX * TERM_FB_MY);
+	if(scroll_y >= (CONFIG_TEXTCONSOLE_FB_MY - 2) * CONFIG_TEXTCONSOLE_FB_SCREENS) {
+		uint32_t screensize = (CONFIG_TEXTCONSOLE_FB_MX * CONFIG_TEXTCONSOLE_FB_MY);
 		#ifdef ARCHx86
 		screensize = screensize * 2;
 		#endif
-		memset(&text_console_fb,0,screensize * TERM_FB_SCREENS);
+		memset(&text_console_fb,0,screensize * CONFIG_TEXTCONSOLE_FB_SCREENS);
 		scroll_y = 0;
 		term_y = 0;
 	}

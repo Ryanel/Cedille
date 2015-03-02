@@ -2,15 +2,16 @@
 #include <string.h>
 #include <stddef.h>
 #include <cedille/pmm.h>
+#include <cedille/kconfig.h>
 #include <cedille/heap.h>
 #include <cedille/logging.h>
 #ifdef ARCHx86
 #include <arch/x86/paging.h>
 #endif
-uintptr_t *bitmap; //Pointer to first frame, first index. The actual bitmap
-uintptr_t frame_amount; //How many frames CAN there be?
-uintptr_t mem_end = 0x1000000; //Where does memory end. Default's to all addressable ram
-uintptr_t mem_end_aligned; //Where does memory end, page aligned.
+uintptr_t *bitmap 			= NULL; //Pointer to first frame, first index. The actual bitmap
+uintptr_t frame_amount 		= 0; //How many frames CAN there be?
+uintptr_t mem_end 			= CONFIG_PMM_DEFAULT_MAXMEM; //Where does memory end. Default's to all addressable ram
+uintptr_t mem_end_aligned 	= CONFIG_PMM_DEFAULT_MAXMEM; //Where does memory end, page aligned.
 
 uintptr_t pmm_frame_amount() {
 	return frame_amount;
