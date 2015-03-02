@@ -30,12 +30,12 @@ void paging_alloc_frame(page_t *page, int kernel, int rw) {
 		return;
 	}
 
-	uint32_t index = pmm_first_frame();
+	uint32_t index = pmm_pfaBitmapGetFirstFrame();
 	if(index == (uint32_t)-1) {
 		panic("PMM is out of memory");
 	}
 
-	pmm_set_frame(index * 0x1000);
+	pmm_pfaBitmapSetFrame(index * 0x1000);
 
 	page->present = 1;
 	page->rw = (rw)?1:0; // Should the page be writeable?
@@ -62,7 +62,7 @@ page_t * paging_get_page(uintptr_t address, int create, page_directory_t *dir) {
 
 void paging_free_frame(page_t *page) {
 	if(!(page->frame)) {return;}
-	pmm_clear_frame(page->frame * 0x1000);
+	pmm_pfaBitmapClearFrame(page->frame * 0x1000);
 	page->frame = 0;
 }
 

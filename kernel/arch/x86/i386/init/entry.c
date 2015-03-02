@@ -30,7 +30,7 @@ int kernel_entry (multiboot_info_t* mbd, unsigned int magic) {
     }
     // It's okay to access multiboot data structures now
     
-    pmm_set_maxmem(mbd->mem_upper * 1024); // It's KB, multiply to get bytes.
+    pmm_pfaSetMaxMemory(mbd->mem_upper * 1024); // It's KB, multiply to get bytes.
 
     #ifdef DEBUG
 	printk(LOG_DEBUG,"mem","Kernel Resides @ 0x%X => 0x%X\n",&_kernel_start,&_kernel_end);

@@ -13,30 +13,30 @@ uintptr_t frame_amount 		= 0; //How many frames CAN there be?
 uintptr_t mem_end 			= CONFIG_PMM_DEFAULT_MAXMEM; //Where does memory end. Default's to all addressable ram
 uintptr_t mem_end_aligned 	= CONFIG_PMM_DEFAULT_MAXMEM; //Where does memory end, page aligned.
 
-uintptr_t pmm_frame_amount() {
+uintptr_t pmm_pfaGetTotalPages() {
 	return frame_amount;
 }
 
-void pmm_set_frame(uintptr_t address) {
+void pmm_pfaBitmapSetFrame(uintptr_t address) {
 	uintptr_t frame_addr = address / 0x1000;
 	uintptr_t index = INDEX_FROM_BIT(frame_addr);
 	uintptr_t offset = OFFSET_FROM_BIT(frame_addr);
 	bitmap[index] |= (0x1 << offset);
 }
-void pmm_clear_frame(uintptr_t address) {
+void pmm_pfaBitmapClearFrame(uintptr_t address) {
 	uintptr_t frame_addr = address / 0x1000;
 	uintptr_t index = INDEX_FROM_BIT(frame_addr);
 	uintptr_t offset = OFFSET_FROM_BIT(frame_addr);
 	bitmap[index] &= ~(0x1 << offset);
 }
-uintptr_t pmm_test_frame(uintptr_t address) {
+uintptr_t pmm_pfaBitmapTestFrame(uintptr_t address) {
 	uintptr_t frame_addr = address / 0x1000;
 	uintptr_t index = INDEX_FROM_BIT(frame_addr);
 	uintptr_t offset = OFFSET_FROM_BIT(frame_addr);
 	return (bitmap[index] & (0x1 << offset));
 }
 
-uintptr_t pmm_first_frame() {
+uintptr_t pmm_pfaBitmapGetFirstFrame() {
 	uintptr_t i,j;
 	for (i = 0; i < INDEX_FROM_BIT(frame_amount); i++) {
 		if(bitmap[i] != 0xFFFFFFFF) {
@@ -50,27 +50,46 @@ uintptr_t pmm_first_frame() {
 	}
 	return -1;
 }
-//TODO: Force PMM to check status and report statuses back instead of assuming it works
-void pmm_alloc_frame(uintptr_t address, int kernel, int rw) {
-	pmm_shim_alloc_frame(address, kernel, rw);
+
+void pmm_pfaAllocateSinglePage(uintptr_t address) {
+	pmm_pfaBitmapSetFrame(address);
+	pmm_ShimAllocFrame(address, 1, 1);
 }
 
-void pmm_free_frame(uintptr_t address) {
-	pmm_shim_free_frame(address);
-	pmm_clear_frame(address);
+uintptr_t * pmm_pfaAllocatePages(unsigned int n) {
+	if(n < 2) {
+		return 0;
+	}
+	uintptr_t potential_first = pmm_pfaBitmapGetFirstFrame() * 0x1000;
+	for(unsigned int i = 0; i != n; i++) {
+		if(pmm_pfaBitmapTestFrame(potential_first + (0x1000 * i)) == 1) {
+			potential_first = (potential_first + (0x1000 * i));
+		}
+	}
+	// It passes, keep potential first and return it after setting used bits.
+	for(unsigned int i = 0; i != n; i++) {
+		pmm_pfaAllocateSinglePage(potential_first + (0x1000 * i));
+	}
+	printf("Potential first:0x%X\n",potential_first);
+	return (uintptr_t*)potential_first;
 }
 
-void pmm_set_maxmem(uintptr_t max) {
+void pmm_pfaFreeSinglePage(uintptr_t address) {
+	pmm_ShimFreeFrame(address);
+	pmm_pfaBitmapClearFrame(address);
+}
+
+void pmm_pfaSetMaxMemory(uintptr_t max) {
 	mem_end = max;
 }
 
-inline uintptr_t pmm_alloc_first() {
-	uintptr_t address = pmm_first_frame();
-	pmm_alloc_frame(address,1,1);
+inline uintptr_t pmm_pfaAllocateFirst() {
+	uintptr_t address = pmm_pfaBitmapGetFirstFrame();
+	pmm_pfaAllocateSinglePage(address);
 	return address;
 }
 
-void init_pmm() {
+void pmm_pfaInit() {
 	//printf("Allocating pages...\n");
 	mem_end_aligned = (mem_end & 0xFFFFF000);
 

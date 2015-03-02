@@ -8,23 +8,27 @@
 #define INDEX_FROM_BIT(b) (b / 0x20)
 ///Page offest from address
 #define OFFSET_FROM_BIT(b) (b % 0x20)
+
 ///Init the pmm
-void init_pmm();
+void pmm_pfaInit();
 ///Set the frame that governs address to used
-void pmm_set_frame(uintptr_t address);
+void pmm_pfaBitmapSetFrame(uintptr_t address);
 ///Set the frame that governs address to free
-void pmm_clear_frame(uintptr_t address);
+void pmm_pfaBitmapClearFrame(uintptr_t address);
 ///Is the frame that governs address used?
-uintptr_t pmm_test_frame(uintptr_t address);
+uintptr_t pmm_pfaBitmapTestFrame(uintptr_t address);
 ///First free frame
-uintptr_t pmm_first_frame();
+uintptr_t pmm_pfaBitmapGetFirstFrame();
 ///How many possible frames?
-uintptr_t pmm_frame_amount();
-///Allocate a frame from page
-void pmm_alloc_frame(uintptr_t address, int kernel, int rw);
-void pmm_shim_alloc_frame(uintptr_t address, int kernel, int rw);
+uintptr_t pmm_pfaGetTotalPages();
+///Allocate a single frame
+void pmm_pfaAllocateSinglePage(uintptr_t address);
 ///Free a frame
-void pmm_free_frame(uintptr_t address);
-void pmm_shim_free_frame(uintptr_t address);
-void pmm_set_maxmem(uintptr_t max);
+void pmm_pfaFreeSinglePage(uintptr_t address);
+void pmm_pfaSetMaxMemory(uintptr_t max);
+
+uintptr_t * pmm_pfaAllocatePages(unsigned int n);
+
+void pmm_ShimAllocFrame(uintptr_t address, int kernel, int rw);
+void pmm_ShimFreeFrame(uintptr_t address);
 #endif
