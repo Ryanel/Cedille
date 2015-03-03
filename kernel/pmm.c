@@ -57,7 +57,7 @@ void pmm_pfaAllocateSinglePage(uintptr_t address) {
 }
 
 uintptr_t * pmm_pfaAllocatePages(unsigned int n) {
-	if(n < 2) {
+	if(n < 1) {
 		return 0;
 	}
 	uintptr_t potential_first = pmm_pfaBitmapGetFirstFrame() * 0x1000;

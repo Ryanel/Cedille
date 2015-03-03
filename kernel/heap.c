@@ -5,8 +5,9 @@
 extern uintptr_t em_placement_addr;
 
 vmm_mapping_entry_t heap_map; // Allocate at compile to force its existance
-
+void heap_mmInit();
 void heap_init() {
+	heap_mmInit();
 	return; //TODO: Do nothing right now
 	heap_map.owned_process 	= 0;
 	heap_map.type			= VMM_MAP_TYPE_HEAP;

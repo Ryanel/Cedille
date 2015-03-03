@@ -31,15 +31,7 @@ int kmain() {
 	timing_system_engine_reportstatustoconsole();
 
 	//Tests
-	printf("Performing tests\n");
-	void * a;
-	void * b;
-	void * c;
-	void * d;
-	a = malloc(32);
-	b = malloc(32);
-	printf("A:0x%X\n",a);
-	printf("B:0x%X\n",b);
+	
 	kernel_doperiodic(1,0); // Force stuff to happen once at the end of initialisation
 	kernel_idle_process();
 	return 0;
