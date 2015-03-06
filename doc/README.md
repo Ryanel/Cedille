@@ -16,11 +16,13 @@ Regular Goals
 --------------------
 * Physical Memory Manager doesn't understand sections. Either set those frames as used, or scrap it
 * Document interfaces for porting (shims)
+* Document interfaces for subsystems.
+* Rewrite PMM to use a consistent interface for storing used frames - even supporting multiple interfaces. (Stack, commit to bitmap)
 * Kernel Debugger
 
 Easy Goals
 --------------------
-* Move configuation variables to their own file, or cedille/kconfig.h
+* Move configuration variables to their own file, or cedille/kconfig.h
 
 Stretch Goals
 --------------------
@@ -37,6 +39,6 @@ Technical Debt
 --------------------
 * Little to no documentation (in progress...!)
 * Uncredited code needs to be removed or credited
-* An offical style guide
+* An official style guide
 * Comment existing code
 

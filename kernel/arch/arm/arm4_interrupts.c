@@ -2,8 +2,8 @@
 #include <stdint.h>
 #include <arch/arm/arm4/interrupts.h>
 #include <stdio.h>
-#include <logging.h>
-#include <error.h>
+#include <cedille/logging.h>
+#include <cedille/error.h>
 
 uint32_t self_test_swi0 = 1;
 

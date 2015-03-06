@@ -1,5 +1,5 @@
-#include <state.h>
-#include <logging.h>
+#include <cedille/state.h>
+#include <cedille/logging.h>
 #include <cedille/pmm.h>
 #include <cedille/heap.h>
 #include <arch/arm/arm4/interrupts.h>

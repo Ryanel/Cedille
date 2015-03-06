@@ -1,7 +1,7 @@
 Porting to Different Architectures
 ===================
 
-In `kernel/` there is a folder called arch that contains subdirectories for each architecture that Cedille supports. In these folders is a mirror of the `kernel/` directory tree, as well as _boards_, sub-architectures that have there own code as well. Each directory gets more specialised, the code in `arch/arm/` will work for all ARM processors, but the code in `arch/arm/rpi/` will only work on the Raspberry Pi. 
+In `kernel/` there is a folder called arch that contains subdirectories for each architecture that Cedille supports. In these folders is a mirror of the `kernel/` directory tree, as well as _boards_, sub-architectures that have there own code as well. Each directory gets more specialized, the code in `arch/arm/` will work for all ARM processors, but the code in `arch/arm/rpi/` will only work on the Raspberry Pi. 
 
 In this example, the Raspberry Pi is compiled with all the code in `arch/arm/rpi`, the (general) code in `arch/arm/` as well as the main kernel code. Each subdirectory's structure is a mirror of `kernel/`, so that files that would be in `init` that relate to the Raspberry Pi would go in `arch/arm/rpi/init/`. It also has the subdirectory `drivers` which stores drivers for each board and arch. It is also required that a linker file be placed in the root of the board titled `link.ld`. This is board specific.
 
@@ -12,7 +12,7 @@ Code requirements
 1. The code must start in assembly (in `init/start.s`, yes `.s`). 
 Prefer nasm, then yasm, then as. The entry point is `_start` and should setup the stack. Then it calls `kernel_entry()`
 2. `kernel_entry()` must be void, and stored in `init/entry.c`. 
-It needs to initialise the board to a point where all interrupts, paging, and other board setup is done and handled properly.
+It needs to initialize the board to a point where all interrupts, paging, and other board setup is done and handled properly.
 It can contain parameters, like r0,r1,r2 on ARM and multiboot data on x86
 3. `kernel_entry()` needs to then hand control over to `kmain()`.
 Do not expect `kmain()` to return. The execution is mostly out of your hands now.

@@ -6,9 +6,9 @@ The text console frame buffer is a buffer that stores all the text printed by th
 2. It blocks the kernel main thread, as it is the only thread
 3. Does this PER CHARACTER PRINTED.
 
-The solution was to avoid hardware accesses until necessary. The framebuffer is used like the old hardware framebuffer was used, but blits every `100 ticks` (`100ms` by default) and all at once to the screen. This prevents IO blocking, and allows the software to boot in  `9ms` since the system clock was initialized.
+The solution was to avoid hardware accesses until necessary. The framebuffer is used like the old hardware framebuffer was used, but blits every `100 ticks` (`100ms` by default) and all at once to the screen. This prevents IO blocking, and allows the software to boot in  `9ms` (best case) since the system clock was initialized.
 
-It refreshes every `100ms` because user interaction does not require high frame rates on a text mode console. It can be flushed / written to independant of the timer, and should be triggered before critical sections, so the user has all data on screen in the event of a crash (Possibly in a function like `kernel_doperiodic()`
+It refreshes every `100ms` because user interaction does not require high frame rates on a text mode console. It can be flushed / written to independent of the timer, and should be triggered before critical sections, so the user has all data on screen in the event of a crash (in a function like `kernel_doperiodic()`
 
 Features
 --------------------
