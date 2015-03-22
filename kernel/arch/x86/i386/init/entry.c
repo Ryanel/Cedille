@@ -20,7 +20,7 @@ void irq1fix();
 int kmain();
 
 int kernel_entry (multiboot_info_t* mbd, unsigned int magic) {
-	kprocess_init();
+    kprocess_init();
     text_console_init();
     
     // Do multiboot verification AFTER initialising the text console.
