@@ -1,1 +1,0 @@
-; TODO, process paging code as raw assembly

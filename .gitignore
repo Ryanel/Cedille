@@ -1,8 +1,6 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
+# Backups
 *~
+
 # Compiled Dynamic libraries
 *.so
 *.dylib
@@ -12,17 +10,32 @@
 *.la
 *.a
 
-# Toolkit
-toolkit/binutils/
-toolkit/binutils-pi/
-toolkit/build-binutils/*
-toolkit/build-binutils-pi/*
-toolkit/binutils-2.22/
-toolkit/*.tar.gz
-toolkit/*.tar.bz2
-toolkit/cross/*
-toolkit/bin/*
-toolkit/gcc/*
+# Compiled executables
+*.elf
+*.aout
+
+# Mac stuff
+libiconv*
+.DS_Store
+
+# Build artifacts
+*.iso
+*.img
+*.bin
+*.mod
+*.map
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.d
+
+# Development artifacts
+*.log
+*.tags*
+ldcedilz
+iso/system/cedille
+t/gcc/*
 *.elf
 *.aout
 toolkit/arm-2008q3/
