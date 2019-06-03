@@ -56,7 +56,7 @@ all: kernel.elf
 
 kernel.elf: $(OBJS) $(ARCHDIR)/linker.ld
 	@echo "[ ELF ]: Compiling Kernel"
-	@$(CC) -T $(ARCHDIR)/linker.ld -o $@ $(CFLAGS) $(LINK_LIST)
+	@$(CPP) -T $(ARCHDIR)/linker.ld -o $@ $(CPPFLAGS) $(LINK_LIST)
 	@echo "[ ELF ]: Compiled"
 	
 
@@ -76,12 +76,30 @@ $(ARCHDIR)/crt/crtbegin.o $(ARCHDIR)/crt/crtend.o:
 	@$(CC) -MD -c $< -o $@ $(CFLAGS)
 
 .asm.o:
-	nasm $(ASMFLAGS) $< -o $@ 
+	@nasm $(ASMFLAGS) $< -o $@ 
 
 clean:
-	rm -f kernel.elf
-	rm -f $(OBJS) *.o */*.o */*/*.o
-	rm -f $(OBJS:.o=.d) *.d */*.d */*/*.d
+	@echo "[CLEAN] src/kernel"
+	@rm -f kernel.elf
+	@rm -f $(OBJS) *.o */*.o */*/*.o
+	@rm -f $(OBJS:.o=.d) *.d */*.d */*/*.d
+	@find . -name \*.expand -type f -delete
+	@find . -name \*.vregs -type f -delete 
+	@find . -name \*.into_cfglayout -type f -delete 
+	@find . -name \*.jump -type f -delete 
+	@find . -name \*.subreg* -type f -delete 
+	@find . -name \*.dfinit -type f -delete 
+	@find . -name \*.cse* -type f -delete 
+	@find . -name \*.fwprop* -type f -delete 
+	@find . -name \*.cprop* -type f -delete
+	@find . -name \*.pre -type f -delete 
+	@find . -name \*.ce* -type f -delete 
+	@find . -name \*.reginfo -type f -delete
+	@find . -name \*.loop* -type f -delete 
+	@find . -name \*.dse* -type f -delete
+	@find . -name \*.init-regs -type f -delete 
+	@find . -name \*.combine -type f -delete 
+	@find . -name \*.split* -type f -delete 
 
 install: install-headers install-kernel
 

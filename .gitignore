@@ -51,8 +51,6 @@ libiconv*
 initutil
 *.log
 *.tags*
-ldcedilz
-iso/system/cedille
 build/
 
 .cproject

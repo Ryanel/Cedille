@@ -82,9 +82,11 @@ libk.a: $(LIBK_OBJS)
 	@$(CC) -MD -c $< -o $@ $(LIBK_CFLAGS)
 
 clean:
-	rm -f $(BINARIES) *.a
-	rm -f $(OBJS) $(LIBK_OBJS) *.o */*.o */*/*.o
-	rm -f $(OBJS:.o=.d) $(LIBK_OBJS:.o=.d) *.d */*.d */*/*.d
+	@echo "[CLEAN] src/libc"
+	@rm -f $(BINARIES) *.a
+	@rm -f $(OBJS) $(LIBK_OBJS) *.o */*.o */*/*.o
+	@rm -f $(OBJS:.o=.d) $(LIBK_OBJS:.o=.d) *.d */*.d */*/*.d
+	
 
 install: install-headers install-libs
 

@@ -2,11 +2,11 @@
 
 class KernelLogImpl {
  public:
-  void Clear();
-  void Newline();
-  void ChangeForegroundColor(char c);
-  void ChangeBackgroundColor(char c);
-  void Print(char c);
+  virtual void Clear() = 0;
+  virtual void Newline() = 0;
+  virtual void ChangeForegroundColor(char c) = 0;
+  virtual void ChangeBackgroundColor(char c) = 0;
+  virtual void Print(char c) = 0;
 };
 
 class KernelLog {
@@ -16,6 +16,10 @@ class KernelLog {
 
  public:
   void Init(KernelLogImpl* impl);
-  void Log(char* str);
-  void ChangeColor(char*);
+  void Log(const char* str);
+  void Log(char c);
+  void ChangeForegroundColor(char c);
+  void ChangeBackgroundColor(char c);
 };
+
+extern KernelLog g_log;
