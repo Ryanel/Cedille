@@ -7,7 +7,7 @@
 x86TextModeLog textmodeLog;
 
 extern "C" void kernel_start(void) {
-  g_log.Init(&textmodeLog);
-  g_log.Log("Hello, World!");
-  kmain();
+    g_log.Init(&textmodeLog);
+    g_log.Log("Hello, World!");
+    kmain();
 }

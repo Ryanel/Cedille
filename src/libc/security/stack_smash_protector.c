@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <stdlib.h>
-//#include <kernel/panic.h>
+#include <kernel/panic.h>
 
 #if UINT32_MAX == UINTPTR_MAX
 #define STACK_CHK_GUARD 0xe2dee396
@@ -13,7 +13,7 @@ uintptr_t __stack_chk_guard = STACK_CHK_GUARD;
 __attribute__((noreturn)) void __stack_chk_fail(void)
 {
 #if defined(__is_libk)
-    //panic("Stack was smashed!");
+    panic("Stack was smashed!");
 #else
     printf("Stack smashed\n");
 #endif

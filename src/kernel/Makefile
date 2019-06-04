@@ -31,7 +31,8 @@ LIBS:=$(LIBS) $(KERNEL_ARCH_LIBS)
 KERNEL_OBJS=\
 	$(KERNEL_ARCH_OBJS) \
 	main.o \
-	log.o
+	log.o \
+	panic.o
 
 OBJS=\
 	$(ARCHDIR)/crt/crti.o \
@@ -55,9 +56,9 @@ LINK_LIST=\
 all: kernel.elf
 
 kernel.elf: $(OBJS) $(ARCHDIR)/linker.ld
-	@echo "[ ELF ]: Compiling Kernel"
+	@echo "[ ELF ] Compiling Kernel..."
 	@$(CPP) -T $(ARCHDIR)/linker.ld -o $@ $(CPPFLAGS) $(LINK_LIST)
-	@echo "[ ELF ]: Compiled"
+	@echo "[ ELF ] Kernel Compiled Successfully"
 	
 
 $(ARCHDIR)/crt/crtbegin.o $(ARCHDIR)/crt/crtend.o:
@@ -75,7 +76,7 @@ $(ARCHDIR)/crt/crtbegin.o $(ARCHDIR)/crt/crtend.o:
 	@echo "[ ASM ] $<"
 	@$(CC) -MD -c $< -o $@ $(CFLAGS)
 
-.asm.o:
+.nasm.o:
 	@nasm $(ASMFLAGS) $< -o $@ 
 
 clean:

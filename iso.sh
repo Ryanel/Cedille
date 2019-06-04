@@ -16,4 +16,4 @@ menuentry "Cedille" {
 }
 EOF
 
-grub-mkrescue -o build/artifact.iso ./build/isodir
+grub-mkrescue -o build/artifact.iso ./build/isodir -quiet
