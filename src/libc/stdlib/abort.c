@@ -12,7 +12,7 @@ __attribute__((__noreturn__)) void abort(void)
     panic("abort() was called!");
 #else
     // TODO: Abnormally terminate the process as if by SIGABRT.
-    printf("abort()\n");
+    printf("abort()!\n");
 #endif
     while (1)
     {

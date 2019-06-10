@@ -6,6 +6,6 @@ for PROJECT in $PROJECTS; do
   (cd src/$PROJECT && $MAKE clean)
 done
 
-rm -rf sysroot
-rm -rf isodir
-rm -rf nyx.iso
+echo "[CLEAN] build/"
+
+rm -rf ./build/

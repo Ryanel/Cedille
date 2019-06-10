@@ -37,6 +37,7 @@ string/memcmp.o \
 string/memcpy.o \
 string/memmove.o \
 string/memset.o \
+string/strncpy.o \
 string/strlen.o \
 security/stack_smash_protector.o \
 

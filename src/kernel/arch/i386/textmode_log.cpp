@@ -1,5 +1,6 @@
 #include <kernel/arch/i386/textmode_log.h>
 #include <stdint.h>
+#include <string.h>
 
 void x86TextModeLog::DrawChar(int xpos, int ypos, char c, char fore,
                               char back) {
@@ -9,13 +10,21 @@ void x86TextModeLog::DrawChar(int xpos, int ypos, char c, char fore,
     buffer[location + 1] = attrib;
 }
 
-void x86TextModeLog::Scroll() {}
+void x86TextModeLog::Scroll(int linesDown) {
+    int size = width * (height + linesDown) * 2;
+    uint8_t tempBuffer[size];
+
+    memcpy(&tempBuffer, (void*)(baseAddr + (width * 2)), size);
+    memcpy((void*)baseAddr, &tempBuffer, size);
+    memset((void*)(baseAddr + size), 0, width * 2);
+    y -= linesDown;
+}
 
 void x86TextModeLog::Clear() {
     x = 0;
     y = 0;
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
+    for (unsigned int y = 0; y < height; y++) {
+        for (unsigned int x = 0; x < width; x++) {
             DrawChar(x, y, ' ', foreColor, backColor);
         }
     }
@@ -25,22 +34,21 @@ void x86TextModeLog::Clear() {
 
 void x86TextModeLog::Newline() {
     // Fill blank space with attribute...
-    for (int i = x; i < width; i++) {
+    for (unsigned int i = x; i < width; i++) {
         DrawChar(i, y, ' ', foreColor, backColor);
     }
     // Reset and scroll
     y++;
     x = left_margin;
-    for (int i = 0; i < left_margin; i++) {
+    for (unsigned int i = 0; i < left_margin; i++) {
         DrawChar(i, y, ' ', foreColor, backColor);
     }
-    Scroll();
 }
 
-void x86TextModeLog::ChangeForegroundColor(char c) {
+void x86TextModeLog::ChangeForegroundColor(unsigned char c) {
     foreColor = c;
 }
-void x86TextModeLog::ChangeBackgroundColor(char c) {
+void x86TextModeLog::ChangeBackgroundColor(unsigned char c) {
     backColor = c;
 }
 void x86TextModeLog::Print(char c) {

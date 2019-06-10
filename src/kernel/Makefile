@@ -32,6 +32,7 @@ KERNEL_OBJS=\
 	$(KERNEL_ARCH_OBJS) \
 	main.o \
 	log.o \
+	boot_log_renderer.o \
 	panic.o
 
 OBJS=\

@@ -60,3 +60,8 @@ build/
 temp/
 
 .vscode/
+
+# GTags
+GTAGS
+GRTAGS
+GPATH
