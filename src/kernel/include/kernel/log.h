@@ -9,7 +9,7 @@
 #define LOG_PANIC 6
 
 #define LOG_MAX_MESSAGE_SIZE 128  // Maximum message size for message
-#define LOG_MAX_ENTRIES 50        // 2 screens of entries...
+#define LOG_MAX_ENTRIES 200       // 2 screens of entries...
 
 struct LogColor {
     unsigned char fore;
