@@ -49,6 +49,15 @@
 #define VBE_DISPI_NOCLEARMEM 0x80
 
 class BGA {
+   public:
+    const unsigned int screenWidth = 1024;
+    const unsigned int screenHeight = 768;
+
+    void Initialise();
+    bool Supported();
+    void PlotPixel(unsigned int x, unsigned int y, Color color);
+    void LineCopy(int lineSrc, int lineDest);
+
    private:
     bool featureFrameBuffer = false;
 
@@ -73,14 +82,5 @@ class BGA {
                            (currentBank * bytesPerBank);
         return 0xA0000 + address;
     }
-
-   public:
-    const unsigned int screenWidth = 800;
-    const unsigned int screenHeight = 600;
-
-    void Initialise();
-    bool Supported();
-    void PlotPixel(unsigned int x, unsigned int y, Color color);
-    void LineCopy(int lineSrc, int lineDest);
 };
 extern BGA x86driver_bga;

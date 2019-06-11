@@ -15,8 +15,8 @@ export BOOTDIR=/boot
 export LIBDIR=$EXEC_PREFIX/lib
 export INCLUDEDIR=$PREFIX/include
 
-export CFLAGS='-O2 -g -fstack-protector'
-export CPPFLAGS='-O2 -g -fstack-protector -fno-exceptions -fno-rtti'
+export CFLAGS='-Og -g -fstack-protector'
+export CPPFLAGS='-Og -g -fstack-protector -fno-exceptions -fno-rtti'
 
 # Configure the cross-compiler to use the desired system root.
 export SYSROOT="$(pwd)/build/sysroot"

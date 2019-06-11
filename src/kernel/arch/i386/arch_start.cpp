@@ -27,16 +27,19 @@ void init_logging() {
 
 #ifdef USE_BGA
     g_log.Init(&textmodeLog);
+    g_log.Log(LOG_INFO, "log", "Initialised 80x25 text mode...");
     // Check if we have BGA
     if (x86driver_bga.Supported()) {
         x86driver_bga.Initialise();
+
         g_log.Init(&bgaLog);
+
         g_log.Log(LOG_INFO, "log",
                   "Switched from Textmode to BGA Graphics Adapter");
     } else {
-        g_log.Log(LOG_WARN, "log", "BGA unsupported, using 80x25 text mode.");
+        g_log.Log(LOG_WARN, "log",
+                  "BGA unsupported, continuing to use 80x25 text mode.");
     }
-
 #endif
     g_log.Log(LOG_DEBUG, "log", "Log Initialised");
 }

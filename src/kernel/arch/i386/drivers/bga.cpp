@@ -111,6 +111,7 @@ void BGA::Initialise() {
     // Force bank to be 0...
     currentBank = 1;
     ChangeBank(0);
+    PlotPixel(1, 1, 0xFFFFFFFF);
 }
 
 bool BGA::Supported() {
@@ -124,6 +125,9 @@ bool BGA::Supported() {
             g_log.Log(LOG_DEBUG, "bga",
                       "Latest card version, enabling frame buffer");
             featureFrameBuffer = false;
+        } else {
+            g_log.Log(LOG_DEBUG, "bga",
+                      "Older card version, using (slower) banked mode");
         }
         return true;
     } else {

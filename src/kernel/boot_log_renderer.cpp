@@ -4,15 +4,18 @@
 
 void BootLogRenderer::Init() {
     log_tag_width = 10;
+    log_scroll_current = 0;
 }
 
 void BootLogRenderer::SignalNewEntry() {
     log_scroll_current = g_log.log_entry_index - g_log.impl->height;
+
     if (log_scroll_current < 0) {
         log_scroll_current = 0;
     }
 
-    if (log_scroll_current > (int)(LOG_MAX_ENTRIES - g_log.impl->height)) {
+    if (LOG_MAX_ENTRIES < g_log.impl->height) {
+    } else if (log_scroll_current > LOG_MAX_ENTRIES - g_log.impl->height) {
         log_scroll_current = LOG_MAX_ENTRIES - g_log.impl->height;
         scrollAppend = true;
     }
@@ -36,17 +39,19 @@ void BootLogRenderer::UpdateRender() {
         currentState = Append;
     } else if (log_scroll_current >= log_scroll_previous) {
         currentState = ScrollUp;
-    } else if (log_scroll_current == 200) {
+    } else if (log_scroll_current ==
+               (int)(LOG_MAX_ENTRIES - g_log.impl->height)) {
         currentState = Full;
     } else if (log_scroll_current < log_scroll_previous) {
         currentState = ScrollDown;
-    } else {
     }
 
     if (requestFullRender == true) {
         currentState = Full;
         requestFullRender = false;
     }
+
+    currentState = Full;
 
     switch (currentState) {
         case RenderState::Append:
@@ -146,9 +151,9 @@ void BootLogRenderer::StateAppend() {
 void BootLogRenderer::StateScrollDown() {}
 void BootLogRenderer::StateScrollUp() {
     int amountToScroll = log_scroll_current - log_scroll_previous;
+
     // We must scroll down at least one line
     // if we're in the scroll up state
-
     if (amountToScroll < 1) {
         amountToScroll = 1;
     }

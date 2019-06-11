@@ -33,20 +33,16 @@ void x86BGALog::DrawChar(int xpos, int ypos, char c, unsigned char fore,
     Color foreColor = log_to_color_mappings[fore];
     Color backColor = log_to_color_mappings[back];
 
+    // Render blank characters as a Space
+    if (c < 32) {
+        c = 32;
+    }
+
     // Draw the glyph
     unsigned int glyph_index = c - 32;
     unsigned int glyph_x, glyph_y;
     unsigned int screen_x = xpos * font_width;
     unsigned int screen_y = ypos * font_height;
-
-    if (c == ' ') {
-        for (glyph_y = 0; glyph_y < font_height; glyph_y++) {
-            for (glyph_x = 0; glyph_x < font_width; glyph_x++) {
-                x86driver_bga.PlotPixel(screen_x + glyph_x, screen_y + glyph_y,
-                                        backColor);
-            }
-        }
-    }
 
     for (glyph_y = 0; glyph_y < font_height; glyph_y++) {
         for (glyph_x = 0; glyph_x < font_width; glyph_x++) {
