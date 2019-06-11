@@ -1,4 +1,3 @@
-//#include <data/font-8x8.h>
 #include <data/font-unscii.h>
 #include <kernel/arch/i386/drivers/bga.h>
 #include <kernel/arch/i386/drivers/bga_log.h>
@@ -28,8 +27,7 @@ void x86BGALog::Init() {
     height = x86driver_bga.screenHeight / font_height;
 }
 
-void x86BGALog::DrawChar(int xpos, int ypos, char c, unsigned char fore,
-                         unsigned char back) {
+void x86BGALog::DrawChar(int xpos, int ypos, char c, unsigned char fore, unsigned char back) {
     Color foreColor = log_to_color_mappings[fore];
     Color backColor = log_to_color_mappings[back];
 
@@ -46,16 +44,18 @@ void x86BGALog::DrawChar(int xpos, int ypos, char c, unsigned char fore,
 
     for (glyph_y = 0; glyph_y < font_height; glyph_y++) {
         for (glyph_x = 0; glyph_x < font_width; glyph_x++) {
-            unsigned char data =
-                unscii_8_glyph_bitmap[(uint8_t)glyph_index][glyph_y];
+            unsigned char data = font_unscii8_bitmap[(uint8_t)glyph_index][glyph_y];
 
+#ifndef FONT_RENDER_INVERSE
             bool glyph_hit = (data >> (font_width - glyph_x)) & 1;
+#else
+            bool glyph_hit = (data >> (glyph_x)) & 1;
+#endif
+
             if (glyph_hit) {
-                x86driver_bga.PlotPixel(screen_x + glyph_x, screen_y + glyph_y,
-                                        foreColor);
+                x86driver_bga.PlotPixel(screen_x + glyph_x, screen_y + glyph_y, foreColor);
             } else {
-                x86driver_bga.PlotPixel(screen_x + glyph_x, screen_y + glyph_y,
-                                        backColor);
+                x86driver_bga.PlotPixel(screen_x + glyph_x, screen_y + glyph_y, backColor);
             }
         }
     }

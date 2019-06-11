@@ -3,3 +3,4 @@ BasedOnStyle: Google
 IndentWidth: '4'
 AllowShortFunctionsOnASingleLine: Empty
 BreakConstructorInitializersBeforeComma: false
+ColumnLimit: 0

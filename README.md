@@ -1,8 +1,22 @@
 # The Cédlle Hybrid kernel
 
-The Cédille Kernel is a kernel in development. It's goal is to be a UNIX compatable kernel 
+The Cédille Kernel is a kernel in development. It's goal is to be a UNIX compatable kernel.
 
 ## Building
 
-Note: You *must* use a Cross Compiler of some variety.
+Note: You *must* use a Cross Compiler.
 
+1. Ensure your cross compiler is in PATH
+2. Set HOST to your specific architecture, or leave it as default for the default x86 architecture.
+3. Call build.sh; the kernel should compile.
+
+You can prefix any command with HOST="target-triple" to target that host.
+
+Now that you have a kernel built:
+
+* To generate an iso image, call iso.sh
+* To run the kernel in qemu, call qemu.sh
+* To reset everything, run clean.sh
+
+To configure the kernel build process (such as flags),
+Modify scripts/config.sh

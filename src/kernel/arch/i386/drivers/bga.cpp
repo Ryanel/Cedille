@@ -120,11 +120,11 @@ bool BGA::Supported() {
     uint16_t version = inw(VBE_DISPI_IOPORT_DATA);
 
     if (version >= VBE_DISPI_ID0 && version <= VBE_DISPI_ID5) {
-        g_log.Log(LOG_DEBUG, "bga", "Card version 0x%04X detected", version);
+        g_log.Log(LOG_MESSAGE, "bga", "Card version 0x%04X detected", version);
         if (version == VBE_DISPI_ID5) {
             g_log.Log(LOG_DEBUG, "bga",
                       "Latest card version, enabling frame buffer");
-            featureFrameBuffer = false;
+            featureFrameBuffer = false;  // We're not ready for it just yet...
         } else {
             g_log.Log(LOG_DEBUG, "bga",
                       "Older card version, using (slower) banked mode");
