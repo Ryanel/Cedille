@@ -1,8 +1,8 @@
 #ifndef _STDIO_H
 #define _STDIO_H 1
 
-#include <sys/cdefs.h>
 #include <stdarg.h>
+#include <sys/cdefs.h>
 
 #define EOF (-1)
 
@@ -10,9 +10,9 @@
 extern "C" {
 #endif
 
-int printf(const char* __restrict, ...);
+int printf(const char *__restrict, ...);
 int putchar(int);
-int puts(const char*);
+int puts(const char *);
 
 int vsprintf(char *buf, const char *fmt, va_list args);
 int sprintf(char *buf, const char *fmt, ...);

@@ -60,7 +60,10 @@ class BootLogRenderer {
     void StateAppend();
     void StateScrollUp();
     void StateScrollDown();
-    enum RenderState { Append, ScrollUp, ScrollDown, Full };
+    enum RenderState { Append,
+                       ScrollUp,
+                       ScrollDown,
+                       Full };
 
    public:
     void Init();
