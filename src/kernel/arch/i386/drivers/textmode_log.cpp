@@ -1,6 +1,19 @@
-#include <kernel/arch/i386/textmode_log.h>
+#include <kernel/arch/i386/drivers/textmode_log.h>
+#include <kernel/arch/i386/ports.h>
 #include <stdint.h>
 #include <string.h>
+
+void x86TextModeLog::Init() {
+    // Disable blinking
+    inb(0x03DA);                     // Set to index state
+    outb(0x03C0, 0x30);              // Write index to address mode control register
+    char regcontents = inb(0x03C1);  // Get contents
+    regcontents &= 0xF7;             // Unset bit 3 (blink)
+    outb(0x03C0, regcontents);       // Write result to 0x3C0, which is in data mode.
+
+    width = 80;
+    height = 25;
+}
 
 void x86TextModeLog::DrawChar(int xpos, int ypos, char c, char fore,
                               char back) {

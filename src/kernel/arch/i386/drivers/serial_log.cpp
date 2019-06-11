@@ -13,6 +13,9 @@ void SerialLog::Init() {
     outb(PORT + 3, 0x03);  // 8 bits, no parity, one stop bit
     outb(PORT + 2, 0xC7);  // Enable FIFO, clear them, with 14-byte threshold
     outb(PORT + 4, 0x0B);  // IRQs enabled, RTS/DSR set
+
+    width = 80;
+    height = 25;
 }
 void SerialLog::SendChar(char c) {
     while ((inb(PORT + 5) & 0x20) == 0) {

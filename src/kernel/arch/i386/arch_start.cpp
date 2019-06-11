@@ -4,7 +4,7 @@
 #include <kernel/arch/i386/drivers/bga.h>
 #include <kernel/arch/i386/drivers/bga_log.h>
 #include <kernel/arch/i386/drivers/serial_log.h>
-#include <kernel/arch/i386/textmode_log.h>
+#include <kernel/arch/i386/drivers/textmode_log.h>
 #include <kernel/log.h>
 #include <kernel/main.h>
 
@@ -23,6 +23,7 @@ void init_logging() {
 
 #ifdef USE_TEXTMODE
     g_log.Init(&textmodeLog);
+    g_log.Log(LOG_INFO, "log", "Initialised 80x25 text mode...");
 #endif
 
 #ifdef USE_BGA

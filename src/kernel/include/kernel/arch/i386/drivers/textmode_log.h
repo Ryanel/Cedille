@@ -7,8 +7,6 @@ class x86TextModeLog : public KernelLogImpl {
     int x = 0;
     int y = 0;
 
-    const unsigned int width = 80;
-    const unsigned int height = 25;
     const uintptr_t baseAddr = 0x000B8000;
 
     uint8_t* buffer = (uint8_t*)baseAddr;
@@ -20,6 +18,7 @@ class x86TextModeLog : public KernelLogImpl {
     void Scroll();
 
    public:
+    virtual void Init();
     virtual void Clear();
     virtual void Newline();
     virtual void ChangeForegroundColor(unsigned char c);
