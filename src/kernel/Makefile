@@ -1,7 +1,7 @@
 DEFAULT_HOST!=../../scripts/default-host.sh
 HOST?=DEFAULT_HOST
 HOSTARCH!=../../scripts/target-triplet-to-arch.sh $(HOST)
-
+BOARD?=pc
 ASMFLAGS ?= -felf
 CFLAGS?=-O2 -g
 CPPFLAGS?=
@@ -19,7 +19,7 @@ CPPFLAGS:=$(CPPFLAGS) -ffreestanding -Wall -Wextra -D__is_kernel -Iinclude
 LDFLAGS:=$(LDFLAGS)
 LIBS:=$(LIBS) -nostdlib -lk -lgcc
 
-ARCHDIR=arch/$(HOSTARCH)
+ARCHDIR=arch/$(HOSTARCH)/$(BOARD)
 
 include $(ARCHDIR)/make.config
 
@@ -65,7 +65,7 @@ kernel.elf: $(OBJS) $(ARCHDIR)/linker.ld
 $(ARCHDIR)/crt/crtbegin.o $(ARCHDIR)/crt/crtend.o:
 	@OBJ=`$(CC) $(CFLAGS) $(LDFLAGS) -print-file-name=$(@F)` && cp "$$OBJ" $@
 
-.c.o:
+.c.o: 
 	@echo "[  C  ] $<"
 	@$(CC) -MD -c $< -o $@ -std=gnu11 $(CFLAGS)
 
@@ -77,6 +77,9 @@ $(ARCHDIR)/crt/crtbegin.o $(ARCHDIR)/crt/crtend.o:
 	@echo "[ ASM ] $<"
 	@$(CC) -MD -c $< -o $@ $(CFLAGS)
 
+.s.o:
+	@echo "[ ASM ] $<"
+	@$(CC) -MD -c $< -o $@ $(CFLAGS)
 .nasm.o:
 	@nasm $(ASMFLAGS) $< -o $@ 
 
