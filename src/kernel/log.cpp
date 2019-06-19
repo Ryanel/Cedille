@@ -1,6 +1,8 @@
 #include "kernel/log.h"
+#include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
+
 
 KernelLog g_log;
 

@@ -1,3 +1,4 @@
+#include <kernel/display/termcolor.h>
 #include <kernel/log.h>
 #include <stdio.h>
 #include <string.h>
@@ -15,7 +16,8 @@ void BootLogRenderer::SignalNewEntry() {
     }
 
     if (LOG_MAX_ENTRIES < g_log.impl->height) {
-    } else if (log_scroll_current > LOG_MAX_ENTRIES - g_log.impl->height) {
+        // Do nothing, because we can fit every entry on screen.
+    } else if (log_scroll_current > (int)(LOG_MAX_ENTRIES - g_log.impl->height)) {
         log_scroll_current = LOG_MAX_ENTRIES - g_log.impl->height;
         scrollAppend = true;
     }
@@ -76,15 +78,17 @@ void BootLogRenderer::PrintEntry(LogEntry entry) {
     LogColor toSet = g_log.GetSeverityColor(entry.severity);
 
     // Set to defaults...
-    if (toSet.fore == 0xFF) {
+    if (toSet.fore == TERMINAL_TRANSPARENT) {
         toSet.fore = g_log.defaultColor.fore;
     }
 
-    if (toSet.back == 0xFF) {
+    if (toSet.back == TERMINAL_TRANSPARENT) {
         toSet.back = g_log.defaultColor.back;
     }
 
     g_log.SetColors(toSet);
+
+    // Print the message to the terminal.
 
     PrintTag(entry.tag);
     PrintMessage(entry.message);
@@ -101,7 +105,7 @@ void BootLogRenderer::PrintTag(const char* tag) {
     int tag_len = strlen(tag);
     int tag_padding_len = tag_len + padding_size;
 
-    // If tag + pad length is bigger then what we've reserved, expand
+    // If tag + pad length is bigger then what we've reserved, expand.
     if (tag_padding_len > log_tag_width) {
         log_tag_width = tag_padding_len;
     }
@@ -109,7 +113,7 @@ void BootLogRenderer::PrintTag(const char* tag) {
     // Print right justified
     int right_space_width = log_tag_width - tag_padding_len;
     for (int i = 0; i < right_space_width; i++) {
-        printf(" ");
+        g_log.impl->Print(' ');
     }
     printf("%s: ", tag);
 }
@@ -124,10 +128,12 @@ void BootLogRenderer::PrintMessage(const char* str) {
 }
 
 void BootLogRenderer::StateFull() {
+    // Set the background color so we clear to the correct color
+    // TODO: Should be default color.
     LogColor oldColor = g_log.currentColor;
-
     g_log.SetBackgroundColor(0);
     g_log.impl->Clear();
+    // Set the background color back
     g_log.SetBackgroundColor(oldColor.back);
 
     size_t max_scroll = g_log.impl->height + log_scroll_current;
@@ -135,6 +141,7 @@ void BootLogRenderer::StateFull() {
         max_scroll = LOG_MAX_ENTRIES - 1;
     }
 
+    // Render entries to the terminal.
     for (size_t i = log_scroll_current; i < max_scroll; i++) {
         if (i >= g_log.log_entry_index) {
             break;
@@ -149,6 +156,7 @@ void BootLogRenderer::StateAppend() {
 }
 
 void BootLogRenderer::StateScrollDown() {}
+
 void BootLogRenderer::StateScrollUp() {
     int amountToScroll = log_scroll_current - log_scroll_previous;
 

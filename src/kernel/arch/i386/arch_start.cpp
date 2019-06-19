@@ -8,9 +8,9 @@
 #include <kernel/log.h>
 #include <kernel/main.h>
 
-#define USE_BGA
+//#define USE_BGA
 //#define USE_SERIAL
-//#define USE_TEXTMODE
+#define USE_TEXTMODE
 
 x86TextModeLog textmodeLog;
 x86BGALog bgaLog;

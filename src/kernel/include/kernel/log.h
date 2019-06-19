@@ -78,7 +78,10 @@ class KernelLog {
     // Log Entry Stuff
     LogEntry entry_buffer[LOG_MAX_ENTRIES];
     unsigned int log_entry_index = 0;
+    bool usingStaticMemory = true;
 
+    // Use when heap is working...
+    void TransitionToDynamicMemory();
     // Coloring
     LogColor currentColor;
     LogColor defaultColor;
@@ -87,7 +90,6 @@ class KernelLog {
     void SetBackgroundColor(char c);
 
     // Printing...
-
     void AppendEntry(LogEntry entry);
     void Log(LogEntry entry);
 
