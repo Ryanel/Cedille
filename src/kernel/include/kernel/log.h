@@ -38,9 +38,10 @@ class KernelLogImpl {
         linesDown = linesDown;
     }
     unsigned int left_margin = 0;
-
     unsigned int width;
     unsigned int height;
+
+    bool isSerial = false;
 };
 
 class BootLogRenderer {

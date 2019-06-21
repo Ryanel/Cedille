@@ -55,6 +55,11 @@ void BootLogRenderer::UpdateRender() {
 
     currentState = Full;
 
+    // Serial devices handle their own scrolling, so we only append data to them.
+    if (g_log.impl->isSerial) {
+        currentState = Append;
+    }
+
     switch (currentState) {
         case RenderState::Append:
             StateAppend();
@@ -95,7 +100,7 @@ void BootLogRenderer::PrintEntry(LogEntry entry) {
     g_log.impl->Print('\n');
 
     // Set color again
-    g_log.SetColors(oldColor);
+    //g_log.SetColors(oldColor);
 }
 
 void BootLogRenderer::PrintTag(const char* tag) {

@@ -16,6 +16,7 @@ void SerialLog::Init() {
 
     width = 80;
     height = 25;
+    isSerial = true;
 }
 void SerialLog::SendChar(char c) {
     while ((inb(PORT + 5) & 0x20) == 0) {

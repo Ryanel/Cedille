@@ -14,8 +14,10 @@ EXEC_PREFIX?=$(PREFIX)
 BOOTDIR?=$(EXEC_PREFIX)/boot
 INCLUDEDIR?=$(PREFIX)/include
 
-CFLAGS:=$(CFLAGS) -ffreestanding -Wall -Wextra -D__is_kernel -Iinclude
-CPPFLAGS:=$(CPPFLAGS) -ffreestanding -Wall -Wextra -D__is_kernel -Iinclude
+DEFINES:=-DARCH_NAME=\"${HOSTARCH}\" -DBOARD_NAME=\"${BOARD}\"
+
+CFLAGS:=$(CFLAGS) -ffreestanding -Wall -Wextra -D__is_kernel -Iinclude $(DEFINES)
+CPPFLAGS:=$(CPPFLAGS) -ffreestanding -Wall -Wextra -D__is_kernel -Iinclude $(DEFINES)
 LDFLAGS:=$(LDFLAGS)
 LIBS:=$(LIBS) -nostdlib -lk -lgcc
 
@@ -33,7 +35,8 @@ KERNEL_OBJS=\
 	main.o \
 	log.o \
 	boot_log_renderer.o \
-	panic.o
+	panic.o \
+	version.o
 
 OBJS=\
 	$(ARCHDIR)/crt/crti.o \

@@ -7,10 +7,6 @@ class SerialLog : public KernelLogImpl {
     int x = 0;
     int y = 0;
 
-    const uintptr_t baseAddr = 0x000B8000;
-
-    uint8_t* buffer = (uint8_t*)baseAddr;
-
     char foreColor = 0xF;
     char backColor = 0x0;
 

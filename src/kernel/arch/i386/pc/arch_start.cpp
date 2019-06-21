@@ -7,7 +7,7 @@
 #include <kernel/arch/i386/drivers/textmode_log.h>
 #include <kernel/log.h>
 #include <kernel/main.h>
-
+#include <kernel/version.h>
 //#define USE_BGA
 //#define USE_SERIAL
 #define USE_TEXTMODE
@@ -47,7 +47,7 @@ void init_logging() {
 
 extern "C" void kernel_start(void) {
     init_logging();
-
+    kernel_print_version();
     // Init GDT
 
     kmain();

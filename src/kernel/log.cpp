@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 
-
 KernelLog g_log;
 
 const unsigned char log_severity_table[] = {

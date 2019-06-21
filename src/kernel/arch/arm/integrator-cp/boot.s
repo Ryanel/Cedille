@@ -8,10 +8,11 @@ interrupt_vector_table:
     b .
     b .
 
-.comm stack, 0x10000 @ Reserve 64k stack in the BSS
+.comm stack, 0x10000        @ Reserve 64k stack in the BSS
 _start:
     .globl _start
-    ldr sp, =stack+0x10000 @ Set up the stack
-    bl kernel_start @ Jump to the main function
+    ldr sp, =stack+0x10000  @ Set up the stack
+    bl _init                @ Call initialization
+    bl kernel_start         @ Jump to the main function
 1: 
     b 1b @ Halt
