@@ -4,11 +4,12 @@ PROJECTS="libc kernel"
 
 export MAKE=${MAKE:-make}
 export HOST=${HOST:-$(./scripts/default-host.sh)}
-export BOARD=${BOARD:-pc}
+export PLATFORM=${PLATFORM:-pc}
 export AR=${HOST}-ar
 export AS=${HOST}-as
 export CC=${HOST}-gcc
 export CPP=${HOST}-g++
+export STRIP=${HOST}-strip
 
 export PREFIX=/usr
 export EXEC_PREFIX=$PREFIX
@@ -24,4 +25,6 @@ export SYSROOT="$(pwd)/build/sysroot"
 export CC="$CC --sysroot=$SYSROOT -isystem=$INCLUDEDIR"
 export CPP="$CPP --sysroot=$SYSROOT -isystem=$INCLUDEDIR"
 
-echo "[CONFIG] Board is $BOARD"
+CONVERTED_ARCH=$(./scripts/target-triplet-to-arch.sh $HOST)
+
+echo "[CONFIG] $HOST ($CONVERTED_ARCH) on $PLATFORM"

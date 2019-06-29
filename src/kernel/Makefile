@@ -1,7 +1,7 @@
 DEFAULT_HOST!=../../scripts/default-host.sh
 HOST?=DEFAULT_HOST
 HOSTARCH!=../../scripts/target-triplet-to-arch.sh $(HOST)
-BOARD?=pc
+PLATFORM?=pc
 ASMFLAGS ?= -felf
 CFLAGS?=-O2 -g
 CPPFLAGS?=
@@ -14,24 +14,27 @@ EXEC_PREFIX?=$(PREFIX)
 BOOTDIR?=$(EXEC_PREFIX)/boot
 INCLUDEDIR?=$(PREFIX)/include
 
-DEFINES:=-DARCH_NAME=\"${HOSTARCH}\" -DBOARD_NAME=\"${BOARD}\"
+DEFINES:=-DARCH_NAME=\"${HOSTARCH}\" -DPLATFORM_NAME=\"${PLATFORM}\"
 
 CFLAGS:=$(CFLAGS) -ffreestanding -Wall -Wextra -D__is_kernel -Iinclude $(DEFINES)
 CPPFLAGS:=$(CPPFLAGS) -ffreestanding -Wall -Wextra -D__is_kernel -Iinclude $(DEFINES)
 LDFLAGS:=$(LDFLAGS)
 LIBS:=$(LIBS) -nostdlib -lk -lgcc
 
-ARCHDIR=arch/$(HOSTARCH)/$(BOARD)
+ISA_DIR=arch/$(HOSTARCH)
+PLATFORM_DIR=arch/$(HOSTARCH)/$(PLATFORM)
 
-include $(ARCHDIR)/make.config
+include $(ISA_DIR)/make.config
+include $(PLATFORM_DIR)/make.config
 
-CFLAGS:=$(CFLAGS) $(KERNEL_ARCH_CFLAGS)
-CPPFLAGS:=$(CPPFLAGS) $(KERNEL_ARCH_CPPFLAGS)
-LDFLAGS:=$(LDFLAGS) $(KERNEL_ARCH_LDFLAGS)
-LIBS:=$(LIBS) $(KERNEL_ARCH_LIBS)
+CFLAGS:=$(CFLAGS) $(KERNEL_PLATFORM_CFLAGS)
+CPPFLAGS:=$(CPPFLAGS) $(KERNEL_PLATFORM_CPPFLAGS)
+LDFLAGS:=$(LDFLAGS) $(KERNEL_PLATFORM_LDFLAGS)
+LIBS:=$(LIBS) $(KERNEL_PLATFORM_LIBS)
 
 KERNEL_OBJS=\
-	$(KERNEL_ARCH_OBJS) \
+	$(KERNEL_ISA_OBJS) \
+	$(KERNEL_PLATFORM_OBJS) \
 	main.o \
 	log.o \
 	boot_log_renderer.o \
@@ -39,33 +42,34 @@ KERNEL_OBJS=\
 	version.o
 
 OBJS=\
-	$(ARCHDIR)/crt/crti.o \
-	$(ARCHDIR)/crt/crtbegin.o \
+	$(PLATFORM_DIR)/crt/crti.o \
+	$(PLATFORM_DIR)/crt/crtbegin.o \
 	$(KERNEL_OBJS) \
-	$(ARCHDIR)/crt/crtend.o \
-	$(ARCHDIR)/crt/crtn.o \
+	$(PLATFORM_DIR)/crt/crtend.o \
+	$(PLATFORM_DIR)/crt/crtn.o \
 
 LINK_LIST=\
 	$(LDFLAGS) \
-	$(ARCHDIR)/crt/crti.o \
-	$(ARCHDIR)/crt/crtbegin.o \
+	$(PLATFORM_DIR)/crt/crti.o \
+	$(PLATFORM_DIR)/crt/crtbegin.o \
 	$(KERNEL_OBJS) \
 	$(LIBS) \
-	$(ARCHDIR)/crt/crtend.o \
-	$(ARCHDIR)/crt/crtn.o \
+	$(PLATFORM_DIR)/crt/crtend.o \
+	$(PLATFORM_DIR)/crt/crtn.o \
 
 .PHONY: all clean install install-headers install-kernel
 .SUFFIXES: .o .c .S .asm .nasm
 
 all: kernel.elf
 
-kernel.elf: $(OBJS) $(ARCHDIR)/linker.ld
+kernel.elf: $(OBJS) $(PLATFORM_DIR)/linker.ld
 	@echo "[ ELF ] Compiling Kernel..."
-	@$(CPP) -T $(ARCHDIR)/linker.ld -o $@ $(CPPFLAGS) $(LINK_LIST)
+	@$(CPP) -T $(PLATFORM_DIR)/linker.ld -o $@ $(CPPFLAGS) $(LINK_LIST)
+
 	@echo "[ ELF ] Kernel Compiled Successfully"
 	
 
-$(ARCHDIR)/crt/crtbegin.o $(ARCHDIR)/crt/crtend.o:
+$(PLATFORM_DIR)/crt/crtbegin.o $(PLATFORM_DIR)/crt/crtend.o:
 	@OBJ=`$(CC) $(CFLAGS) $(LDFLAGS) -print-file-name=$(@F)` && cp "$$OBJ" $@
 
 .c.o: 

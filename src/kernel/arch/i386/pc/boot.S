@@ -29,6 +29,10 @@ _start:
 	xor %ebp, %ebp          # Set EBP to null
 	push %ebp               # Push null return address to signal end of stack. Useful for debugging.
 
+    # Push multiboot paramaters to stack for call to kernel_start
+    push %eax
+    push %ebx
+
 	# Call the global constructors.
 	call _init
 

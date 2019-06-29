@@ -6,6 +6,6 @@ void kernel_print_version();
 #define ARCH_NAME "unknown"
 #endif
 
-#ifndef BOARD_NAME
-#define BOARD_NAME "unknown"
+#ifndef PLATFORM_NAME
+#define PLATFORM_NAME "unknown"
 #endif

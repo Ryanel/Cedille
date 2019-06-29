@@ -79,7 +79,7 @@ void BootLogRenderer::UpdateRender() {
 }
 
 void BootLogRenderer::PrintEntry(LogEntry entry) {
-    LogColor oldColor = g_log.currentColor;
+    //LogColor oldColor = g_log.currentColor;
     LogColor toSet = g_log.GetSeverityColor(entry.severity);
 
     // Set to defaults...

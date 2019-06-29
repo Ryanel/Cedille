@@ -65,3 +65,7 @@ temp/
 GTAGS
 GRTAGS
 GPATH
+
+
+# Personal scripts
+virtualbox.sh

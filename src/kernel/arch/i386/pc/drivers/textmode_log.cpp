@@ -69,6 +69,10 @@ void x86TextModeLog::Print(char c) {
         Newline();
         return;
     }
+    if (x >= (signed int)width) {
+        Newline();
+    }
     DrawChar(x, y, c, foreColor, backColor);
+
     x++;
 }
