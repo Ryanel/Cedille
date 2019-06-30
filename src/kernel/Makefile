@@ -3,7 +3,7 @@ HOST?=DEFAULT_HOST
 HOSTARCH!=../../scripts/target-triplet-to-arch.sh $(HOST)
 PLATFORM?=pc
 ASMFLAGS ?= -felf
-CFLAGS?=-O2 -g
+CFLAGS?=-Og -g
 CPPFLAGS?=
 LDFLAGS?=
 LIBS?=
@@ -74,11 +74,11 @@ $(PLATFORM_DIR)/crt/crtbegin.o $(PLATFORM_DIR)/crt/crtend.o:
 
 .c.o: 
 	@echo "[  C  ] $<"
-	@$(CC) -MD -c $< -o $@ -std=gnu11 $(CFLAGS)
+	@$(CC) -MD -c $< -o $@ -std=gnu14 $(CFLAGS)
 
 .cpp.o:
 	@echo "[ CXX ] $<"
-	@$(CPP) -MD -c $< -o $@ -std=gnu++11 $(CPPFLAGS)
+	@$(CPP) -MD -c $< -o $@ -std=gnu++14 $(CPPFLAGS)
 
 .S.o:
 	@echo "[ ASM ] $<"

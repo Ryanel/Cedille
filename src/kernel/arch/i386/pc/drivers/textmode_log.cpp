@@ -24,12 +24,29 @@ void x86TextModeLog::DrawChar(int xpos, int ypos, char c, char fore,
 }
 
 void x86TextModeLog::Scroll(int linesDown) {
-    int size = width * (height + linesDown) * 2;
-    uint8_t tempBuffer[size];
+    if (linesDown < 0) {
+        //TODO: Implement
+        asm("hlt");
+        return;
+    }
 
-    memcpy(&tempBuffer, (void*)(baseAddr + (width * 2)), size);
-    memcpy((void*)baseAddr, &tempBuffer, size);
-    memset((void*)(baseAddr + size), 0, width * 2);
+    linesDown = 1;
+
+    uint32_t screen_size = width * height * 2;
+    uint32_t line_down_offset = width * (linesDown)*2;
+    uint32_t needed_region_start = baseAddr + line_down_offset;
+    uint32_t needed_region_size = screen_size - line_down_offset;
+    uint8_t tempBuffer[needed_region_size];
+
+    // Step 1: Copy needed part of screen to buffer
+    memcpy(&tempBuffer, (void*)(needed_region_start), needed_region_size);
+
+    // Step 2: Copy buffer to screen.
+    memcpy((void*)baseAddr, &tempBuffer, needed_region_size);
+
+    // Step 3: Clear lines at bottom
+    memset((void*)(baseAddr + needed_region_size), 0, line_down_offset);
+
     y -= linesDown;
 }
 

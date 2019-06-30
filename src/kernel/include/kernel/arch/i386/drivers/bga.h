@@ -50,8 +50,8 @@
 
 class BGA {
    public:
-    const unsigned int screenWidth = 1024;
-    const unsigned int screenHeight = 768;
+    unsigned int screenWidth = 800;
+    unsigned int screenHeight = 600;
 
     void Initialise();
     bool Supported();

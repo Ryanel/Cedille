@@ -25,6 +25,7 @@ Color log_to_color_mappings[] = {
 void x86BGALog::Init() {
     width = x86driver_bga.screenWidth / font_width;
     height = x86driver_bga.screenHeight / font_height;
+    g_log.Log(LOG_INFO, "log", "BGA logging running at %dx%d (%dx%d chars)", x86driver_bga.screenWidth, x86driver_bga.screenHeight, width, height);
 }
 
 void x86BGALog::DrawChar(int xpos, int ypos, char c, unsigned char fore, unsigned char back) {
@@ -82,8 +83,10 @@ void x86BGALog::Clear() {
 
 void x86BGALog::Newline() {
     // Fill blank space with attribute...
-    for (unsigned int i = x; i < width; i++) {
-        DrawChar(i, y, ' ', foreColor, backColor);
+    if (backColor != 0) {  // Optimization: Since the screen is by default black (0), don't overwrite any pixels that are already that color.
+        for (unsigned int i = x; i < width; i++) {
+            DrawChar(i, y, ' ', foreColor, backColor);
+        }
     }
     // Reset and scroll
     y++;
@@ -104,6 +107,10 @@ void x86BGALog::Print(char c) {
         Newline();
         return;
     }
+    if ((unsigned int)x >= width) {
+        Newline();
+    }
     DrawChar(x, y, c, foreColor, backColor);
+
     x++;
 }

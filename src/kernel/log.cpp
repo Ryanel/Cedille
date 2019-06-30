@@ -105,3 +105,18 @@ void KernelLog::AppendEntry(LogEntry entry) {
 extern "C" void kernel_log_char(char c) {
     g_log.Log(c);
 }
+
+// Dummy log stuff
+
+void DummyLog::Init() {}
+void DummyLog::Clear() {}
+void DummyLog::Newline() {}
+void DummyLog::ChangeForegroundColor(unsigned char c) {
+    c = c;
+}
+void DummyLog::ChangeBackgroundColor(unsigned char c) {
+    c = c;
+}
+void DummyLog::Print(char c) {
+    c = c;
+}

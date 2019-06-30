@@ -3,8 +3,8 @@
 
 int kmain() {
     g_log.Log(LOG_NOTICE, "kernel", "Entered Kernel Main.");
-    while (true) {
-    }
+    //while (true) {
+    //}
     panic("Kernel main exited...");
     return 0;
 }

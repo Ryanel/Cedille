@@ -41,9 +41,8 @@ void BootLogRenderer::UpdateRender() {
         currentState = Append;
     } else if (log_scroll_current >= log_scroll_previous) {
         currentState = ScrollUp;
-    } else if (log_scroll_current ==
-               (int)(LOG_MAX_ENTRIES - g_log.impl->height)) {
-        currentState = Full;
+    } else if (log_scroll_current == (int)(LOG_MAX_ENTRIES - g_log.impl->height)) {
+        currentState = ScrollUp;
     } else if (log_scroll_current < log_scroll_previous) {
         currentState = ScrollDown;
     }
@@ -52,8 +51,6 @@ void BootLogRenderer::UpdateRender() {
         currentState = Full;
         requestFullRender = false;
     }
-
-    currentState = Full;
 
     // Serial devices handle their own scrolling, so we only append data to them.
     if (g_log.impl->isSerial) {

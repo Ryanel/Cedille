@@ -75,7 +75,11 @@ class BootLogRenderer {
 class KernelLog {
    private:
     KernelLogImpl* impl;
+
+   public:
     BootLogRenderer renderer;
+
+   private:
     // Log Entry Stuff
     LogEntry entry_buffer[LOG_MAX_ENTRIES];
     unsigned int log_entry_index = 0;
@@ -108,4 +112,17 @@ class KernelLog {
     friend class BootLogRenderer;
 };
 
+class DummyLog : public KernelLogImpl {
+   private:
+    int x = 0;
+    int y = 0;
+
+   public:
+    virtual void Init();
+    virtual void Clear();
+    virtual void Newline();
+    virtual void ChangeForegroundColor(unsigned char c);
+    virtual void ChangeBackgroundColor(unsigned char c);
+    virtual void Print(char c);
+};
 extern KernelLog g_log;

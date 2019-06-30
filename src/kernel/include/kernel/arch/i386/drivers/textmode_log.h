@@ -7,7 +7,7 @@ class x86TextModeLog : public KernelLogImpl {
     int x = 0;
     int y = 0;
 
-    const uintptr_t baseAddr = 0x000B8000;
+    const uintptr_t baseAddr = 0xC03FF000;
 
     uint8_t* buffer = (uint8_t*)baseAddr;
 

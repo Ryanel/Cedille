@@ -1,41 +1,35 @@
-/* The bootloader will look at this image and start execution at the symbol
-   designated at the entry point. */
 ENTRY(_start)
 
-/* Tell where the various sections of the object files will be put in the final
-   kernel image. */
 SECTIONS
 {
-	/* Begin putting sections at 1 MiB, a conventional place for kernels to be
-	   loaded at by the bootloader. */
-	. = 1M;
+	. = 0xC0100000;
+
     kernel_link_memory_start = .;
-	/* First put the multiboot header, as it is required to be put very early
-	   early in the image or the bootloader won't recognize the file format.
-	   Next we'll put the .text section. */
-	.text BLOCK(0x1000) : ALIGN(0x1000) 
+
+	.text ALIGN(0x1000) : AT (ADDR (.text) - 0xC0000000)
 	{
 		*(.multiboot)
 		*(.text)
 	}
 
 	/* Read-only data. */
-	.rodata BLOCK(0x1000) : ALIGN(0x1000) 
+	.rodata ALIGN(0x1000) : AT (ADDR (.rodata) - 0xC0000000)
 	{
 		*(.rodata)
 	}
 
 	/* Read-write data (initialized) */
-	.data BLOCK(0x1000) : ALIGN(0x1000) 
+	.data ALIGN(0x1000) : AT (ADDR (.data) - 0xC0000000)
 	{
 		*(.data)
 	}
 
 	/* Read-write data (uninitialized) and stack */
-	.bss BLOCK(0x1000) : ALIGN(0x1000) 
+	.bss ALIGN(0x1000) : AT (ADDR (.bss) - 0xC0000000)
 	{
 		*(COMMON)
 		*(.bss)
+        *(.bootstrap_stack)
 	}
     
     /DISCARD/ :
